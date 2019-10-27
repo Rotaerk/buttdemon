@@ -16,5 +16,18 @@ executable buttdemon
   main-is: Main.hs
   ghc-options: -threaded -Wall -Wno-name-shadowing -Wno-unused-matches -fno-ignore-asserts
   default-language: Haskell2010
-  build-depends: base ^>=4.12
---  other-modules:
+  extra-libraries: assimp
+  build-depends:
+    easytensor,
+    base ^>=4.12
+  default-extensions: ForeignFunctionInterface
+  other-modules:
+    Graphics.Formats.Assimp.CFileIO
+    Graphics.Formats.Assimp.PostProcess
+    Graphics.Formats.Assimp.Scene
+    Graphics.Formats.Assimp.Types
+
+source-repository head
+  type: git
+  location: https://github.com/rotaerk/buttdemon
+  subdir: buttdemon
