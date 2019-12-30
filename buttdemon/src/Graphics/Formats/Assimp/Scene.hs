@@ -4,21 +4,21 @@
 
 module Graphics.Formats.Assimp.Scene where
 
+import Graphics.Formats.Assimp.Animation
+import Graphics.Formats.Assimp.Types
+
 import Data.Bits
 import Data.Word
 import Foreign.Ptr
 import GHC.Generics
 import Numeric.PrimBytes
 
-data AiAnimation
 data AiCamera
 data AiLight
 data AiMaterial
 data AiMesh
 data AiMetadata
 data AiTexture
-data AiString
-data AiMatrix4x4
 
 data AiNode =
   AiNode {
@@ -39,19 +39,14 @@ instance PrimBytes AiSceneFlags
 
 pattern AI_SCENE_FLAGS_INCOMPLETE :: AiSceneFlags
 pattern AI_SCENE_FLAGS_INCOMPLETE = AiSceneFlags 0x1
-
 pattern AI_SCENE_FLAGS_VALIDATED :: AiSceneFlags
 pattern AI_SCENE_FLAGS_VALIDATED = AiSceneFlags 0x2
-
 pattern AI_SCENE_FLAGS_VALIDATION_WARNING :: AiSceneFlags
 pattern AI_SCENE_FLAGS_VALIDATION_WARNING = AiSceneFlags 0x4
-
 pattern AI_SCENE_FLAGS_NON_VERBOSE_FORMAT :: AiSceneFlags
 pattern AI_SCENE_FLAGS_NON_VERBOSE_FORMAT = AiSceneFlags 0x8
-
 pattern AI_SCENE_FLAGS_TERRAIN :: AiSceneFlags
 pattern AI_SCENE_FLAGS_TERRAIN = AiSceneFlags 0x10
-
 pattern AI_SCENE_FLAGS_ALLOW_SHARED :: AiSceneFlags
 pattern AI_SCENE_FLAGS_ALLOW_SHARED = AiSceneFlags 0x20
 

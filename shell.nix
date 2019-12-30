@@ -7,6 +7,7 @@ let
     (hs.ghcWithPackages (ps: [ps.shake]))
     hs.cabal-install
     hs.ghcid
+    pkgs.binutils-unwrapped
   ];
   libraries = [
     assimp
