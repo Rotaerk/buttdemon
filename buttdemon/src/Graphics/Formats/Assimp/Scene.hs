@@ -5,6 +5,7 @@
 module Graphics.Formats.Assimp.Scene where
 
 import Graphics.Formats.Assimp.Animation
+import Graphics.Formats.Assimp.Camera
 import Graphics.Formats.Assimp.Types
 
 import Data.Bits
@@ -13,7 +14,6 @@ import Foreign.Ptr
 import GHC.Generics
 import Numeric.PrimBytes
 
-data AiCamera
 data AiLight
 data AiMaterial
 data AiMesh

@@ -23,6 +23,7 @@ executable buttdemon
   default-extensions: ForeignFunctionInterface
   other-modules:
     Graphics.Formats.Assimp.Animation
+    Graphics.Formats.Assimp.Camera
     Graphics.Formats.Assimp.CFileIO
     Graphics.Formats.Assimp.PostProcess
     Graphics.Formats.Assimp.Scene
