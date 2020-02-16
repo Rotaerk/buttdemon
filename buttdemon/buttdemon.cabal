@@ -28,6 +28,7 @@ executable buttdemon
     Graphics.Formats.Assimp.CFileIO
     Graphics.Formats.Assimp.Light
     Graphics.Formats.Assimp.Material
+    Graphics.Formats.Assimp.Mesh
     Graphics.Formats.Assimp.Metadata
     Graphics.Formats.Assimp.PostProcess
     Graphics.Formats.Assimp.Scene

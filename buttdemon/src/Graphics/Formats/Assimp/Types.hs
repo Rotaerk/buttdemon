@@ -31,6 +31,11 @@ data AiVector3D = AiVector3D { aiVector3D'x, aiVector3D'y, aiVector3D'z :: AiRea
 
 instance PrimBytes AiVector3D
 
+data AiAABB = AiAABB { aiAABB'min, aiAABB'max :: AiVector3D }
+  deriving (Generic)
+
+instance PrimBytes AiAABB
+
 data AiColor3D = AiColor3D { aiColor3D'r, aiColor3D'g, aiColor3D'b :: AiReal }
   deriving (Generic)
 
