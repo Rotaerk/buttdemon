@@ -8,6 +8,7 @@ import Graphics.Formats.Assimp.Animation
 import Graphics.Formats.Assimp.Camera
 import Graphics.Formats.Assimp.Light
 import Graphics.Formats.Assimp.Material
+import Graphics.Formats.Assimp.Metadata
 import Graphics.Formats.Assimp.Texture
 import Graphics.Formats.Assimp.Types
 
@@ -18,7 +19,6 @@ import GHC.Generics
 import Numeric.PrimBytes
 
 data AiMesh
-data AiMetadata
 
 data AiNode =
   AiNode {
