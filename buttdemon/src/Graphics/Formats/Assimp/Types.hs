@@ -1,14 +1,19 @@
 {-# LANGUAGE DataKinds #-}
 {-# LANGUAGE DeriveGeneric #-}
+{-# LANGUAGE KindSignatures #-}
 {-# LANGUAGE PatternSynonyms #-}
+{-# LANGUAGE RankNTypes #-}
 
 module Graphics.Formats.Assimp.Types where
 
+import Data.Char
 import Data.Int
+import Data.String
 import Data.Word
 import GHC.Generics
 import Numeric.PrimBytes
 import Numeric.DataFrame
+import Numeric.Dimensions
 
 type AiReal = Float
 type AiInt = Int32
@@ -79,7 +84,21 @@ data AiString =
 
 instance PrimBytes AiString
 
-newtype AiReturn = AiReturn Word32 deriving (Eq, Ord, Show, Generic)
+vectorToList :: forall t (n :: Nat). (PrimBytes t, KnownDim n) => Vector t n -> [t]
+vectorToList = fmap unScalar . sewfoldr (:) []
+
+instance Eq AiString where
+  AiString l1 d1 == AiString l2 d2 =
+    l1 == l2 &&
+    take (fromIntegral l1) (vectorToList d1) == take (fromIntegral l2) (vectorToList d2)
+
+instance IsString AiString where
+  fromString = AiString <$> fromIntegral . length <*> fromFlatList dims 0 . fmap (fromIntegral . ord)
+
+instance Show AiString where
+  show (AiString l d) = take (fromIntegral l) . fmap (chr . fromIntegral) . vectorToList $ d
+
+newtype AiReturn = AiReturn Int32 deriving (Eq, Ord, Show, Generic)
 
 instance PrimBytes AiReturn
 
@@ -90,7 +109,7 @@ pattern AiReturn_FAILURE = AiReturn (-0x1)
 pattern AiReturn_OUTOFMEMORY :: AiReturn
 pattern AiReturn_OUTOFMEMORY = AiReturn (-0x3)
 
-newtype AiOrigin = AiOrigin Word32 deriving (Eq, Ord, Show, Generic)
+newtype AiOrigin = AiOrigin Int32 deriving (Eq, Ord, Show, Generic)
 
 instance PrimBytes AiOrigin
 
@@ -101,7 +120,7 @@ pattern AiOrigin_CUR = AiOrigin 0x1
 pattern AiOrigin_END :: AiOrigin
 pattern AiOrigin_END = AiOrigin 0x3
 
-newtype AiDefaultLogStream = AiDefaultLogStream Word32 deriving (Eq, Ord, Show, Generic)
+newtype AiDefaultLogStream = AiDefaultLogStream Int32 deriving (Eq, Ord, Show, Generic)
 
 instance PrimBytes AiDefaultLogStream
 
