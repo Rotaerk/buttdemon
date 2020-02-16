@@ -7,6 +7,8 @@ module Graphics.Formats.Assimp.Scene where
 import Graphics.Formats.Assimp.Animation
 import Graphics.Formats.Assimp.Camera
 import Graphics.Formats.Assimp.Light
+import Graphics.Formats.Assimp.Material
+import Graphics.Formats.Assimp.Texture
 import Graphics.Formats.Assimp.Types
 
 import Data.Bits
@@ -15,10 +17,8 @@ import Foreign.Ptr
 import GHC.Generics
 import Numeric.PrimBytes
 
-data AiMaterial
 data AiMesh
 data AiMetadata
-data AiTexture
 
 data AiNode =
   AiNode {
