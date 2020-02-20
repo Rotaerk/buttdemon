@@ -1,2 +1,3 @@
 packages:
   buttdemon/buttdemon.cabal
+  easytensor/easytensor/easytensor.cabal
