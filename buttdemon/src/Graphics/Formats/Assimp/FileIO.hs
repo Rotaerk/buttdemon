@@ -1,7 +1,7 @@
 {-# LANGUAGE DeriveAnyClass #-}
 {-# LANGUAGE DeriveGeneric #-}
 
-module Graphics.Formats.Assimp.CFileIO where
+module Graphics.Formats.Assimp.FileIO where
 
 import Graphics.Formats.Assimp.Types
 
