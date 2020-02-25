@@ -4,11 +4,11 @@
 module Graphics.Formats.Assimp.PostProcess where
 
 import Data.Bits
-import Data.Word
+import Foreign.C.Types
 import GHC.Generics
 import Numeric.PrimBytes
   
-newtype AiPostProcessSteps = AiPostProcessSteps Word32 deriving (Eq, Ord, Bits, FiniteBits, Show, Generic)
+newtype AiPostProcessSteps = AiPostProcessSteps CUInt deriving (Eq, Ord, Bits, FiniteBits, Show, Generic)
 instance PrimBytes AiPostProcessSteps
 
 aiProcess_CalcTangentSpace :: AiPostProcessSteps

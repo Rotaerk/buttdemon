@@ -11,8 +11,8 @@ module Main where
 
 import Control.Monad
 import Data.Bits
-import Data.Word
 import Foreign.C.String
+import Foreign.C.Types
 import Foreign.Ptr
 import Numeric.PrimBytes
 
@@ -34,7 +34,7 @@ main =
 
     scene <- bPeek scenePtr
 
-    numMeshes <- bPeekByteOff @Word32 scenePtr $ bFieldOffsetOf @"aiScene'numMeshes" (undefined :: AiScene)
+    numMeshes <- bPeekByteOff @CUInt scenePtr $ bFieldOffsetOf @"aiScene'numMeshes" (undefined :: AiScene)
 
     print numMeshes
 
@@ -70,14 +70,14 @@ foreign import ccall "aiImportFileExWithProperties" aiImportFileExWithProperties
 
 foreign import ccall "aiImportFileFromMemory" aiImportFileFromMemory ::
   CString {-^ buffer -} ->
-  Word32 {-^ length -} ->
+  CUInt {-^ length -} ->
   AiPostProcessSteps {-^ flags -} ->
   CString {-^ hint -} ->
   Ptr AiScene
 
 foreign import ccall "aiImportFileFromMemoryWithProperties" aiImportFileFromMemoryWithProperties ::
   CString {-^ buffer -} ->
-  Word32 {-^ length -} ->
+  CUInt {-^ length -} ->
   AiPostProcessSteps {-^ flags -} ->
   CString {-^ hint -} ->
   Ptr AiPropertyStore {-^ props -} ->

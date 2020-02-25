@@ -1,4 +1,3 @@
-{-# LANGUAGE DeriveAnyClass #-}
 {-# LANGUAGE DeriveGeneric #-}
 
 module Graphics.Formats.Assimp.FileIO where
@@ -11,31 +10,57 @@ import Foreign.Ptr
 import GHC.Generics
 import Numeric.PrimBytes
 
-type AiFileWriteProc = Ptr AiFile -> CString -> CSize -> CSize -> IO CSize
-type AiFileReadProc = Ptr AiFile -> Ptr CChar -> CSize -> CSize -> IO CSize
-type AiFileTellProc = Ptr AiFile -> IO CSize
-type AiFileFlushProc = Ptr AiFile -> IO ()
-type AiFileSeek = Ptr AiFile -> CSize -> AiOrigin -> IO AiReturn
-type AiFileOpenProc = Ptr AiFileIO -> CString -> CString -> IO (Ptr AiFile)
-type AiFileCloseProc = Ptr AiFileIO -> Ptr AiFile -> IO ()
+type AiFileWriteProcFunc =
+  Ptr AiFile {-^ pFile -} ->
+  Ptr CChar {-^ pIn -} ->
+  CSize {-^ elementSize -} ->
+  CSize {-^ elementCount -} ->
+  IO CSize -- Returns number of elements of size elementSize written
+type AiFileWriteProc = FunPtr AiFileWriteProcFunc
+
+type AiFileReadProcFunc =
+  Ptr AiFile {-^ pFile -} ->
+  Ptr CChar {-^ pOut -} ->
+  CSize {-^ elementSize -} ->
+  CSize {-^ elementCount -} ->
+  IO CSize -- Returns number of elements of size elementSize read
+type AiFileReadProc = FunPtr AiFileReadProcFunc
+
+type AiFileTellProcFunc = Ptr AiFile {-^ pFile -} -> IO CSize -- Returns current position in file
+type AiFileTellProc = FunPtr AiFileTellProcFunc
+
+type AiFileFlushProcFunc = Ptr AiFile {-^ pFile -} -> IO ()
+type AiFileFlushProc = FunPtr AiFileFlushProcFunc
+
+type AiFileSeekFunc = Ptr AiFile {-^ pFile -} -> CSize {-^ offset -} -> AiOrigin {-^ whence -} -> IO AiReturn
+type AiFileSeek = FunPtr AiFileSeekFunc
+
+type AiFileOpenProcFunc = Ptr AiFileIO {-^ pFileIO -} -> CString {-^ filename -} -> CString {-^ mode -} -> IO (Ptr AiFile)
+type AiFileOpenProc = FunPtr AiFileOpenProcFunc
+
+type AiFileCloseProcFunc = Ptr AiFileIO {-^ pFileIO -} -> Ptr AiFile {-^ pFile -} -> IO ()
+type AiFileCloseProc = FunPtr AiFileCloseProcFunc
+
 type AiUserData = Ptr CChar
 
 data AiFileIO =
   AiFileIO {
-    aiFileIO'openProc :: FunPtr AiFileOpenProc,
-    aiFileIO'closeProc :: FunPtr AiFileCloseProc,
+    aiFileIO'openProc :: AiFileOpenProc,
+    aiFileIO'closeProc :: AiFileCloseProc,
     aiFileIO'userData :: AiUserData
   }
-  deriving (Generic, PrimBytes)
+  deriving (Generic)
+instance PrimBytes AiFileIO
 
 data AiFile =
   AiFile {
-    aiFile'readProc :: FunPtr AiFileReadProc,
-    aiFile'writeProc :: FunPtr AiFileWriteProc,
-    aiFile'tellProc :: FunPtr AiFileTellProc,
-    aiFile'fileSizeProc :: FunPtr AiFileTellProc,
-    aiFile'seekProc :: FunPtr AiFileSeek,
-    aiFile'flushProc :: FunPtr AiFileFlushProc,
+    aiFile'readProc :: AiFileReadProc,
+    aiFile'writeProc :: AiFileWriteProc,
+    aiFile'tellProc :: AiFileTellProc,
+    aiFile'fileSizeProc :: AiFileTellProc,
+    aiFile'seekProc :: AiFileSeek,
+    aiFile'flushProc :: AiFileFlushProc,
     aiFile'userData :: AiUserData
   }
-  deriving (Generic, PrimBytes)
+  deriving (Generic)
+instance PrimBytes AiFile

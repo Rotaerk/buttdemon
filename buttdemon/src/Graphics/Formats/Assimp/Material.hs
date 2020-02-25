@@ -9,9 +9,8 @@ module Graphics.Formats.Assimp.Material where
 import Graphics.Formats.Assimp.Types
 
 import Data.Bits
-import Data.Int
-import Data.Word
 import Foreign.C.String
+import Foreign.C.Types
 import Foreign.Ptr
 import GHC.Generics
 import Numeric.PrimBytes
@@ -19,7 +18,7 @@ import Numeric.PrimBytes
 pattern AI_DEFAULT_MATERIAL_NAME :: AiString
 pattern AI_DEFAULT_MATERIAL_NAME = "DefaultMaterial"
 
-newtype AiTextureOp = AiTextureOp Word32 deriving (Eq, Ord, Show, Generic)
+newtype AiTextureOp = AiTextureOp CUInt deriving (Eq, Ord, Show, Generic)
 instance PrimBytes AiTextureOp
 
 pattern AiTextureOp_Multiply :: AiTextureOp
@@ -35,7 +34,7 @@ pattern AiTextureOp_SmoothAdd = AiTextureOp 0x4
 pattern AiTextureOp_SignedAdd :: AiTextureOp
 pattern AiTextureOp_SignedAdd = AiTextureOp 0x5
 
-newtype AiTextureMapMode = AiTextureMapMode Word32 deriving (Eq, Ord, Show, Generic)
+newtype AiTextureMapMode = AiTextureMapMode CUInt deriving (Eq, Ord, Show, Generic)
 instance PrimBytes AiTextureMapMode
 
 pattern AiTextureMapMode_Wrap :: AiTextureMapMode
@@ -47,7 +46,7 @@ pattern AiTextureMapMode_Mirror = AiTextureMapMode 0x2
 pattern AiTextureMapMode_Decal :: AiTextureMapMode
 pattern AiTextureMapMode_Decal = AiTextureMapMode 0x3
 
-newtype AiTextureMapping = AiTextureMapping Word32 deriving (Eq, Ord, Show, Generic)
+newtype AiTextureMapping = AiTextureMapping CUInt deriving (Eq, Ord, Show, Generic)
 instance PrimBytes AiTextureMapping
 
 pattern AiTextureMapping_UV :: AiTextureMapping
@@ -63,7 +62,7 @@ pattern AiTextureMapping_PLANE = AiTextureMapping 0x4
 pattern AiTextureMapping_OTHER :: AiTextureMapping
 pattern AiTextureMapping_OTHER = AiTextureMapping 0x5
 
-newtype AiTextureType = AiTextureType Word32 deriving (Eq, Ord, Show, Generic)
+newtype AiTextureType = AiTextureType CUInt deriving (Eq, Ord, Show, Generic)
 instance PrimBytes AiTextureType
 
 pattern AiTextureType_NONE :: AiTextureType
@@ -108,7 +107,7 @@ pattern AiTextureType_UNKNOWN = AiTextureType 18
 pattern AI_TEXTURE_TYPE_MAX :: AiTextureType
 pattern AI_TEXTURE_TYPE_MAX = AiTextureType_UNKNOWN
 
-newtype AiShadingMode = AiShadingMode Word32 deriving (Eq, Ord, Show, Generic)
+newtype AiShadingMode = AiShadingMode CUInt deriving (Eq, Ord, Show, Generic)
 instance PrimBytes AiShadingMode
 
 pattern AiShadingMode_Flat :: AiShadingMode
@@ -132,7 +131,7 @@ pattern AiShadingMode_NoShading = AiShadingMode 0x9
 pattern AiShadingMode_Fresnel :: AiShadingMode
 pattern AiShadingMode_Fresnel = AiShadingMode 0xa
 
-newtype AiTextureFlags = AiTextureFlags Word32 deriving (Eq, Ord, Bits, FiniteBits, Show, Generic)
+newtype AiTextureFlags = AiTextureFlags CUInt deriving (Eq, Ord, Bits, FiniteBits, Show, Generic)
 instance PrimBytes AiTextureFlags
 
 pattern AiTextureFlags_Invert :: AiTextureFlags
@@ -142,7 +141,7 @@ pattern AiTextureFlags_UseAlpha = AiTextureFlags 0x2
 pattern AiTextureFlags_IgnoreAlpha :: AiTextureFlags
 pattern AiTextureFlags_IgnoreAlpha = AiTextureFlags 0x4
 
-newtype AiBlendMode = AiBlendMode Word32 deriving (Eq, Ord, Show, Generic)
+newtype AiBlendMode = AiBlendMode CUInt deriving (Eq, Ord, Show, Generic)
 instance PrimBytes AiBlendMode
 
 pattern AiBlendmode_Default :: AiBlendMode
@@ -157,10 +156,9 @@ data AiUVTransform =
     aiUVTransform'rotation :: AiReal
   }
   deriving (Generic)
-
 instance PrimBytes AiUVTransform
 
-newtype AiPropertyTypeInfo = AiPropertyTypeInfo Word32 deriving (Eq, Ord, Show, Generic)
+newtype AiPropertyTypeInfo = AiPropertyTypeInfo CUInt deriving (Eq, Ord, Show, Generic)
 instance PrimBytes AiPropertyTypeInfo
 
 pattern AiPropertyTypeInfo_Float :: AiPropertyTypeInfo
@@ -177,27 +175,26 @@ pattern AiPropertyTypeInfo_Buffer = AiPropertyTypeInfo 0x5
 data AiMaterialProperty =
   AiMaterialProperty {
     aiMaterialProperty'key :: AiString,
-    aiMaterialProperty'semantic :: Word32,
-    aiMaterialProperty'index :: Word32,
-    aiMaterialProperty'dataLength :: Word32,
+    aiMaterialProperty'semantic :: CUInt,
+    aiMaterialProperty'index :: CUInt,
+    aiMaterialProperty'dataLength :: CUInt,
     aiMaterialProperty'type :: AiPropertyTypeInfo,
-    aiMaterialProperty'data :: Ptr Int8
+    aiMaterialProperty'data :: Ptr CChar
   }
   deriving (Generic)
-
 instance PrimBytes AiMaterialProperty
 
 data AiMaterial =
   AiMaterial {
     aiMaterial'properties :: Ptr AiMaterialProperty,
-    aiMaterial'numProperties :: Word32,
-    aiMaterial'numAllocated :: Word32
+    aiMaterial'numProperties :: CUInt,
+    aiMaterial'numAllocated :: CUInt
   }
   deriving (Generic)
 
 instance PrimBytes AiMaterial
 
-data AiMatKey = AiMatKey String AiTextureType Word32
+data AiMatKey = AiMatKey String AiTextureType CUInt
 
 pattern AI_MATKEY_NAME :: AiMatKey
 pattern AI_MATKEY_NAME = AiMatKey "?mat.name" AiTextureType_NONE 0
@@ -273,271 +270,271 @@ pattern AI_MATKEY_UVTRANSFORM_BASE = "$tex.uvtrafo"
 pattern AI_MATKEY_TEXFLAGS_BASE :: String
 pattern AI_MATKEY_TEXFLAGS_BASE = "$tex.flags"
 
-pattern AI_MATKEY_TEXTURE :: AiTextureType -> Word32 -> AiMatKey
+pattern AI_MATKEY_TEXTURE :: AiTextureType -> CUInt -> AiMatKey
 pattern AI_MATKEY_TEXTURE textureType index = AiMatKey AI_MATKEY_TEXTURE_BASE textureType index
 
-pattern AI_MATKEY_TEXTURE_DIFFUSE :: Word32 -> AiMatKey
+pattern AI_MATKEY_TEXTURE_DIFFUSE :: CUInt -> AiMatKey
 pattern AI_MATKEY_TEXTURE_DIFFUSE index = AI_MATKEY_TEXTURE AiTextureType_DIFFUSE index
-pattern AI_MATKEY_TEXTURE_SPECULAR :: Word32 -> AiMatKey
+pattern AI_MATKEY_TEXTURE_SPECULAR :: CUInt -> AiMatKey
 pattern AI_MATKEY_TEXTURE_SPECULAR index = AI_MATKEY_TEXTURE AiTextureType_SPECULAR index
-pattern AI_MATKEY_TEXTURE_AMBIENT :: Word32 -> AiMatKey
+pattern AI_MATKEY_TEXTURE_AMBIENT :: CUInt -> AiMatKey
 pattern AI_MATKEY_TEXTURE_AMBIENT index = AI_MATKEY_TEXTURE AiTextureType_AMBIENT index
-pattern AI_MATKEY_TEXTURE_EMISSIVE :: Word32 -> AiMatKey
+pattern AI_MATKEY_TEXTURE_EMISSIVE :: CUInt -> AiMatKey
 pattern AI_MATKEY_TEXTURE_EMISSIVE index = AI_MATKEY_TEXTURE AiTextureType_EMISSIVE index
-pattern AI_MATKEY_TEXTURE_NORMALS :: Word32 -> AiMatKey
+pattern AI_MATKEY_TEXTURE_NORMALS :: CUInt -> AiMatKey
 pattern AI_MATKEY_TEXTURE_NORMALS index = AI_MATKEY_TEXTURE AiTextureType_NORMALS index
-pattern AI_MATKEY_TEXTURE_HEIGHT :: Word32 -> AiMatKey
+pattern AI_MATKEY_TEXTURE_HEIGHT :: CUInt -> AiMatKey
 pattern AI_MATKEY_TEXTURE_HEIGHT index = AI_MATKEY_TEXTURE AiTextureType_HEIGHT index
-pattern AI_MATKEY_TEXTURE_SHININESS :: Word32 -> AiMatKey
+pattern AI_MATKEY_TEXTURE_SHININESS :: CUInt -> AiMatKey
 pattern AI_MATKEY_TEXTURE_SHININESS index = AI_MATKEY_TEXTURE AiTextureType_SHININESS index
-pattern AI_MATKEY_TEXTURE_OPACITY :: Word32 -> AiMatKey
+pattern AI_MATKEY_TEXTURE_OPACITY :: CUInt -> AiMatKey
 pattern AI_MATKEY_TEXTURE_OPACITY index = AI_MATKEY_TEXTURE AiTextureType_OPACITY index
-pattern AI_MATKEY_TEXTURE_DISPLACEMENT :: Word32 -> AiMatKey
+pattern AI_MATKEY_TEXTURE_DISPLACEMENT :: CUInt -> AiMatKey
 pattern AI_MATKEY_TEXTURE_DISPLACEMENT index = AI_MATKEY_TEXTURE AiTextureType_DISPLACEMENT index
-pattern AI_MATKEY_TEXTURE_LIGHTMAP :: Word32 -> AiMatKey
+pattern AI_MATKEY_TEXTURE_LIGHTMAP :: CUInt -> AiMatKey
 pattern AI_MATKEY_TEXTURE_LIGHTMAP index = AI_MATKEY_TEXTURE AiTextureType_LIGHTMAP index
-pattern AI_MATKEY_TEXTURE_REFLECTION :: Word32 -> AiMatKey
+pattern AI_MATKEY_TEXTURE_REFLECTION :: CUInt -> AiMatKey
 pattern AI_MATKEY_TEXTURE_REFLECTION index = AI_MATKEY_TEXTURE AiTextureType_REFLECTION index
 
-pattern AI_MATKEY_UVWSRC :: AiTextureType -> Word32 -> AiMatKey
+pattern AI_MATKEY_UVWSRC :: AiTextureType -> CUInt -> AiMatKey
 pattern AI_MATKEY_UVWSRC textureType index = AiMatKey AI_MATKEY_UVWSRC_BASE textureType index
 
-pattern AI_MATKEY_UVWSRC_DIFFUSE :: Word32 -> AiMatKey
+pattern AI_MATKEY_UVWSRC_DIFFUSE :: CUInt -> AiMatKey
 pattern AI_MATKEY_UVWSRC_DIFFUSE index = AI_MATKEY_UVWSRC AiTextureType_DIFFUSE index
-pattern AI_MATKEY_UVWSRC_SPECULAR :: Word32 -> AiMatKey
+pattern AI_MATKEY_UVWSRC_SPECULAR :: CUInt -> AiMatKey
 pattern AI_MATKEY_UVWSRC_SPECULAR index = AI_MATKEY_UVWSRC AiTextureType_SPECULAR index
-pattern AI_MATKEY_UVWSRC_AMBIENT :: Word32 -> AiMatKey
+pattern AI_MATKEY_UVWSRC_AMBIENT :: CUInt -> AiMatKey
 pattern AI_MATKEY_UVWSRC_AMBIENT index = AI_MATKEY_UVWSRC AiTextureType_AMBIENT index
-pattern AI_MATKEY_UVWSRC_EMISSIVE :: Word32 -> AiMatKey
+pattern AI_MATKEY_UVWSRC_EMISSIVE :: CUInt -> AiMatKey
 pattern AI_MATKEY_UVWSRC_EMISSIVE index = AI_MATKEY_UVWSRC AiTextureType_EMISSIVE index
-pattern AI_MATKEY_UVWSRC_NORMALS :: Word32 -> AiMatKey
+pattern AI_MATKEY_UVWSRC_NORMALS :: CUInt -> AiMatKey
 pattern AI_MATKEY_UVWSRC_NORMALS index = AI_MATKEY_UVWSRC AiTextureType_NORMALS index
-pattern AI_MATKEY_UVWSRC_HEIGHT :: Word32 -> AiMatKey
+pattern AI_MATKEY_UVWSRC_HEIGHT :: CUInt -> AiMatKey
 pattern AI_MATKEY_UVWSRC_HEIGHT index = AI_MATKEY_UVWSRC AiTextureType_HEIGHT index
-pattern AI_MATKEY_UVWSRC_SHININESS :: Word32 -> AiMatKey
+pattern AI_MATKEY_UVWSRC_SHININESS :: CUInt -> AiMatKey
 pattern AI_MATKEY_UVWSRC_SHININESS index = AI_MATKEY_UVWSRC AiTextureType_SHININESS index
-pattern AI_MATKEY_UVWSRC_OPACITY :: Word32 -> AiMatKey
+pattern AI_MATKEY_UVWSRC_OPACITY :: CUInt -> AiMatKey
 pattern AI_MATKEY_UVWSRC_OPACITY index = AI_MATKEY_UVWSRC AiTextureType_OPACITY index
-pattern AI_MATKEY_UVWSRC_DISPLACEMENT :: Word32 -> AiMatKey
+pattern AI_MATKEY_UVWSRC_DISPLACEMENT :: CUInt -> AiMatKey
 pattern AI_MATKEY_UVWSRC_DISPLACEMENT index = AI_MATKEY_UVWSRC AiTextureType_DISPLACEMENT index
-pattern AI_MATKEY_UVWSRC_LIGHTMAP :: Word32 -> AiMatKey
+pattern AI_MATKEY_UVWSRC_LIGHTMAP :: CUInt -> AiMatKey
 pattern AI_MATKEY_UVWSRC_LIGHTMAP index = AI_MATKEY_UVWSRC AiTextureType_LIGHTMAP index
-pattern AI_MATKEY_UVWSRC_REFLECTION :: Word32 -> AiMatKey
+pattern AI_MATKEY_UVWSRC_REFLECTION :: CUInt -> AiMatKey
 pattern AI_MATKEY_UVWSRC_REFLECTION index = AI_MATKEY_UVWSRC AiTextureType_REFLECTION index
 
-pattern AI_MATKEY_TEXOP :: AiTextureType -> Word32 -> AiMatKey
+pattern AI_MATKEY_TEXOP :: AiTextureType -> CUInt -> AiMatKey
 pattern AI_MATKEY_TEXOP textureType index = AiMatKey AI_MATKEY_TEXOP_BASE textureType index
 
-pattern AI_MATKEY_TEXOP_DIFFUSE :: Word32 -> AiMatKey
+pattern AI_MATKEY_TEXOP_DIFFUSE :: CUInt -> AiMatKey
 pattern AI_MATKEY_TEXOP_DIFFUSE index = AI_MATKEY_TEXOP AiTextureType_DIFFUSE index
-pattern AI_MATKEY_TEXOP_SPECULAR :: Word32 -> AiMatKey
+pattern AI_MATKEY_TEXOP_SPECULAR :: CUInt -> AiMatKey
 pattern AI_MATKEY_TEXOP_SPECULAR index = AI_MATKEY_TEXOP AiTextureType_SPECULAR index
-pattern AI_MATKEY_TEXOP_AMBIENT :: Word32 -> AiMatKey
+pattern AI_MATKEY_TEXOP_AMBIENT :: CUInt -> AiMatKey
 pattern AI_MATKEY_TEXOP_AMBIENT index = AI_MATKEY_TEXOP AiTextureType_AMBIENT index
-pattern AI_MATKEY_TEXOP_EMISSIVE :: Word32 -> AiMatKey
+pattern AI_MATKEY_TEXOP_EMISSIVE :: CUInt -> AiMatKey
 pattern AI_MATKEY_TEXOP_EMISSIVE index = AI_MATKEY_TEXOP AiTextureType_EMISSIVE index
-pattern AI_MATKEY_TEXOP_NORMALS :: Word32 -> AiMatKey
+pattern AI_MATKEY_TEXOP_NORMALS :: CUInt -> AiMatKey
 pattern AI_MATKEY_TEXOP_NORMALS index = AI_MATKEY_TEXOP AiTextureType_NORMALS index
-pattern AI_MATKEY_TEXOP_HEIGHT :: Word32 -> AiMatKey
+pattern AI_MATKEY_TEXOP_HEIGHT :: CUInt -> AiMatKey
 pattern AI_MATKEY_TEXOP_HEIGHT index = AI_MATKEY_TEXOP AiTextureType_HEIGHT index
-pattern AI_MATKEY_TEXOP_SHININESS :: Word32 -> AiMatKey
+pattern AI_MATKEY_TEXOP_SHININESS :: CUInt -> AiMatKey
 pattern AI_MATKEY_TEXOP_SHININESS index = AI_MATKEY_TEXOP AiTextureType_SHININESS index
-pattern AI_MATKEY_TEXOP_OPACITY :: Word32 -> AiMatKey
+pattern AI_MATKEY_TEXOP_OPACITY :: CUInt -> AiMatKey
 pattern AI_MATKEY_TEXOP_OPACITY index = AI_MATKEY_TEXOP AiTextureType_OPACITY index
-pattern AI_MATKEY_TEXOP_DISPLACEMENT :: Word32 -> AiMatKey
+pattern AI_MATKEY_TEXOP_DISPLACEMENT :: CUInt -> AiMatKey
 pattern AI_MATKEY_TEXOP_DISPLACEMENT index = AI_MATKEY_TEXOP AiTextureType_DISPLACEMENT index
-pattern AI_MATKEY_TEXOP_LIGHTMAP :: Word32 -> AiMatKey
+pattern AI_MATKEY_TEXOP_LIGHTMAP :: CUInt -> AiMatKey
 pattern AI_MATKEY_TEXOP_LIGHTMAP index = AI_MATKEY_TEXOP AiTextureType_LIGHTMAP index
-pattern AI_MATKEY_TEXOP_REFLECTION :: Word32 -> AiMatKey
+pattern AI_MATKEY_TEXOP_REFLECTION :: CUInt -> AiMatKey
 pattern AI_MATKEY_TEXOP_REFLECTION index = AI_MATKEY_TEXOP AiTextureType_REFLECTION index
 
-pattern AI_MATKEY_MAPPING :: AiTextureType -> Word32 -> AiMatKey
+pattern AI_MATKEY_MAPPING :: AiTextureType -> CUInt -> AiMatKey
 pattern AI_MATKEY_MAPPING textureType index = AiMatKey AI_MATKEY_MAPPING_BASE textureType index
 
-pattern AI_MATKEY_MAPPING_DIFFUSE :: Word32 -> AiMatKey
+pattern AI_MATKEY_MAPPING_DIFFUSE :: CUInt -> AiMatKey
 pattern AI_MATKEY_MAPPING_DIFFUSE index = AI_MATKEY_MAPPING AiTextureType_DIFFUSE index
-pattern AI_MATKEY_MAPPING_SPECULAR :: Word32 -> AiMatKey
+pattern AI_MATKEY_MAPPING_SPECULAR :: CUInt -> AiMatKey
 pattern AI_MATKEY_MAPPING_SPECULAR index = AI_MATKEY_MAPPING AiTextureType_SPECULAR index
-pattern AI_MATKEY_MAPPING_AMBIENT :: Word32 -> AiMatKey
+pattern AI_MATKEY_MAPPING_AMBIENT :: CUInt -> AiMatKey
 pattern AI_MATKEY_MAPPING_AMBIENT index = AI_MATKEY_MAPPING AiTextureType_AMBIENT index
-pattern AI_MATKEY_MAPPING_EMISSIVE :: Word32 -> AiMatKey
+pattern AI_MATKEY_MAPPING_EMISSIVE :: CUInt -> AiMatKey
 pattern AI_MATKEY_MAPPING_EMISSIVE index = AI_MATKEY_MAPPING AiTextureType_EMISSIVE index
-pattern AI_MATKEY_MAPPING_NORMALS :: Word32 -> AiMatKey
+pattern AI_MATKEY_MAPPING_NORMALS :: CUInt -> AiMatKey
 pattern AI_MATKEY_MAPPING_NORMALS index = AI_MATKEY_MAPPING AiTextureType_NORMALS index
-pattern AI_MATKEY_MAPPING_HEIGHT :: Word32 -> AiMatKey
+pattern AI_MATKEY_MAPPING_HEIGHT :: CUInt -> AiMatKey
 pattern AI_MATKEY_MAPPING_HEIGHT index = AI_MATKEY_MAPPING AiTextureType_HEIGHT index
-pattern AI_MATKEY_MAPPING_SHININESS :: Word32 -> AiMatKey
+pattern AI_MATKEY_MAPPING_SHININESS :: CUInt -> AiMatKey
 pattern AI_MATKEY_MAPPING_SHININESS index = AI_MATKEY_MAPPING AiTextureType_SHININESS index
-pattern AI_MATKEY_MAPPING_OPACITY :: Word32 -> AiMatKey
+pattern AI_MATKEY_MAPPING_OPACITY :: CUInt -> AiMatKey
 pattern AI_MATKEY_MAPPING_OPACITY index = AI_MATKEY_MAPPING AiTextureType_OPACITY index
-pattern AI_MATKEY_MAPPING_DISPLACEMENT :: Word32 -> AiMatKey
+pattern AI_MATKEY_MAPPING_DISPLACEMENT :: CUInt -> AiMatKey
 pattern AI_MATKEY_MAPPING_DISPLACEMENT index = AI_MATKEY_MAPPING AiTextureType_DISPLACEMENT index
-pattern AI_MATKEY_MAPPING_LIGHTMAP :: Word32 -> AiMatKey
+pattern AI_MATKEY_MAPPING_LIGHTMAP :: CUInt -> AiMatKey
 pattern AI_MATKEY_MAPPING_LIGHTMAP index = AI_MATKEY_MAPPING AiTextureType_LIGHTMAP index
-pattern AI_MATKEY_MAPPING_REFLECTION :: Word32 -> AiMatKey
+pattern AI_MATKEY_MAPPING_REFLECTION :: CUInt -> AiMatKey
 pattern AI_MATKEY_MAPPING_REFLECTION index = AI_MATKEY_MAPPING AiTextureType_REFLECTION index
 
-pattern AI_MATKEY_TEXBLEND :: AiTextureType -> Word32 -> AiMatKey
+pattern AI_MATKEY_TEXBLEND :: AiTextureType -> CUInt -> AiMatKey
 pattern AI_MATKEY_TEXBLEND textureType index = AiMatKey AI_MATKEY_TEXBLEND_BASE textureType index
 
-pattern AI_MATKEY_TEXBLEND_DIFFUSE :: Word32 -> AiMatKey
+pattern AI_MATKEY_TEXBLEND_DIFFUSE :: CUInt -> AiMatKey
 pattern AI_MATKEY_TEXBLEND_DIFFUSE index = AI_MATKEY_TEXBLEND AiTextureType_DIFFUSE index
-pattern AI_MATKEY_TEXBLEND_SPECULAR :: Word32 -> AiMatKey
+pattern AI_MATKEY_TEXBLEND_SPECULAR :: CUInt -> AiMatKey
 pattern AI_MATKEY_TEXBLEND_SPECULAR index = AI_MATKEY_TEXBLEND AiTextureType_SPECULAR index
-pattern AI_MATKEY_TEXBLEND_AMBIENT :: Word32 -> AiMatKey
+pattern AI_MATKEY_TEXBLEND_AMBIENT :: CUInt -> AiMatKey
 pattern AI_MATKEY_TEXBLEND_AMBIENT index = AI_MATKEY_TEXBLEND AiTextureType_AMBIENT index
-pattern AI_MATKEY_TEXBLEND_EMISSIVE :: Word32 -> AiMatKey
+pattern AI_MATKEY_TEXBLEND_EMISSIVE :: CUInt -> AiMatKey
 pattern AI_MATKEY_TEXBLEND_EMISSIVE index = AI_MATKEY_TEXBLEND AiTextureType_EMISSIVE index
-pattern AI_MATKEY_TEXBLEND_NORMALS :: Word32 -> AiMatKey
+pattern AI_MATKEY_TEXBLEND_NORMALS :: CUInt -> AiMatKey
 pattern AI_MATKEY_TEXBLEND_NORMALS index = AI_MATKEY_TEXBLEND AiTextureType_NORMALS index
-pattern AI_MATKEY_TEXBLEND_HEIGHT :: Word32 -> AiMatKey
+pattern AI_MATKEY_TEXBLEND_HEIGHT :: CUInt -> AiMatKey
 pattern AI_MATKEY_TEXBLEND_HEIGHT index = AI_MATKEY_TEXBLEND AiTextureType_HEIGHT index
-pattern AI_MATKEY_TEXBLEND_SHININESS :: Word32 -> AiMatKey
+pattern AI_MATKEY_TEXBLEND_SHININESS :: CUInt -> AiMatKey
 pattern AI_MATKEY_TEXBLEND_SHININESS index = AI_MATKEY_TEXBLEND AiTextureType_SHININESS index
-pattern AI_MATKEY_TEXBLEND_OPACITY :: Word32 -> AiMatKey
+pattern AI_MATKEY_TEXBLEND_OPACITY :: CUInt -> AiMatKey
 pattern AI_MATKEY_TEXBLEND_OPACITY index = AI_MATKEY_TEXBLEND AiTextureType_OPACITY index
-pattern AI_MATKEY_TEXBLEND_DISPLACEMENT :: Word32 -> AiMatKey
+pattern AI_MATKEY_TEXBLEND_DISPLACEMENT :: CUInt -> AiMatKey
 pattern AI_MATKEY_TEXBLEND_DISPLACEMENT index = AI_MATKEY_TEXBLEND AiTextureType_DISPLACEMENT index
-pattern AI_MATKEY_TEXBLEND_LIGHTMAP :: Word32 -> AiMatKey
+pattern AI_MATKEY_TEXBLEND_LIGHTMAP :: CUInt -> AiMatKey
 pattern AI_MATKEY_TEXBLEND_LIGHTMAP index = AI_MATKEY_TEXBLEND AiTextureType_LIGHTMAP index
-pattern AI_MATKEY_TEXBLEND_REFLECTION :: Word32 -> AiMatKey
+pattern AI_MATKEY_TEXBLEND_REFLECTION :: CUInt -> AiMatKey
 pattern AI_MATKEY_TEXBLEND_REFLECTION index = AI_MATKEY_TEXBLEND AiTextureType_REFLECTION index
 
-pattern AI_MATKEY_MAPPINGMODE_U :: AiTextureType -> Word32 -> AiMatKey
+pattern AI_MATKEY_MAPPINGMODE_U :: AiTextureType -> CUInt -> AiMatKey
 pattern AI_MATKEY_MAPPINGMODE_U textureType index = AiMatKey AI_MATKEY_MAPPINGMODE_U_BASE textureType index
 
-pattern AI_MATKEY_MAPPINGMODE_U_DIFFUSE :: Word32 -> AiMatKey
+pattern AI_MATKEY_MAPPINGMODE_U_DIFFUSE :: CUInt -> AiMatKey
 pattern AI_MATKEY_MAPPINGMODE_U_DIFFUSE index = AI_MATKEY_MAPPINGMODE_U AiTextureType_DIFFUSE index
-pattern AI_MATKEY_MAPPINGMODE_U_SPECULAR :: Word32 -> AiMatKey
+pattern AI_MATKEY_MAPPINGMODE_U_SPECULAR :: CUInt -> AiMatKey
 pattern AI_MATKEY_MAPPINGMODE_U_SPECULAR index = AI_MATKEY_MAPPINGMODE_U AiTextureType_SPECULAR index
-pattern AI_MATKEY_MAPPINGMODE_U_AMBIENT :: Word32 -> AiMatKey
+pattern AI_MATKEY_MAPPINGMODE_U_AMBIENT :: CUInt -> AiMatKey
 pattern AI_MATKEY_MAPPINGMODE_U_AMBIENT index = AI_MATKEY_MAPPINGMODE_U AiTextureType_AMBIENT index
-pattern AI_MATKEY_MAPPINGMODE_U_EMISSIVE :: Word32 -> AiMatKey
+pattern AI_MATKEY_MAPPINGMODE_U_EMISSIVE :: CUInt -> AiMatKey
 pattern AI_MATKEY_MAPPINGMODE_U_EMISSIVE index = AI_MATKEY_MAPPINGMODE_U AiTextureType_EMISSIVE index
-pattern AI_MATKEY_MAPPINGMODE_U_NORMALS :: Word32 -> AiMatKey
+pattern AI_MATKEY_MAPPINGMODE_U_NORMALS :: CUInt -> AiMatKey
 pattern AI_MATKEY_MAPPINGMODE_U_NORMALS index = AI_MATKEY_MAPPINGMODE_U AiTextureType_NORMALS index
-pattern AI_MATKEY_MAPPINGMODE_U_HEIGHT :: Word32 -> AiMatKey
+pattern AI_MATKEY_MAPPINGMODE_U_HEIGHT :: CUInt -> AiMatKey
 pattern AI_MATKEY_MAPPINGMODE_U_HEIGHT index = AI_MATKEY_MAPPINGMODE_U AiTextureType_HEIGHT index
-pattern AI_MATKEY_MAPPINGMODE_U_SHININESS :: Word32 -> AiMatKey
+pattern AI_MATKEY_MAPPINGMODE_U_SHININESS :: CUInt -> AiMatKey
 pattern AI_MATKEY_MAPPINGMODE_U_SHININESS index = AI_MATKEY_MAPPINGMODE_U AiTextureType_SHININESS index
-pattern AI_MATKEY_MAPPINGMODE_U_OPACITY :: Word32 -> AiMatKey
+pattern AI_MATKEY_MAPPINGMODE_U_OPACITY :: CUInt -> AiMatKey
 pattern AI_MATKEY_MAPPINGMODE_U_OPACITY index = AI_MATKEY_MAPPINGMODE_U AiTextureType_OPACITY index
-pattern AI_MATKEY_MAPPINGMODE_U_DISPLACEMENT :: Word32 -> AiMatKey
+pattern AI_MATKEY_MAPPINGMODE_U_DISPLACEMENT :: CUInt -> AiMatKey
 pattern AI_MATKEY_MAPPINGMODE_U_DISPLACEMENT index = AI_MATKEY_MAPPINGMODE_U AiTextureType_DISPLACEMENT index
-pattern AI_MATKEY_MAPPINGMODE_U_LIGHTMAP :: Word32 -> AiMatKey
+pattern AI_MATKEY_MAPPINGMODE_U_LIGHTMAP :: CUInt -> AiMatKey
 pattern AI_MATKEY_MAPPINGMODE_U_LIGHTMAP index = AI_MATKEY_MAPPINGMODE_U AiTextureType_LIGHTMAP index
-pattern AI_MATKEY_MAPPINGMODE_U_REFLECTION :: Word32 -> AiMatKey
+pattern AI_MATKEY_MAPPINGMODE_U_REFLECTION :: CUInt -> AiMatKey
 pattern AI_MATKEY_MAPPINGMODE_U_REFLECTION index = AI_MATKEY_MAPPINGMODE_U AiTextureType_REFLECTION index
 
-pattern AI_MATKEY_MAPPINGMODE_V :: AiTextureType -> Word32 -> AiMatKey
+pattern AI_MATKEY_MAPPINGMODE_V :: AiTextureType -> CUInt -> AiMatKey
 pattern AI_MATKEY_MAPPINGMODE_V textureType index = AiMatKey AI_MATKEY_MAPPINGMODE_V_BASE textureType index
 
-pattern AI_MATKEY_MAPPINGMODE_V_DIFFUSE :: Word32 -> AiMatKey
+pattern AI_MATKEY_MAPPINGMODE_V_DIFFUSE :: CUInt -> AiMatKey
 pattern AI_MATKEY_MAPPINGMODE_V_DIFFUSE index = AI_MATKEY_MAPPINGMODE_V AiTextureType_DIFFUSE index
-pattern AI_MATKEY_MAPPINGMODE_V_SPECULAR :: Word32 -> AiMatKey
+pattern AI_MATKEY_MAPPINGMODE_V_SPECULAR :: CUInt -> AiMatKey
 pattern AI_MATKEY_MAPPINGMODE_V_SPECULAR index = AI_MATKEY_MAPPINGMODE_V AiTextureType_SPECULAR index
-pattern AI_MATKEY_MAPPINGMODE_V_AMBIENT :: Word32 -> AiMatKey
+pattern AI_MATKEY_MAPPINGMODE_V_AMBIENT :: CUInt -> AiMatKey
 pattern AI_MATKEY_MAPPINGMODE_V_AMBIENT index = AI_MATKEY_MAPPINGMODE_V AiTextureType_AMBIENT index
-pattern AI_MATKEY_MAPPINGMODE_V_EMISSIVE :: Word32 -> AiMatKey
+pattern AI_MATKEY_MAPPINGMODE_V_EMISSIVE :: CUInt -> AiMatKey
 pattern AI_MATKEY_MAPPINGMODE_V_EMISSIVE index = AI_MATKEY_MAPPINGMODE_V AiTextureType_EMISSIVE index
-pattern AI_MATKEY_MAPPINGMODE_V_NORMALS :: Word32 -> AiMatKey
+pattern AI_MATKEY_MAPPINGMODE_V_NORMALS :: CUInt -> AiMatKey
 pattern AI_MATKEY_MAPPINGMODE_V_NORMALS index = AI_MATKEY_MAPPINGMODE_V AiTextureType_NORMALS index
-pattern AI_MATKEY_MAPPINGMODE_V_HEIGHT :: Word32 -> AiMatKey
+pattern AI_MATKEY_MAPPINGMODE_V_HEIGHT :: CUInt -> AiMatKey
 pattern AI_MATKEY_MAPPINGMODE_V_HEIGHT index = AI_MATKEY_MAPPINGMODE_V AiTextureType_HEIGHT index
-pattern AI_MATKEY_MAPPINGMODE_V_SHININESS :: Word32 -> AiMatKey
+pattern AI_MATKEY_MAPPINGMODE_V_SHININESS :: CUInt -> AiMatKey
 pattern AI_MATKEY_MAPPINGMODE_V_SHININESS index = AI_MATKEY_MAPPINGMODE_V AiTextureType_SHININESS index
-pattern AI_MATKEY_MAPPINGMODE_V_OPACITY :: Word32 -> AiMatKey
+pattern AI_MATKEY_MAPPINGMODE_V_OPACITY :: CUInt -> AiMatKey
 pattern AI_MATKEY_MAPPINGMODE_V_OPACITY index = AI_MATKEY_MAPPINGMODE_V AiTextureType_OPACITY index
-pattern AI_MATKEY_MAPPINGMODE_V_DISPLACEMENT :: Word32 -> AiMatKey
+pattern AI_MATKEY_MAPPINGMODE_V_DISPLACEMENT :: CUInt -> AiMatKey
 pattern AI_MATKEY_MAPPINGMODE_V_DISPLACEMENT index = AI_MATKEY_MAPPINGMODE_V AiTextureType_DISPLACEMENT index
-pattern AI_MATKEY_MAPPINGMODE_V_LIGHTMAP :: Word32 -> AiMatKey
+pattern AI_MATKEY_MAPPINGMODE_V_LIGHTMAP :: CUInt -> AiMatKey
 pattern AI_MATKEY_MAPPINGMODE_V_LIGHTMAP index = AI_MATKEY_MAPPINGMODE_V AiTextureType_LIGHTMAP index
-pattern AI_MATKEY_MAPPINGMODE_V_REFLECTION :: Word32 -> AiMatKey
+pattern AI_MATKEY_MAPPINGMODE_V_REFLECTION :: CUInt -> AiMatKey
 pattern AI_MATKEY_MAPPINGMODE_V_REFLECTION index = AI_MATKEY_MAPPINGMODE_V AiTextureType_REFLECTION index
 
-pattern AI_MATKEY_TEXMAP_AXIS :: AiTextureType -> Word32 -> AiMatKey
+pattern AI_MATKEY_TEXMAP_AXIS :: AiTextureType -> CUInt -> AiMatKey
 pattern AI_MATKEY_TEXMAP_AXIS textureType index = AiMatKey AI_MATKEY_TEXMAP_AXIS_BASE textureType index
 
-pattern AI_MATKEY_TEXMAP_AXIS_DIFFUSE :: Word32 -> AiMatKey
+pattern AI_MATKEY_TEXMAP_AXIS_DIFFUSE :: CUInt -> AiMatKey
 pattern AI_MATKEY_TEXMAP_AXIS_DIFFUSE index = AI_MATKEY_TEXMAP_AXIS AiTextureType_DIFFUSE index
-pattern AI_MATKEY_TEXMAP_AXIS_SPECULAR :: Word32 -> AiMatKey
+pattern AI_MATKEY_TEXMAP_AXIS_SPECULAR :: CUInt -> AiMatKey
 pattern AI_MATKEY_TEXMAP_AXIS_SPECULAR index = AI_MATKEY_TEXMAP_AXIS AiTextureType_SPECULAR index
-pattern AI_MATKEY_TEXMAP_AXIS_AMBIENT :: Word32 -> AiMatKey
+pattern AI_MATKEY_TEXMAP_AXIS_AMBIENT :: CUInt -> AiMatKey
 pattern AI_MATKEY_TEXMAP_AXIS_AMBIENT index = AI_MATKEY_TEXMAP_AXIS AiTextureType_AMBIENT index
-pattern AI_MATKEY_TEXMAP_AXIS_EMISSIVE :: Word32 -> AiMatKey
+pattern AI_MATKEY_TEXMAP_AXIS_EMISSIVE :: CUInt -> AiMatKey
 pattern AI_MATKEY_TEXMAP_AXIS_EMISSIVE index = AI_MATKEY_TEXMAP_AXIS AiTextureType_EMISSIVE index
-pattern AI_MATKEY_TEXMAP_AXIS_NORMALS :: Word32 -> AiMatKey
+pattern AI_MATKEY_TEXMAP_AXIS_NORMALS :: CUInt -> AiMatKey
 pattern AI_MATKEY_TEXMAP_AXIS_NORMALS index = AI_MATKEY_TEXMAP_AXIS AiTextureType_NORMALS index
-pattern AI_MATKEY_TEXMAP_AXIS_HEIGHT :: Word32 -> AiMatKey
+pattern AI_MATKEY_TEXMAP_AXIS_HEIGHT :: CUInt -> AiMatKey
 pattern AI_MATKEY_TEXMAP_AXIS_HEIGHT index = AI_MATKEY_TEXMAP_AXIS AiTextureType_HEIGHT index
-pattern AI_MATKEY_TEXMAP_AXIS_SHININESS :: Word32 -> AiMatKey
+pattern AI_MATKEY_TEXMAP_AXIS_SHININESS :: CUInt -> AiMatKey
 pattern AI_MATKEY_TEXMAP_AXIS_SHININESS index = AI_MATKEY_TEXMAP_AXIS AiTextureType_SHININESS index
-pattern AI_MATKEY_TEXMAP_AXIS_OPACITY :: Word32 -> AiMatKey
+pattern AI_MATKEY_TEXMAP_AXIS_OPACITY :: CUInt -> AiMatKey
 pattern AI_MATKEY_TEXMAP_AXIS_OPACITY index = AI_MATKEY_TEXMAP_AXIS AiTextureType_OPACITY index
-pattern AI_MATKEY_TEXMAP_AXIS_DISPLACEMENT :: Word32 -> AiMatKey
+pattern AI_MATKEY_TEXMAP_AXIS_DISPLACEMENT :: CUInt -> AiMatKey
 pattern AI_MATKEY_TEXMAP_AXIS_DISPLACEMENT index = AI_MATKEY_TEXMAP_AXIS AiTextureType_DISPLACEMENT index
-pattern AI_MATKEY_TEXMAP_AXIS_LIGHTMAP :: Word32 -> AiMatKey
+pattern AI_MATKEY_TEXMAP_AXIS_LIGHTMAP :: CUInt -> AiMatKey
 pattern AI_MATKEY_TEXMAP_AXIS_LIGHTMAP index = AI_MATKEY_TEXMAP_AXIS AiTextureType_LIGHTMAP index
-pattern AI_MATKEY_TEXMAP_AXIS_REFLECTION :: Word32 -> AiMatKey
+pattern AI_MATKEY_TEXMAP_AXIS_REFLECTION :: CUInt -> AiMatKey
 pattern AI_MATKEY_TEXMAP_AXIS_REFLECTION index = AI_MATKEY_TEXMAP_AXIS AiTextureType_REFLECTION index
 
-pattern AI_MATKEY_UVTRANSFORM :: AiTextureType -> Word32 -> AiMatKey
+pattern AI_MATKEY_UVTRANSFORM :: AiTextureType -> CUInt -> AiMatKey
 pattern AI_MATKEY_UVTRANSFORM textureType index = AiMatKey AI_MATKEY_UVTRANSFORM_BASE textureType index
 
-pattern AI_MATKEY_UVTRANSFORM_DIFFUSE :: Word32 -> AiMatKey
+pattern AI_MATKEY_UVTRANSFORM_DIFFUSE :: CUInt -> AiMatKey
 pattern AI_MATKEY_UVTRANSFORM_DIFFUSE index = AI_MATKEY_UVTRANSFORM AiTextureType_DIFFUSE index
-pattern AI_MATKEY_UVTRANSFORM_SPECULAR :: Word32 -> AiMatKey
+pattern AI_MATKEY_UVTRANSFORM_SPECULAR :: CUInt -> AiMatKey
 pattern AI_MATKEY_UVTRANSFORM_SPECULAR index = AI_MATKEY_UVTRANSFORM AiTextureType_SPECULAR index
-pattern AI_MATKEY_UVTRANSFORM_AMBIENT :: Word32 -> AiMatKey
+pattern AI_MATKEY_UVTRANSFORM_AMBIENT :: CUInt -> AiMatKey
 pattern AI_MATKEY_UVTRANSFORM_AMBIENT index = AI_MATKEY_UVTRANSFORM AiTextureType_AMBIENT index
-pattern AI_MATKEY_UVTRANSFORM_EMISSIVE :: Word32 -> AiMatKey
+pattern AI_MATKEY_UVTRANSFORM_EMISSIVE :: CUInt -> AiMatKey
 pattern AI_MATKEY_UVTRANSFORM_EMISSIVE index = AI_MATKEY_UVTRANSFORM AiTextureType_EMISSIVE index
-pattern AI_MATKEY_UVTRANSFORM_NORMALS :: Word32 -> AiMatKey
+pattern AI_MATKEY_UVTRANSFORM_NORMALS :: CUInt -> AiMatKey
 pattern AI_MATKEY_UVTRANSFORM_NORMALS index = AI_MATKEY_UVTRANSFORM AiTextureType_NORMALS index
-pattern AI_MATKEY_UVTRANSFORM_HEIGHT :: Word32 -> AiMatKey
+pattern AI_MATKEY_UVTRANSFORM_HEIGHT :: CUInt -> AiMatKey
 pattern AI_MATKEY_UVTRANSFORM_HEIGHT index = AI_MATKEY_UVTRANSFORM AiTextureType_HEIGHT index
-pattern AI_MATKEY_UVTRANSFORM_SHININESS :: Word32 -> AiMatKey
+pattern AI_MATKEY_UVTRANSFORM_SHININESS :: CUInt -> AiMatKey
 pattern AI_MATKEY_UVTRANSFORM_SHININESS index = AI_MATKEY_UVTRANSFORM AiTextureType_SHININESS index
-pattern AI_MATKEY_UVTRANSFORM_OPACITY :: Word32 -> AiMatKey
+pattern AI_MATKEY_UVTRANSFORM_OPACITY :: CUInt -> AiMatKey
 pattern AI_MATKEY_UVTRANSFORM_OPACITY index = AI_MATKEY_UVTRANSFORM AiTextureType_OPACITY index
-pattern AI_MATKEY_UVTRANSFORM_DISPLACEMENT :: Word32 -> AiMatKey
+pattern AI_MATKEY_UVTRANSFORM_DISPLACEMENT :: CUInt -> AiMatKey
 pattern AI_MATKEY_UVTRANSFORM_DISPLACEMENT index = AI_MATKEY_UVTRANSFORM AiTextureType_DISPLACEMENT index
-pattern AI_MATKEY_UVTRANSFORM_LIGHTMAP :: Word32 -> AiMatKey
+pattern AI_MATKEY_UVTRANSFORM_LIGHTMAP :: CUInt -> AiMatKey
 pattern AI_MATKEY_UVTRANSFORM_LIGHTMAP index = AI_MATKEY_UVTRANSFORM AiTextureType_LIGHTMAP index
-pattern AI_MATKEY_UVTRANSFORM_REFLECTION :: Word32 -> AiMatKey
+pattern AI_MATKEY_UVTRANSFORM_REFLECTION :: CUInt -> AiMatKey
 pattern AI_MATKEY_UVTRANSFORM_REFLECTION index = AI_MATKEY_UVTRANSFORM AiTextureType_REFLECTION index
 
-pattern AI_MATKEY_TEXFLAGS :: AiTextureType -> Word32 -> AiMatKey
+pattern AI_MATKEY_TEXFLAGS :: AiTextureType -> CUInt -> AiMatKey
 pattern AI_MATKEY_TEXFLAGS textureType index = AiMatKey AI_MATKEY_TEXFLAGS_BASE textureType index
 
-pattern AI_MATKEY_TEXFLAGS_DIFFUSE :: Word32 -> AiMatKey
+pattern AI_MATKEY_TEXFLAGS_DIFFUSE :: CUInt -> AiMatKey
 pattern AI_MATKEY_TEXFLAGS_DIFFUSE index = AI_MATKEY_TEXFLAGS AiTextureType_DIFFUSE index
-pattern AI_MATKEY_TEXFLAGS_SPECULAR :: Word32 -> AiMatKey
+pattern AI_MATKEY_TEXFLAGS_SPECULAR :: CUInt -> AiMatKey
 pattern AI_MATKEY_TEXFLAGS_SPECULAR index = AI_MATKEY_TEXFLAGS AiTextureType_SPECULAR index
-pattern AI_MATKEY_TEXFLAGS_AMBIENT :: Word32 -> AiMatKey
+pattern AI_MATKEY_TEXFLAGS_AMBIENT :: CUInt -> AiMatKey
 pattern AI_MATKEY_TEXFLAGS_AMBIENT index = AI_MATKEY_TEXFLAGS AiTextureType_AMBIENT index
-pattern AI_MATKEY_TEXFLAGS_EMISSIVE :: Word32 -> AiMatKey
+pattern AI_MATKEY_TEXFLAGS_EMISSIVE :: CUInt -> AiMatKey
 pattern AI_MATKEY_TEXFLAGS_EMISSIVE index = AI_MATKEY_TEXFLAGS AiTextureType_EMISSIVE index
-pattern AI_MATKEY_TEXFLAGS_NORMALS :: Word32 -> AiMatKey
+pattern AI_MATKEY_TEXFLAGS_NORMALS :: CUInt -> AiMatKey
 pattern AI_MATKEY_TEXFLAGS_NORMALS index = AI_MATKEY_TEXFLAGS AiTextureType_NORMALS index
-pattern AI_MATKEY_TEXFLAGS_HEIGHT :: Word32 -> AiMatKey
+pattern AI_MATKEY_TEXFLAGS_HEIGHT :: CUInt -> AiMatKey
 pattern AI_MATKEY_TEXFLAGS_HEIGHT index = AI_MATKEY_TEXFLAGS AiTextureType_HEIGHT index
-pattern AI_MATKEY_TEXFLAGS_SHININESS :: Word32 -> AiMatKey
+pattern AI_MATKEY_TEXFLAGS_SHININESS :: CUInt -> AiMatKey
 pattern AI_MATKEY_TEXFLAGS_SHININESS index = AI_MATKEY_TEXFLAGS AiTextureType_SHININESS index
-pattern AI_MATKEY_TEXFLAGS_OPACITY :: Word32 -> AiMatKey
+pattern AI_MATKEY_TEXFLAGS_OPACITY :: CUInt -> AiMatKey
 pattern AI_MATKEY_TEXFLAGS_OPACITY index = AI_MATKEY_TEXFLAGS AiTextureType_OPACITY index
-pattern AI_MATKEY_TEXFLAGS_DISPLACEMENT :: Word32 -> AiMatKey
+pattern AI_MATKEY_TEXFLAGS_DISPLACEMENT :: CUInt -> AiMatKey
 pattern AI_MATKEY_TEXFLAGS_DISPLACEMENT index = AI_MATKEY_TEXFLAGS AiTextureType_DISPLACEMENT index
-pattern AI_MATKEY_TEXFLAGS_LIGHTMAP :: Word32 -> AiMatKey
+pattern AI_MATKEY_TEXFLAGS_LIGHTMAP :: CUInt -> AiMatKey
 pattern AI_MATKEY_TEXFLAGS_LIGHTMAP index = AI_MATKEY_TEXFLAGS AiTextureType_LIGHTMAP index
-pattern AI_MATKEY_TEXFLAGS_REFLECTION :: Word32 -> AiMatKey
+pattern AI_MATKEY_TEXFLAGS_REFLECTION :: CUInt -> AiMatKey
 pattern AI_MATKEY_TEXFLAGS_REFLECTION index = AI_MATKEY_TEXFLAGS AiTextureType_REFLECTION index
 
 foreign import ccall "aiGetMaterialProperty" _aiGetMaterialProperty ::
   Ptr AiMaterial {-^ pMat -} ->
   CString {-^ pKey -} ->
-  Word32 {-^ type -} ->
-  Word32 {-^ index -} ->
+  CUInt {-^ type -} ->
+  CUInt {-^ index -} ->
   Ptr (Ptr AiMaterialProperty) {-^ pPropOut -} ->
   IO AiReturn
 
@@ -553,17 +550,17 @@ aiGetMaterialProperty pMat (AiMatKey key (AiTextureType typeId) index) pPropOut 
 foreign import ccall "aiGetMaterialFloatArray" _aiGetMaterialFloatArray ::
   Ptr AiMaterial {-^ pMat -} ->
   CString {-^ pKey -} ->
-  Word32 {-^ type -} ->
-  Word32 {-^ index -} ->
+  CUInt {-^ type -} ->
+  CUInt {-^ index -} ->
   Ptr AiReal {-^ pOut -} ->
-  Ptr Word32 {-^ pMax -} ->
+  Ptr CUInt {-^ pMax -} ->
   IO AiReturn
 
 aiGetMaterialFloatArray ::
   Ptr AiMaterial {-^ pMat -} ->
   AiMatKey {-^ matKey -} ->
   Ptr AiReal {-^ pOut -} ->
-  Ptr Word32 {-^ pMax -} ->
+  Ptr CUInt {-^ pMax -} ->
   IO AiReturn
 aiGetMaterialFloatArray pMat (AiMatKey key (AiTextureType typeId) index) pOut pMax =
   withCString key $ \keyPtr -> _aiGetMaterialFloatArray pMat keyPtr typeId index pOut pMax
@@ -580,17 +577,17 @@ aiGetMaterialFloat pMat matKey pOut = aiGetMaterialFloatArray pMat matKey pOut n
 foreign import ccall "aiGetMaterialIntegerArray" _aiGetMaterialIntegerArray ::
   Ptr AiMaterial {-^ pMat -} ->
   CString {-^ pKey -} ->
-  Word32 {-^ type -} ->
-  Word32 {-^ index -} ->
-  Ptr Int32 {-^ pOut -} ->
-  Ptr Word32 {-^ pMax -} ->
+  CUInt {-^ type -} ->
+  CUInt {-^ index -} ->
+  Ptr CInt {-^ pOut -} ->
+  Ptr CUInt {-^ pMax -} ->
   IO AiReturn
 
 aiGetMaterialIntegerArray ::
   Ptr AiMaterial {-^ pMat -} ->
   AiMatKey {-^ matKey -} ->
-  Ptr Int32 {-^ pOut -} ->
-  Ptr Word32 {-^ pMax -} ->
+  Ptr CInt {-^ pOut -} ->
+  Ptr CUInt {-^ pMax -} ->
   IO AiReturn
 aiGetMaterialIntegerArray pMat (AiMatKey key (AiTextureType typeId) index) pOut pMax =
   withCString key $ \keyPtr -> _aiGetMaterialIntegerArray pMat keyPtr typeId index pOut pMax
@@ -599,7 +596,7 @@ aiGetMaterialIntegerArray pMat (AiMatKey key (AiTextureType typeId) index) pOut 
 aiGetMaterialInteger ::
   Ptr AiMaterial {-^ pMat -} ->
   AiMatKey {-^ matKey -} ->
-  Ptr Int32 {-^ pOut -} ->
+  Ptr CInt {-^ pOut -} ->
   IO AiReturn
 aiGetMaterialInteger pMat matKey pOut = aiGetMaterialIntegerArray pMat matKey pOut nullPtr
 {-# INLINE aiGetMaterialInteger #-}
@@ -607,8 +604,8 @@ aiGetMaterialInteger pMat matKey pOut = aiGetMaterialIntegerArray pMat matKey pO
 foreign import ccall "aiGetMaterialColor" _aiGetMaterialColor ::
   Ptr AiMaterial {-^ pMat -} ->
   CString {-^ pKey -} ->
-  Word32 {-^ type -} ->
-  Word32 {-^ index -} ->
+  CUInt {-^ type -} ->
+  CUInt {-^ index -} ->
   Ptr AiColor4D {-^ pOut -} ->
   IO AiReturn
 
@@ -624,8 +621,8 @@ aiGetMaterialColor pMat (AiMatKey key (AiTextureType typeId) index) pOut =
 foreign import ccall "aiGetMaterialUVTransform" _aiGetMaterialUVTransform ::
   Ptr AiMaterial {-^ pMat -} ->
   CString {-^ pKey -} ->
-  Word32 {-^ type -} ->
-  Word32 {-^ index -} ->
+  CUInt {-^ type -} ->
+  CUInt {-^ index -} ->
   Ptr AiUVTransform {-^ pOut -} ->
   IO AiReturn
 
@@ -641,8 +638,8 @@ aiGetMaterialUVTransform pMat (AiMatKey key (AiTextureType typeId) index) pOut =
 foreign import ccall "aiGetMaterialString" _aiGetMaterialString ::
   Ptr AiMaterial {-^ pMat -} ->
   CString {-^ pKey -} ->
-  Word32 {-^ type -} ->
-  Word32 {-^ index -} ->
+  CUInt {-^ type -} ->
+  CUInt {-^ index -} ->
   Ptr AiString {-^ pOut -} ->
   IO AiReturn
 
@@ -658,17 +655,17 @@ aiGetMaterialString pMat (AiMatKey key (AiTextureType typeId) index) pOut =
 foreign import ccall "aiGetMaterialTextureCount" aiGetMaterialTextureCount ::
   Ptr AiMaterial {-^ pMat -} ->
   AiTextureType {-^ type -} ->
-  IO Word32
+  IO CUInt
 
 foreign import ccall "aiGetMaterialTexture" aiGetMaterialTexture::
   Ptr AiMaterial {-^ pMat -} ->
   AiTextureType {-^ type -} ->
-  Word32 {-^ index -} ->
+  CUInt {-^ index -} ->
   Ptr AiString {-^ path -} ->
   Ptr AiTextureMapping {-^ mapping -} ->
-  Ptr Word32 {-^ uvindex -} ->
+  Ptr CUInt {-^ uvindex -} ->
   Ptr AiReal {-^ blend -} ->
   Ptr AiTextureOp {-^ op -} ->
   Ptr AiTextureMapMode {-^ mapmode -} ->
-  Ptr Word32 {-^ flags -} ->
+  Ptr CUInt {-^ flags -} ->
   IO AiReturn

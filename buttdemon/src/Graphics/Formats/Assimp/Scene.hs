@@ -14,7 +14,7 @@ import Graphics.Formats.Assimp.Texture
 import Graphics.Formats.Assimp.Types
 
 import Data.Bits
-import Data.Word
+import Foreign.C.Types
 import Foreign.Ptr
 import GHC.Generics
 import Numeric.PrimBytes
@@ -24,15 +24,15 @@ data AiNode =
     aiNode'name :: AiString,
     aiNode'transformation :: AiMatrix4x4,
     aiNode'parent :: Ptr AiNode,
-    aiNode'numChildren :: Word32,
+    aiNode'numChildren :: CUInt,
     aiNode'children :: Ptr (Ptr AiNode),
-    aiNode'numMeshes :: Word32,
-    aiNode'meshes :: Ptr Word32,
+    aiNode'numMeshes :: CUInt,
+    aiNode'meshes :: Ptr CUInt,
     aiNode'metadata :: Ptr AiMetadata
   }
   deriving (Generic)
 
-newtype AiSceneFlags = AiSceneFlags Word32 deriving (Eq, Ord, Bits, FiniteBits, Show, Generic)
+newtype AiSceneFlags = AiSceneFlags CUInt deriving (Eq, Ord, Bits, FiniteBits, Show, Generic)
 
 instance PrimBytes AiSceneFlags
 
@@ -53,17 +53,17 @@ data AiScene =
   AiScene {
     aiScene'flags :: AiSceneFlags,
     aiScene'rootNode :: Ptr AiNode,
-    aiScene'numMeshes :: Word32,
+    aiScene'numMeshes :: CUInt,
     aiScene'meshes :: Ptr (Ptr AiMesh),
-    aiScene'numMaterials :: Word32,
+    aiScene'numMaterials :: CUInt,
     aiScene'materials :: Ptr (Ptr AiMaterial),
-    aiScene'numAnimations :: Word32,
+    aiScene'numAnimations :: CUInt,
     aiScene'animations :: Ptr (Ptr AiAnimation),
-    aiScene'numTextures :: Word32,
+    aiScene'numTextures :: CUInt,
     aiScene'textures :: Ptr (Ptr AiTexture),
-    aiScene'numLights :: Word32,
+    aiScene'numLights :: CUInt,
     aiScene'lights :: Ptr (Ptr AiLight),
-    aiScene'numCameras :: Word32,
+    aiScene'numCameras :: CUInt,
     aiScene'cameras :: Ptr (Ptr AiCamera),
     aiScene'metadata :: Ptr AiMetadata
   }

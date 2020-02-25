@@ -5,12 +5,11 @@ module Graphics.Formats.Assimp.Light where
 
 import Graphics.Formats.Assimp.Types
 
-import Data.Int
+import Foreign.C.Types
 import GHC.Generics
 import Numeric.PrimBytes
 
-newtype AiLightSourceType = AiLightSourceType Int32 deriving (Eq, Ord, Show, Generic)
-
+newtype AiLightSourceType = AiLightSourceType CUInt deriving (Eq, Ord, Show, Generic)
 instance PrimBytes AiLightSourceType
 
 pattern AiLightSource_UNDEFINED :: AiLightSourceType
@@ -33,16 +32,15 @@ data AiLight =
     aiLight'position :: AiVector3D,
     aiLight'direction :: AiVector3D,
     aiLight'up :: AiVector3D,
-    aiLight'attenuationConstant :: Float,
-    aiLight'attenuationLinear :: Float,
-    aiLight'attenuationQuadratic :: Float,
+    aiLight'attenuationConstant :: CFloat,
+    aiLight'attenuationLinear :: CFloat,
+    aiLight'attenuationQuadratic :: CFloat,
     aiLight'colorDiffuse :: AiColor3D,
     aiLight'colorSpecular :: AiColor3D,
     aiLight'colorAmbient :: AiColor3D,
-    aiLight'angleInnerCone :: Float,
-    aiLight'angleOuterCone :: Float,
+    aiLight'angleInnerCone :: CFloat,
+    aiLight'angleOuterCone :: CFloat,
     aiLight'size :: AiVector2D
   }
   deriving (Generic)
-
 instance PrimBytes AiLight
