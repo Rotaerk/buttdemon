@@ -109,7 +109,7 @@ pattern AiReturn_FAILURE = AiReturn (-0x1)
 pattern AiReturn_OUTOFMEMORY :: AiReturn
 pattern AiReturn_OUTOFMEMORY = AiReturn (-0x3)
 
-newtype AiOrigin = AiOrigin CInt deriving (Eq, Ord, Show, Generic)
+newtype AiOrigin = AiOrigin CUInt deriving (Eq, Ord, Show, Generic)
 instance PrimBytes AiOrigin
 
 pattern AiOrigin_SET :: AiOrigin
@@ -119,7 +119,7 @@ pattern AiOrigin_CUR = AiOrigin 0x1
 pattern AiOrigin_END :: AiOrigin
 pattern AiOrigin_END = AiOrigin 0x3
 
-newtype AiDefaultLogStream = AiDefaultLogStream CInt deriving (Eq, Ord, Show, Generic)
+newtype AiDefaultLogStream = AiDefaultLogStream CUInt deriving (Eq, Ord, Show, Generic)
 instance PrimBytes AiDefaultLogStream
 
 pattern AiDefaultLogStream_FILE :: AiDefaultLogStream

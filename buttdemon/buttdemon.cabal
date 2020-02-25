@@ -27,6 +27,8 @@ executable buttdemon
     Graphics.Formats.Assimp.Camera
     Graphics.Formats.Assimp.Export
     Graphics.Formats.Assimp.FileIO
+    Graphics.Formats.Assimp.Import
+    Graphics.Formats.Assimp.ImporterDesc
     Graphics.Formats.Assimp.Light
     Graphics.Formats.Assimp.Material
     Graphics.Formats.Assimp.Mesh
