@@ -1,11 +1,13 @@
 {-# LANGUAGE DataKinds #-}
 {-# LANGUAGE DeriveGeneric #-}
+{-# LANGUAGE GeneralizedNewtypeDeriving #-}
 {-# LANGUAGE KindSignatures #-}
 {-# LANGUAGE PatternSynonyms #-}
 {-# LANGUAGE RankNTypes #-}
 
 module Graphics.Formats.Assimp.Types where
 
+import Data.Bits
 import Data.Char
 import Data.Int
 import Data.String
@@ -119,7 +121,7 @@ pattern AiOrigin_CUR = AiOrigin 0x1
 pattern AiOrigin_END :: AiOrigin
 pattern AiOrigin_END = AiOrigin 0x3
 
-newtype AiDefaultLogStream = AiDefaultLogStream CUInt deriving (Eq, Ord, Show, Generic)
+newtype AiDefaultLogStream = AiDefaultLogStream CUInt deriving (Eq, Ord, Bits, FiniteBits, Show, Generic)
 instance PrimBytes AiDefaultLogStream
 
 pattern AiDefaultLogStream_FILE :: AiDefaultLogStream
