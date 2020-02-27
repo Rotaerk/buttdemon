@@ -1,3 +1,4 @@
+{-# LANGUAGE CPP #-}
 {-# LANGUAGE DataKinds #-}
 {-# LANGUAGE DeriveGeneric #-}
 {-# LANGUAGE GeneralizedNewtypeDeriving #-}
@@ -18,9 +19,20 @@ import Numeric.PrimBytes
 import Numeric.DataFrame
 import Numeric.Dimensions
 
+#ifdef ASSIMP_DOUBLE_PRECISION
+type AiReal = CDouble
+type AiInt = CLLong
+type AiUInt = CULLong
+pattern ASSIMP_AI_REAL_TEXT_PRECISION :: (Num n, Eq n) => n
+pattern ASSIMP_AI_REAL_TEXT_PRECISION = 16
+#else
 type AiReal = CFloat
 type AiInt = CInt
 type AiUInt = CUInt
+pattern ASSIMP_AI_REAL_TEXT_PRECISION :: (Num n, Eq n) => n
+pattern ASSIMP_AI_REAL_TEXT_PRECISION = 8
+#endif
+
 type AiInt32 = Int32
 type AiUInt32 = Word32
 type AiBool = CInt

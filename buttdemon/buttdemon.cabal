@@ -11,6 +11,11 @@ category: Graphics
 build-type: Simple
 extra-source-files: CHANGELOG.md
 
+flag useDoublePrecision
+  description:
+    Compatible with Assimp builds where ASSIMP_DOUBLE_PRECISION is on.
+  default: False
+
 executable buttdemon
   hs-source-dirs: src
   main-is: Main.hs
@@ -38,6 +43,9 @@ executable buttdemon
     Graphics.Formats.Assimp.Texture
     Graphics.Formats.Assimp.Types
     Graphics.Formats.Assimp.Version
+
+if flag(useDoublePrecision)
+  cpp-options: -DASSIMP_DOUBLE_PRECISION
 
 source-repository head
   type: git
