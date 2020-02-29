@@ -5,6 +5,7 @@ module Graphics.Formats.Assimp.Import where
 
 import Graphics.Formats.Assimp.FileIO
 import Graphics.Formats.Assimp.ImporterDesc
+import Graphics.Formats.Assimp.PostProcess
 import Graphics.Formats.Assimp.Scene
 import Graphics.Formats.Assimp.Types
 
@@ -35,7 +36,7 @@ data AiPropertyStore =
 
 foreign import ccall "aiImportFile" aiImportFile ::
   CString {-^ pFile -} ->
-  CUInt {-^ flags -} ->
+  AiPostProcessSteps {-^ flags -} ->
   IO (Ptr AiScene)
 
 foreign import ccall "aiImportFileEx" aiImportFileEx ::
@@ -71,13 +72,11 @@ foreign import ccall "aiApplyPostProcessing" aiApplyPostProcessing ::
   CUInt {-^ flags -} ->
   IO (Ptr AiScene)
 
-{-
--- TODO: need to wrap this in C, since it returns a struct
-foreign import ccall "aiGetPredefinedLogStream" aiGetPredefinedLogStream ::
+foreign import ccall "hs_aiGetPredefinedLogStream" hs_aiGetPredefinedLogStream ::
   AiDefaultLogStream {-^ stream -} ->
   CString {-^ file -} ->
-  IO AiLogStream
--}
+  Ptr AiLogStream {-^ pOut -} ->
+  IO ()
 
 foreign import ccall "aiAttachLogStream" aiAttachLogStream ::
   Ptr AiLogStream {-^ stream -} ->
