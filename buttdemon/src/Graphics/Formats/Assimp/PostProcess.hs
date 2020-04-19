@@ -1,5 +1,6 @@
 {-# LANGUAGE DeriveGeneric #-}
 {-# LANGUAGE GeneralizedNewtypeDeriving #-}
+{-# LANGUAGE PatternSynonyms #-}
 
 module Graphics.Formats.Assimp.PostProcess where
 
@@ -11,132 +12,102 @@ import Numeric.PrimBytes
 newtype AiPostProcessSteps = AiPostProcessSteps CUInt deriving (Eq, Ord, Bits, FiniteBits, Show, Generic)
 instance PrimBytes AiPostProcessSteps
 
-aiProcess_CalcTangentSpace :: AiPostProcessSteps
-aiProcess_CalcTangentSpace = AiPostProcessSteps 0x1
-
-aiProcess_JoinIdenticalVertices :: AiPostProcessSteps
-aiProcess_JoinIdenticalVertices = AiPostProcessSteps 0x2
-
-aiProcess_MakeLeftHanded :: AiPostProcessSteps
-aiProcess_MakeLeftHanded = AiPostProcessSteps 0x4
-
-aiProcess_Triangulate :: AiPostProcessSteps
-aiProcess_Triangulate = AiPostProcessSteps 0x8
-
-aiProcess_RemoveComponent :: AiPostProcessSteps
-aiProcess_RemoveComponent = AiPostProcessSteps 0x10
-
-aiProcess_GenNormals :: AiPostProcessSteps
-aiProcess_GenNormals = AiPostProcessSteps 0x20
-
-aiProcess_GenSmoothNormals :: AiPostProcessSteps
-aiProcess_GenSmoothNormals = AiPostProcessSteps 0x40
-
-aiProcess_SplitLargeMeshes :: AiPostProcessSteps
-aiProcess_SplitLargeMeshes = AiPostProcessSteps 0x80
-
-aiProcess_PreTransformVertices :: AiPostProcessSteps
-aiProcess_PreTransformVertices = AiPostProcessSteps 0x100
-
-aiProcess_LimitBoneWeights :: AiPostProcessSteps
-aiProcess_LimitBoneWeights = AiPostProcessSteps 0x200
-
-aiProcess_ValidateDataStructure :: AiPostProcessSteps
-aiProcess_ValidateDataStructure = AiPostProcessSteps 0x400
-
-aiProcess_ImproveCacheLocality :: AiPostProcessSteps
-aiProcess_ImproveCacheLocality = AiPostProcessSteps 0x800
-
-aiProcess_RemoveRedundantMaterials :: AiPostProcessSteps
-aiProcess_RemoveRedundantMaterials = AiPostProcessSteps 0x1000
-
-aiProcess_FixInfacingNormals :: AiPostProcessSteps
-aiProcess_FixInfacingNormals = AiPostProcessSteps 0x2000
-
-aiProcess_SortByPType :: AiPostProcessSteps
-aiProcess_SortByPType = AiPostProcessSteps 0x8000
-
-aiProcess_FindDegenerates :: AiPostProcessSteps
-aiProcess_FindDegenerates = AiPostProcessSteps 0x10000
-
-aiProcess_FindInvalidData :: AiPostProcessSteps
-aiProcess_FindInvalidData = AiPostProcessSteps 0x20000
-
-aiProcess_GenUVCoords :: AiPostProcessSteps
-aiProcess_GenUVCoords = AiPostProcessSteps 0x40000
-
-aiProcess_TransformUVCoords :: AiPostProcessSteps
-aiProcess_TransformUVCoords = AiPostProcessSteps 0x80000
-
-aiProcess_FindInstances :: AiPostProcessSteps
-aiProcess_FindInstances = AiPostProcessSteps 0x100000
-
-aiProcess_OptimizeMeshes :: AiPostProcessSteps
-aiProcess_OptimizeMeshes = AiPostProcessSteps 0x200000
-
-aiProcess_OptimizeGraph :: AiPostProcessSteps
-aiProcess_OptimizeGraph = AiPostProcessSteps 0x400000
-
-aiProcess_FlipUVs :: AiPostProcessSteps
-aiProcess_FlipUVs = AiPostProcessSteps 0x800000
-
-aiProcess_FlipWindingOrder :: AiPostProcessSteps
-aiProcess_FlipWindingOrder = AiPostProcessSteps 0x1000000
-
-aiProcess_SplitByBoneCount :: AiPostProcessSteps
-aiProcess_SplitByBoneCount = AiPostProcessSteps 0x2000000
-
-aiProcess_Debone :: AiPostProcessSteps
-aiProcess_Debone = AiPostProcessSteps 0x4000000
-
-aiProcess_GlobalScale :: AiPostProcessSteps
-aiProcess_GlobalScale = AiPostProcessSteps 0x8000000
-
-aiProcess_EmbedTextures :: AiPostProcessSteps
-aiProcess_EmbedTextures = AiPostProcessSteps 0x10000000
-
-aiProcess_ForceGenNormals :: AiPostProcessSteps
-aiProcess_ForceGenNormals = AiPostProcessSteps 0x20000000
-
-aiProcess_DropNormals :: AiPostProcessSteps
-aiProcess_DropNormals = AiPostProcessSteps 0x40000000
-
-aiProcess_GenBoundingBoxes :: AiPostProcessSteps
-aiProcess_GenBoundingBoxes = AiPostProcessSteps 0x80000000
+pattern AiProcess_CalcTangentSpace :: AiPostProcessSteps
+pattern AiProcess_CalcTangentSpace = AiPostProcessSteps 0x1
+pattern AiProcess_JoinIdenticalVertices :: AiPostProcessSteps
+pattern AiProcess_JoinIdenticalVertices = AiPostProcessSteps 0x2
+pattern AiProcess_MakeLeftHanded :: AiPostProcessSteps
+pattern AiProcess_MakeLeftHanded = AiPostProcessSteps 0x4
+pattern AiProcess_Triangulate :: AiPostProcessSteps
+pattern AiProcess_Triangulate = AiPostProcessSteps 0x8
+pattern AiProcess_RemoveComponent :: AiPostProcessSteps
+pattern AiProcess_RemoveComponent = AiPostProcessSteps 0x10
+pattern AiProcess_GenNormals :: AiPostProcessSteps
+pattern AiProcess_GenNormals = AiPostProcessSteps 0x20
+pattern AiProcess_GenSmoothNormals :: AiPostProcessSteps
+pattern AiProcess_GenSmoothNormals = AiPostProcessSteps 0x40
+pattern AiProcess_SplitLargeMeshes :: AiPostProcessSteps
+pattern AiProcess_SplitLargeMeshes = AiPostProcessSteps 0x80
+pattern AiProcess_PreTransformVertices :: AiPostProcessSteps
+pattern AiProcess_PreTransformVertices = AiPostProcessSteps 0x100
+pattern AiProcess_LimitBoneWeights :: AiPostProcessSteps
+pattern AiProcess_LimitBoneWeights = AiPostProcessSteps 0x200
+pattern AiProcess_ValidateDataStructure :: AiPostProcessSteps
+pattern AiProcess_ValidateDataStructure = AiPostProcessSteps 0x400
+pattern AiProcess_ImproveCacheLocality :: AiPostProcessSteps
+pattern AiProcess_ImproveCacheLocality = AiPostProcessSteps 0x800
+pattern AiProcess_RemoveRedundantMaterials :: AiPostProcessSteps
+pattern AiProcess_RemoveRedundantMaterials = AiPostProcessSteps 0x1000
+pattern AiProcess_FixInfacingNormals :: AiPostProcessSteps
+pattern AiProcess_FixInfacingNormals = AiPostProcessSteps 0x2000
+pattern AiProcess_SortByPType :: AiPostProcessSteps
+pattern AiProcess_SortByPType = AiPostProcessSteps 0x8000
+pattern AiProcess_FindDegenerates :: AiPostProcessSteps
+pattern AiProcess_FindDegenerates = AiPostProcessSteps 0x10000
+pattern AiProcess_FindInvalidData :: AiPostProcessSteps
+pattern AiProcess_FindInvalidData = AiPostProcessSteps 0x20000
+pattern AiProcess_GenUVCoords :: AiPostProcessSteps
+pattern AiProcess_GenUVCoords = AiPostProcessSteps 0x40000
+pattern AiProcess_TransformUVCoords :: AiPostProcessSteps
+pattern AiProcess_TransformUVCoords = AiPostProcessSteps 0x80000
+pattern AiProcess_FindInstances :: AiPostProcessSteps
+pattern AiProcess_FindInstances = AiPostProcessSteps 0x100000
+pattern AiProcess_OptimizeMeshes :: AiPostProcessSteps
+pattern AiProcess_OptimizeMeshes = AiPostProcessSteps 0x200000
+pattern AiProcess_OptimizeGraph :: AiPostProcessSteps
+pattern AiProcess_OptimizeGraph = AiPostProcessSteps 0x400000
+pattern AiProcess_FlipUVs :: AiPostProcessSteps
+pattern AiProcess_FlipUVs = AiPostProcessSteps 0x800000
+pattern AiProcess_FlipWindingOrder :: AiPostProcessSteps
+pattern AiProcess_FlipWindingOrder = AiPostProcessSteps 0x1000000
+pattern AiProcess_SplitByBoneCount :: AiPostProcessSteps
+pattern AiProcess_SplitByBoneCount = AiPostProcessSteps 0x2000000
+pattern AiProcess_Debone :: AiPostProcessSteps
+pattern AiProcess_Debone = AiPostProcessSteps 0x4000000
+pattern AiProcess_GlobalScale :: AiPostProcessSteps
+pattern AiProcess_GlobalScale = AiPostProcessSteps 0x8000000
+pattern AiProcess_EmbedTextures :: AiPostProcessSteps
+pattern AiProcess_EmbedTextures = AiPostProcessSteps 0x10000000
+pattern AiProcess_ForceGenNormals :: AiPostProcessSteps
+pattern AiProcess_ForceGenNormals = AiPostProcessSteps 0x20000000
+pattern AiProcess_DropNormals :: AiPostProcessSteps
+pattern AiProcess_DropNormals = AiPostProcessSteps 0x40000000
+pattern AiProcess_GenBoundingBoxes :: AiPostProcessSteps
+pattern AiProcess_GenBoundingBoxes = AiPostProcessSteps 0x80000000
 
 aiProcess_ConvertToLeftHanded :: AiPostProcessSteps
 aiProcess_ConvertToLeftHanded =
-  aiProcess_MakeLeftHanded .|.
-  aiProcess_FlipUVs .|.
-  aiProcess_FlipWindingOrder
+  AiProcess_MakeLeftHanded .|.
+  AiProcess_FlipUVs .|.
+  AiProcess_FlipWindingOrder
 
 aiProcessPreset_TargetRealtime_Fast :: AiPostProcessSteps
 aiProcessPreset_TargetRealtime_Fast =
-  aiProcess_CalcTangentSpace .|.
-  aiProcess_GenNormals .|.
-  aiProcess_JoinIdenticalVertices .|.
-  aiProcess_Triangulate .|.
-  aiProcess_GenUVCoords .|.
-  aiProcess_SortByPType
+  AiProcess_CalcTangentSpace .|.
+  AiProcess_GenNormals .|.
+  AiProcess_JoinIdenticalVertices .|.
+  AiProcess_Triangulate .|.
+  AiProcess_GenUVCoords .|.
+  AiProcess_SortByPType
 
 aiProcessPreset_TargetRealtime_Quality :: AiPostProcessSteps
 aiProcessPreset_TargetRealtime_Quality =
-  aiProcess_CalcTangentSpace .|.
-  aiProcess_GenSmoothNormals .|.
-  aiProcess_JoinIdenticalVertices .|.
-  aiProcess_ImproveCacheLocality .|.
-  aiProcess_LimitBoneWeights .|.
-  aiProcess_RemoveRedundantMaterials .|.
-  aiProcess_SplitLargeMeshes .|.
-  aiProcess_Triangulate .|.
-  aiProcess_GenUVCoords .|.
-  aiProcess_SortByPType .|.
-  aiProcess_FindDegenerates .|.
-  aiProcess_FindInvalidData
+  AiProcess_CalcTangentSpace .|.
+  AiProcess_GenSmoothNormals .|.
+  AiProcess_JoinIdenticalVertices .|.
+  AiProcess_ImproveCacheLocality .|.
+  AiProcess_LimitBoneWeights .|.
+  AiProcess_RemoveRedundantMaterials .|.
+  AiProcess_SplitLargeMeshes .|.
+  AiProcess_Triangulate .|.
+  AiProcess_GenUVCoords .|.
+  AiProcess_SortByPType .|.
+  AiProcess_FindDegenerates .|.
+  AiProcess_FindInvalidData
 
 aiProcessPreset_TargetRealtime_MaxQuality :: AiPostProcessSteps
 aiProcessPreset_TargetRealtime_MaxQuality =
   aiProcessPreset_TargetRealtime_Quality .|.
-  aiProcess_FindInstances .|.
-  aiProcess_ValidateDataStructure .|.
-  aiProcess_OptimizeMeshes
+  AiProcess_FindInstances .|.
+  AiProcess_ValidateDataStructure .|.
+  AiProcess_OptimizeMeshes

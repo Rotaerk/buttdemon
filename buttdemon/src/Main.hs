@@ -25,11 +25,11 @@ main =
   withCString "assets/treasure_smooth.dae" $ \filePathCString -> do
     scenePtr <-
       aiImportFile filePathCString $
-      aiProcess_FlipWindingOrder .|.
-      aiProcess_Triangulate .|.
-      aiProcess_PreTransformVertices .|.
-      aiProcess_CalcTangentSpace .|.
-      aiProcess_GenSmoothNormals
+      AiProcess_FlipWindingOrder .|.
+      AiProcess_Triangulate .|.
+      AiProcess_PreTransformVertices .|.
+      AiProcess_CalcTangentSpace .|.
+      AiProcess_GenSmoothNormals
 
     when (scenePtr == nullPtr) $ error "Error: null scene"
 

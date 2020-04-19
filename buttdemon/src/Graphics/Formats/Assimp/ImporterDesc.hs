@@ -1,15 +1,17 @@
 {-# LANGUAGE DeriveGeneric #-}
+{-# LANGUAGE GeneralizedNewtypeDeriving #-}
 {-# LANGUAGE PatternSynonyms #-}
 
 module Graphics.Formats.Assimp.ImporterDesc where
 
+import Data.Bits
 import Foreign.C.String
 import Foreign.C.Types
 import Foreign.Ptr
 import GHC.Generics
 import Numeric.PrimBytes
 
-newtype AiImporterFlags = AiImporterFlags CUInt deriving (Eq, Ord, Show, Generic)
+newtype AiImporterFlags = AiImporterFlags CUInt deriving (Eq, Ord, Bits, FiniteBits, Show, Generic)
 instance PrimBytes AiImporterFlags
 
 pattern AiImporterFlags_SupportTextFlavour :: AiImporterFlags

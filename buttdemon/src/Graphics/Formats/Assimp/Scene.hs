@@ -33,7 +33,6 @@ data AiNode =
   deriving (Generic)
 
 newtype AiSceneFlags = AiSceneFlags CUInt deriving (Eq, Ord, Bits, FiniteBits, Show, Generic)
-
 instance PrimBytes AiSceneFlags
 
 pattern AI_SCENE_FLAGS_INCOMPLETE :: AiSceneFlags

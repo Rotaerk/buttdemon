@@ -14,28 +14,28 @@ import Numeric.PrimBytes
 newtype AiComponent = AiComponent CUInt deriving (Eq, Ord, Bits, FiniteBits, Show, Generic)
 instance PrimBytes AiComponent
 
-aiComponent_NORMALS :: AiComponent
-aiComponent_NORMALS = AiComponent 0x2
-aiComponent_TANGENTS_AND_BITANGENTS :: AiComponent
-aiComponent_TANGENTS_AND_BITANGENTS = AiComponent 0x4
-aiComponent_COLORS :: AiComponent
-aiComponent_COLORS = AiComponent 0x8
-aiComponent_TEXCOORDS :: AiComponent
-aiComponent_TEXCOORDS = AiComponent 0x10
-aiComponent_BONEWEIGHTS :: AiComponent
-aiComponent_BONEWEIGHTS = AiComponent 0x20
-aiComponent_ANIMATIONS :: AiComponent
-aiComponent_ANIMATIONS = AiComponent 0x40
-aiComponent_TEXTURES :: AiComponent
-aiComponent_TEXTURES = AiComponent 0x80
-aiComponent_LIGHTS :: AiComponent
-aiComponent_LIGHTS = AiComponent 0x100
-aiComponent_CAMERAS :: AiComponent
-aiComponent_CAMERAS = AiComponent 0x200
-aiComponent_MESHES :: AiComponent
-aiComponent_MESHES = AiComponent 0x400
-aiComponent_MATERIALS :: AiComponent
-aiComponent_MATERIALS = AiComponent 0x800
+pattern AiComponent_NORMALS :: AiComponent
+pattern AiComponent_NORMALS = AiComponent 0x2
+pattern AiComponent_TANGENTS_AND_BITANGENTS :: AiComponent
+pattern AiComponent_TANGENTS_AND_BITANGENTS = AiComponent 0x4
+pattern AiComponent_COLORS :: AiComponent
+pattern AiComponent_COLORS = AiComponent 0x8
+pattern AiComponent_TEXCOORDS :: AiComponent
+pattern AiComponent_TEXCOORDS = AiComponent 0x10
+pattern AiComponent_BONEWEIGHTS :: AiComponent
+pattern AiComponent_BONEWEIGHTS = AiComponent 0x20
+pattern AiComponent_ANIMATIONS :: AiComponent
+pattern AiComponent_ANIMATIONS = AiComponent 0x40
+pattern AiComponent_TEXTURES :: AiComponent
+pattern AiComponent_TEXTURES = AiComponent 0x80
+pattern AiComponent_LIGHTS :: AiComponent
+pattern AiComponent_LIGHTS = AiComponent 0x100
+pattern AiComponent_CAMERAS :: AiComponent
+pattern AiComponent_CAMERAS = AiComponent 0x200
+pattern AiComponent_MESHES :: AiComponent
+pattern AiComponent_MESHES = AiComponent 0x400
+pattern AiComponent_MATERIALS :: AiComponent
+pattern AiComponent_MATERIALS = AiComponent 0x800
 
 aiComponent_COLORSn :: Int -> AiComponent
 aiComponent_COLORSn = AiComponent . shift 0x100000
@@ -46,14 +46,14 @@ aiComponent_TEXCOORDSn = AiComponent . shift 0x2000000
 newtype AiUVTrafo = AiUVTrafo CUInt deriving (Eq, Ord, Bits, FiniteBits, Show, Generic)
 instance PrimBytes AiUVTrafo
 
-aiUVTrafo_SCALING :: AiUVTrafo
-aiUVTrafo_SCALING = AiUVTrafo 0x1
-aiUVTrafo_ROTATION :: AiUVTrafo
-aiUVTrafo_ROTATION = AiUVTrafo 0x2
-aiUVTrafo_TRANSLATION :: AiUVTrafo
-aiUVTrafo_TRANSLATION = AiUVTrafo 0x4
+pattern AiUVTrafo_SCALING :: AiUVTrafo
+pattern AiUVTrafo_SCALING = AiUVTrafo 0x1
+pattern AiUVTrafo_ROTATION :: AiUVTrafo
+pattern AiUVTrafo_ROTATION = AiUVTrafo 0x2
+pattern AiUVTrafo_TRANSLATION :: AiUVTrafo
+pattern AiUVTrafo_TRANSLATION = AiUVTrafo 0x4
 aiUVTrafo_ALL :: AiUVTrafo
-aiUVTrafo_ALL = aiUVTrafo_SCALING .|. aiUVTrafo_ROTATION .|. aiUVTrafo_TRANSLATION
+aiUVTrafo_ALL = AiUVTrafo_SCALING .|. AiUVTrafo_ROTATION .|. AiUVTrafo_TRANSLATION
 
 pattern AI_CONFIG_GLOB_MEASURE_TIME :: (Eq a, IsString a) => a
 pattern AI_CONFIG_GLOB_MEASURE_TIME = "GLOB_MEASURE_TIME"

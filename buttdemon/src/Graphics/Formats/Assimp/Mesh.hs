@@ -7,6 +7,7 @@ module Graphics.Formats.Assimp.Mesh where
 
 import Graphics.Formats.Assimp.Types
 
+import Data.Bits
 import Foreign.C.Types
 import Foreign.Ptr
 import GHC.Generics
@@ -53,7 +54,7 @@ data AiBone =
   deriving (Generic)
 instance PrimBytes AiBone
 
-newtype AiPrimitiveType = AiPrimitiveType CUInt deriving (Eq, Ord, Show, Generic)
+newtype AiPrimitiveType = AiPrimitiveType CUInt deriving (Eq, Ord, Bits, FiniteBits, Show, Generic)
 instance PrimBytes AiPrimitiveType
 
 pattern AiPrimitiveType_POINT :: AiPrimitiveType
