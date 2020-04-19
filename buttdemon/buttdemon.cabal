@@ -35,6 +35,7 @@ executable buttdemon
   other-modules:
     Graphics.Formats.Assimp.Animation
     Graphics.Formats.Assimp.Camera
+    Graphics.Formats.Assimp.Config
     Graphics.Formats.Assimp.Export
     Graphics.Formats.Assimp.FileIO
     Graphics.Formats.Assimp.Import
