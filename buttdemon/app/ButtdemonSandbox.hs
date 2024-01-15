@@ -1,27 +1,25 @@
-{-# LANGUAGE DataKinds #-}
-{-# LANGUAGE DeriveGeneric #-}
-{-# LANGUAGE FlexibleInstances #-}
-{-# LANGUAGE GeneralizedNewtypeDeriving #-}
-{-# LANGUAGE KindSignatures #-}
-{-# LANGUAGE PatternSynonyms #-}
-{-# LANGUAGE StandaloneDeriving #-}
-{-# LANGUAGE TypeApplications #-}
-
 module Main where
 
-import Control.Monad
-import Data.Bits
-import Foreign.C.String
-import Foreign.C.Types
-import Foreign.Ptr
-import Numeric.PrimBytes
+--import Control.Monad
+--import Data.Bits
+--import Foreign.C.String
+--import Foreign.C.Types
+--import Foreign.Ptr
 
-import Graphics.Formats.Assimp.PostProcess
-import Graphics.Formats.Assimp.Scene
-import Graphics.Formats.Assimp.Import
+--import Graphics.Formats.Assimp.Config
+--import Graphics.Formats.Assimp.PostProcess
+--import Graphics.Formats.Assimp.Scene
+--import Graphics.Formats.Assimp.Import
 
 main :: IO ()
-main =
+main = do
+  putStrLn "Buttdemon"
+--  putStrLn $ show c_AI_CONFIG_GLOB_MEASURE_TIME
+--  putStrLn $ show c_AI_UVTRAFO_SCALING
+
+{-
+oldtest :: IO ()
+oldtest =
   withCString "assets/treasure_smooth.dae" $ \filePathCString -> do
     scenePtr <-
       aiImportFile filePathCString $
@@ -42,3 +40,4 @@ main =
     print scene
 
     aiReleaseImport scenePtr
+-}

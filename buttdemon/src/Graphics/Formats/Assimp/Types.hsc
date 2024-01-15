@@ -1,24 +1,8 @@
-{-# LANGUAGE CPP #-}
-{-# LANGUAGE DataKinds #-}
-{-# LANGUAGE DeriveGeneric #-}
-{-# LANGUAGE GeneralizedNewtypeDeriving #-}
-{-# LANGUAGE KindSignatures #-}
-{-# LANGUAGE PatternSynonyms #-}
-{-# LANGUAGE RankNTypes #-}
-
 module Graphics.Formats.Assimp.Types where
 
-import Data.Bits
-import Data.Char
-import Data.Int
-import Data.String
-import Data.Word
-import Foreign.C.Types
-import GHC.Generics
-import Numeric.PrimBytes
-import Numeric.DataFrame
-import Numeric.Dimensions
+#include <assimp/types.h>
 
+{-
 #ifdef ASSIMP_DOUBLE_PRECISION
 type AiReal = CDouble
 type AiInt = CLLong
@@ -152,3 +136,4 @@ data AiMemoryInfo =
   }
   deriving (Generic)
 instance PrimBytes AiMemoryInfo
+-}

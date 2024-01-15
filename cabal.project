@@ -1,3 +1,5 @@
 packages:
   buttdemon/buttdemon.cabal
-  easytensor/easytensor/easytensor.cabal
+
+allow-newer:
+  storable-offset:base

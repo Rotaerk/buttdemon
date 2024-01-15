@@ -1,57 +1,65 @@
-cabal-version: 3.0
+cabal-version: 2.2
 
 name: buttdemon
 version: 0.1.0.0
 synopsis: Bindings to the Open Asset Import Library, a.k.a. Assimp.
-license: BSD-3-Clause
+license: MIT
 license-file: LICENSE
 author: Matthew Stewart
 maintainer: m.scott.stewart@gmail.com
 category: Graphics
 build-type: Simple
-extra-source-files:
-  include/**/*.h
-  include/**/*.inl
-  cbits/*.h
 
-flag useDoublePrecision
-  description:
-    Compatible with Assimp builds where ASSIMP_DOUBLE_PRECISION is on.
-  default: False
-
-executable buttdemon
-  hs-source-dirs: src
-  main-is: Main.hs
-  ghc-options: -threaded -Wall -Wno-name-shadowing -Wno-unused-matches -fno-ignore-asserts
+common common
+  ghc-options: -Wall
   default-language: Haskell2010
+  default-extensions:
+    CApiFFI
+    CPP
+    DataKinds
+    DuplicateRecordFields
+    PatternSynonyms
+    TypeApplications
+    ViewPatterns
+  if impl(ghc >= 9.0.2)
+    default-extensions:
+      NoFieldSelectors
+
+library
+  import: common
+  hs-source-dirs: src
   extra-libraries: assimp
-  c-sources: cbits/buttdemon.c
-  include-dirs: include
+  build-tool-depends: hsc2hs:hsc2hs
   build-depends:
-    dimensions,
-    easytensor,
-    base ^>=4.12
-  default-extensions: ForeignFunctionInterface
-  other-modules:
-    Graphics.Formats.Assimp.Animation
-    Graphics.Formats.Assimp.Camera
+    base >=4.9,
+--    storable-offset
+  exposed-modules:
     Graphics.Formats.Assimp.Config
-    Graphics.Formats.Assimp.Export
-    Graphics.Formats.Assimp.FileIO
-    Graphics.Formats.Assimp.Import
-    Graphics.Formats.Assimp.ImporterDesc
-    Graphics.Formats.Assimp.Light
-    Graphics.Formats.Assimp.Material
-    Graphics.Formats.Assimp.Mesh
-    Graphics.Formats.Assimp.Metadata
-    Graphics.Formats.Assimp.PostProcess
-    Graphics.Formats.Assimp.Scene
-    Graphics.Formats.Assimp.Texture
-    Graphics.Formats.Assimp.Types
-    Graphics.Formats.Assimp.Version
-  if flag(useDoublePrecision)
-    cpp-options: -DASSIMP_DOUBLE_PRECISION
-    cc-options: -DASSIMP_DOUBLE_PRECISION
+--    Graphics.Formats.Assimp.Defs
+--    Graphics.Formats.Assimp.Animation
+--    Graphics.Formats.Assimp.Camera
+--    Graphics.Formats.Assimp.Config
+--    Graphics.Formats.Assimp.Export
+--    Graphics.Formats.Assimp.FileIO
+--    Graphics.Formats.Assimp.Import
+--    Graphics.Formats.Assimp.ImporterDesc
+--    Graphics.Formats.Assimp.Light
+--    Graphics.Formats.Assimp.Material
+--    Graphics.Formats.Assimp.Mesh
+--    Graphics.Formats.Assimp.Metadata
+--    Graphics.Formats.Assimp.PostProcess
+--    Graphics.Formats.Assimp.Scene
+--    Graphics.Formats.Assimp.Texture
+--    Graphics.Formats.Assimp.Types
+--    Graphics.Formats.Assimp.Version
+
+executable buttdemon-sandbox
+  import: common
+  hs-source-dirs: app
+  main-is: ButtdemonSandbox.hs
+  build-depends:
+    buttdemon,
+    base
 
 source-repository head
   type: git

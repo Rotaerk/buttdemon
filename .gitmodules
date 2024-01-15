@@ -1,6 +1,3 @@
 [submodule "assimp"]
 	path = assimp
 	url = https://github.com/assimp/assimp
-[submodule "easytensor"]
-	path = easytensor
-	url = https://github.com/rotaerk/easytensor
