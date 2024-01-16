@@ -137,25 +137,38 @@ void *hsc_stdout(void);
         }                                                          \
     }
 
-#define hsc_importvaluefrom(header, name, type) \
-  hsc_printf ("foreign import capi \"%s value %s\" _%s :: %s", header, name, name, type);
+#define hsc_importvaluefrom(header, cname, hsname, type) \
+  hsc_printf ("foreign import capi \"%s value %s\" %s :: %s", header, cname, hsname, type);
 
 // Relies on THE_HEADER being defined before being used.
-#define hsc_importvalue(name, type) \
-  hsc_importvaluefrom(THE_HEADER, name, type);
+#define hsc_importvalue(cname, hsname, type) \
+  hsc_importvaluefrom(THE_HEADER, cname, hsname, type);
 
 #define hsc_equalspattern(name, type, value) \
   hsc_printf ("pattern %s :: %s\n", name, type); \
   hsc_printf ("pattern %s <- ((== %s) -> True)\n", name, value); \
   hsc_printf ("  where %s = %s", name, value);
 
-#define hsc_cstring(symbol) \
-  hsc_importvalue(#symbol, "CString");
+#define hsc_cstring(csymbol, hssymbol) \
+  hsc_importvalue(#csymbol, #hssymbol, "CString");
 
-#define hsc_cint(symbol) \
-  hsc_importvalue(#symbol, "CInt"); \
+#define hsc_cint(csymbol, hssymbol, patsymbol) \
+  hsc_importvalue(#csymbol, #hssymbol, "CInt"); \
   hsc_putchar ('\n\n'); \
-  hsc_equalspattern(#symbol, "(Eq a, Num a) => a", "fromIntegral _"#symbol);
+  hsc_equalspattern(#patsymbol, "(Eq a, Num a) => a", "fromIntegral "#hssymbol);
 
-#define hsc_cfloat(symbol) \
-  hsc_importvalue(#symbol, "CFloat");
+#define hsc_cuint(csymbol, hssymbol, patsymbol) \
+  hsc_importvalue(#csymbol, #hssymbol, "CUInt"); \
+  hsc_putchar ('\n\n'); \
+  hsc_equalspattern(#patsymbol, "(Eq a, Num a) => a", "fromIntegral "#hssymbol);
+
+#define hsc_cfloat(csymbol, hssymbol) \
+  hsc_importvalue(#csymbol, #hssymbol, "CFloat");
+
+/*
+#define hsc_testcstring(csymbol, hssymbol) \
+  hsc_printf ("%s :: CString\n", #hssymbol); \
+  hsc_printf ("%s = Ptr ", #hssymbol); \
+  hsc_const_str (csymbol); \
+  hsc_printf ("#");
+*/
