@@ -149,26 +149,27 @@ void *hsc_stdout(void);
   hsc_printf ("pattern %s <- ((== %s) -> True)\n", name, value); \
   hsc_printf ("  where %s = %s", name, value);
 
-#define hsc_cstring(csymbol, hssymbol) \
-  hsc_importvalue(#csymbol, #hssymbol, "CString");
+#define hsc_cstring(cname, hsname) \
+  hsc_importvalue(cname, hsname, "CString");
 
-#define hsc_cint(csymbol, hssymbol, patsymbol) \
-  hsc_importvalue(#csymbol, #hssymbol, "CInt"); \
+#define hsc_cstring_uppercase(cname) \
+  hsc_cstring(cname, "_"cname);
+
+#define hsc_cfloat(cname, hsname) \
+  hsc_importvalue(cname, hsname, "CFloat");
+
+#define hsc_cfloat_uppercase(cname) \
+  hsc_cfloat(cname, "_"cname);
+
+#define hsc_cint(cname, hsname, patname) \
+  hsc_importvalue(cname, hsname, "CInt"); \
   hsc_putchar ('\n\n'); \
-  hsc_equalspattern(#patsymbol, "(Eq a, Num a) => a", "fromIntegral "#hssymbol);
+  hsc_equalspattern(patname, "(Eq a, Num a) => a", "fromIntegral "hsname);
 
-#define hsc_cuint(csymbol, hssymbol, patsymbol) \
-  hsc_importvalue(#csymbol, #hssymbol, "CUInt"); \
+#define hsc_cint_uppercase(cname) \
+  hsc_cint(cname, "_"cname, cname);
+
+#define hsc_cuint(cname, hsname, patname) \
+  hsc_importvalue(cname, hsname, "CUInt"); \
   hsc_putchar ('\n\n'); \
-  hsc_equalspattern(#patsymbol, "(Eq a, Num a) => a", "fromIntegral "#hssymbol);
-
-#define hsc_cfloat(csymbol, hssymbol) \
-  hsc_importvalue(#csymbol, #hssymbol, "CFloat");
-
-/*
-#define hsc_testcstring(csymbol, hssymbol) \
-  hsc_printf ("%s :: CString\n", #hssymbol); \
-  hsc_printf ("%s = Ptr ", #hssymbol); \
-  hsc_const_str (csymbol); \
-  hsc_printf ("#");
-*/
+  hsc_equalspattern(patname, "(Eq a, Num a) => a", "fromIntegral "hsname);
