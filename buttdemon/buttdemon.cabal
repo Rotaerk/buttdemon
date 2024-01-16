@@ -1,4 +1,4 @@
-cabal-version: 2.2
+cabal-version: 3.8
 
 name: buttdemon
 version: 0.1.0.0
@@ -28,8 +28,10 @@ common common
 library
   import: common
   hs-source-dirs: src
-  extra-libraries: assimp
+  pkgconfig-depends: assimp
+  include-dirs: include
   build-tool-depends: hsc2hs:hsc2hs
+  hsc2hs-options: -t template-hsc.h
   build-depends:
     base >=4.9,
 --    storable-offset

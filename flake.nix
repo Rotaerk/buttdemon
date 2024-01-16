@@ -21,10 +21,6 @@
           nativeBuildInputs = [
             hs.cabal-install
           ];
-          # Without LD_LIBRARY_PATH set, cabal build will work, but cabal repl will fail to find libassimp.so.
-          shellHook = ''
-            export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:${ldLibraryPath}"
-          '';
         };
       };
 

@@ -1,29 +1,64 @@
 {-# LANGUAGE MagicHash #-}
 
-#include <assimp/config.h>
+#define THE_HEADER "assimp/config.h"
+#include THE_HEADER
 
-module Graphics.Formats.Assimp.Config
---(
---  c_AI_CONFIG_GLOB_MEASURE_TIME
---)
-where
+module Graphics.Formats.Assimp.Config where
 
 import Foreign.C.String
 import Foreign.C.Types
 import GHC.Ptr
 
-pattern AI_CONFIG_GLOB_MEASURE_TIME :: CString
-pattern AI_CONFIG_GLOB_MEASURE_TIME <- (const False -> True)
-  where AI_CONFIG_GLOB_MEASURE_TIME = Ptr #{const_str AI_CONFIG_GLOB_MEASURE_TIME}##
+#{cstring AI_CONFIG_GLOB_MEASURE_TIME}
 
-pattern AI_UVTRAFO_SCALING :: (Eq a, Num a) => a
-pattern AI_UVTRAFO_SCALING = #{const AI_UVTRAFO_SCALING}
+#{cstring AI_CONFIG_IMPORT_NO_SKELETON_MESHES}
 
-pattern AI_UVTRAFO_ROTATION :: (Eq a, Num a) => a
-pattern AI_UVTRAFO_ROTATION = #{const AI_UVTRAFO_ROTATION}
+#{cstring AI_CONFIG_PP_SBBC_MAX_BONES}
 
-pattern AI_UVTRAFO_TRANSLATION :: (Eq a, Num a) => a
-pattern AI_UVTRAFO_TRANSLATION = #{const AI_UVTRAFO_TRANSLATION}
+#{cint AI_SBBC_DEFAULT_MAX_BONES}
 
-pattern AI_UVTRAFO_ALL :: (Eq a, Num a) => a
-pattern AI_UVTRAFO_ALL = #{const AI_UVTRAFO_ALL}
+#{cstring AI_CONFIG_PP_CT_MAX_SMOOTHING_ANGLE}
+
+#{cstring AI_CONFIG_PP_CT_TEXTURE_CHANNEL_INDEX}
+
+#{cstring AI_CONFIG_PP_GSN_MAX_SMOOTHING_ANGLE}
+
+#{cstring AI_CONFIG_IMPORT_MDL_COLORMAP}
+
+#{cstring AI_CONFIG_PP_RRM_EXCLUDE_LIST}
+
+#{cstring AI_CONFIG_PP_PTV_KEEP_HIERARCHY}
+
+#{cstring AI_CONFIG_PP_PTV_NORMALIZE}
+
+#{cstring AI_CONFIG_PP_PTV_ADD_ROOT_TRANSFORMATION}
+
+#{cstring AI_CONFIG_PP_PTV_ROOT_TRANSFORMATION}
+
+#{cstring AI_CONFIG_PP_FD_REMOVE}
+
+#{cstring AI_CONFIG_PP_FD_CHECKAREA}
+
+#{cstring AI_CONFIG_PP_OG_EXCLUDE_LIST}
+
+#{cstring AI_CONFIG_PP_SLM_TRIANGLE_LIMIT}
+
+#{cint AI_SLM_DEFAULT_MAX_TRIANGLES}
+
+#{cstring AI_CONFIG_PP_SLM_VERTEX_LIMIT}
+
+#{cint AI_SLM_DEFAULT_MAX_VERTICES}
+
+#{cstring AI_CONFIG_PP_LBW_MAX_WEIGHTS}
+
+#{cint AI_LMW_MAX_WEIGHTS}
+
+#{cstring AI_CONFIG_PP_DB_THRESHOLD}
+
+#{cfloat AI_DEBONE_THRESHOLD}
+
+#{cstring AI_CONFIG_PP_DB_ALL_OR_NONE}
+
+#{cint PP_ICL_PTCACHE_SIZE}
+
+#{cstring AI_CONFIG_PP_ICL_PTCACHE_SIZE}
