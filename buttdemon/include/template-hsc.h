@@ -137,39 +137,37 @@ void *hsc_stdout(void);
         }                                                          \
     }
 
+#define hsc_importfunctionfrom(header, cname, hsname, type) \
+  hsc_printf ("foreign import capi \"%s %s\" %s :: %s", header, cname, hsname, type);
+
 #define hsc_importvaluefrom(header, cname, hsname, type) \
   hsc_printf ("foreign import capi \"%s value %s\" %s :: %s", header, cname, hsname, type);
-
-// Relies on THE_HEADER being defined before being used.
-#define hsc_importvalue(cname, hsname, type) \
-  hsc_importvaluefrom(THE_HEADER, cname, hsname, type);
 
 #define hsc_equalspattern(name, type, value) \
   hsc_printf ("pattern %s :: %s\n", name, type); \
   hsc_printf ("pattern %s <- ((== %s) -> True)\n", name, value); \
   hsc_printf ("  where %s = %s", name, value);
 
+// The below definitions rely on THE_HEADER being defined before being used.
+#define hsc_importfunction(cname, hsname, type) \
+  hsc_importfunctionfrom(THE_HEADER, cname, hsname, type);
+
+#define hsc_importvalue(cname, hsname, type) \
+  hsc_importvaluefrom(THE_HEADER, cname, hsname, type);
+
 #define hsc_cstring(cname, hsname) \
   hsc_importvalue(cname, hsname, "CString");
-
-#define hsc_cstring_uppercase(cname) \
-  hsc_cstring(cname, "_"cname);
 
 #define hsc_cfloat(cname, hsname) \
   hsc_importvalue(cname, hsname, "CFloat");
 
-#define hsc_cfloat_uppercase(cname) \
-  hsc_cfloat(cname, "_"cname);
+#define hsc_integral(cname, hsname, patname, type) \
+  hsc_importvalue(cname, hsname, type); \
+  hsc_putchar ('\n\n'); \
+  hsc_equalspattern(patname, "(Eq a, Num a) => a", "fromIntegral "hsname);
 
 #define hsc_cint(cname, hsname, patname) \
-  hsc_importvalue(cname, hsname, "CInt"); \
-  hsc_putchar ('\n\n'); \
-  hsc_equalspattern(patname, "(Eq a, Num a) => a", "fromIntegral "hsname);
-
-#define hsc_cint_uppercase(cname) \
-  hsc_cint(cname, "_"cname, cname);
+  hsc_integral(cname, hsname, patname, "CInt");
 
 #define hsc_cuint(cname, hsname, patname) \
-  hsc_importvalue(cname, hsname, "CUInt"); \
-  hsc_putchar ('\n\n'); \
-  hsc_equalspattern(patname, "(Eq a, Num a) => a", "fromIntegral "hsname);
+  hsc_integral(cname, hsname, patname, "CUInt");
