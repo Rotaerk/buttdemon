@@ -22,12 +22,18 @@ common common
   ghc-options: -Wall
   default-language: Haskell2010
   default-extensions:
+    AllowAmbiguousTypes
     CApiFFI
     CPP
     DataKinds
     DuplicateRecordFields
+    FunctionalDependencies
+    KindSignatures
     PatternSynonyms
+    RankNTypes
+    ScopedTypeVariables
     TypeApplications
+    TypeSynonymInstances
     ViewPatterns
   if impl(ghc >= 9.0.2)
     default-extensions:
@@ -41,11 +47,13 @@ library
   build-tool-depends: hsc2hs:hsc2hs
   hsc2hs-options: -t template-hsc.h
   build-depends:
-    base >=4.9,
---    storable-offset
+    base >=4.9
   exposed-modules:
+    Foreign.Allocable
+    Foreign.Offset
     Graphics.Formats.Assimp.Config
---    Graphics.Formats.Assimp.Defs
+    Graphics.Formats.Assimp.Defs
+    Graphics.Formats.Assimp.Vector3
 --    Graphics.Formats.Assimp.Animation
 --    Graphics.Formats.Assimp.Camera
 --    Graphics.Formats.Assimp.Config

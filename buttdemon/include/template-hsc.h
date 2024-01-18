@@ -171,3 +171,6 @@ void *hsc_stdout(void);
 
 #define hsc_cuint(cname, hsname, patname) \
   hsc_integral(cname, hsname, patname, "CUInt");
+
+#define hsc_csize(cname, hsname, patname) \
+  hsc_integral(cname, hsname, patname, "CSize");

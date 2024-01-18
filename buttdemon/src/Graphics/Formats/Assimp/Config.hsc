@@ -1,5 +1,3 @@
-{-# LANGUAGE MagicHash #-}
-
 #define THE_HEADER "assimp/config.h"
 #include THE_HEADER
 
