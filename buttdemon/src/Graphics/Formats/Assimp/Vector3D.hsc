@@ -1,7 +1,8 @@
-#define THE_HEADER "assimp/vector3.h"
-#include THE_HEADER
+#include "assimp/vector3.h"
 
-module Graphics.Formats.Assimp.Vector3 where
+module Graphics.Formats.Assimp.Vector3D (
+  AiVector3D
+) where
 
 import Foreign.Allocable
 import Foreign.Offset

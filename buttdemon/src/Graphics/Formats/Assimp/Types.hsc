@@ -1,139 +1,112 @@
-module Graphics.Formats.Assimp.Types where
+#define THE_HEADER "assimp/types.h"
+#include THE_HEADER
 
-#include <assimp/types.h>
+module Graphics.Formats.Assimp.Types (
+  module Graphics.Formats.Assimp.Defs,
+  module Graphics.Formats.Assimp.Vector2D,
+  module Graphics.Formats.Assimp.Vector3D,
+  module Graphics.Formats.Assimp.Color4D,
+  module Graphics.Formats.Assimp.Matrix3x3,
+  module Graphics.Formats.Assimp.Matrix4x4,
+  module Graphics.Formats.Assimp.Quaternion,
+  AiInt32,
+  AiUInt32,
+  AiPlane,
+  AiRay,
+  AiColor3D,
+  AiString,
+  aiReturn_SUCCESS, pattern AiReturn_SUCCESS,
+  aiReturn_FAILURE, pattern AiReturn_FAILURE,
+  aiReturn_OUTOFMEMORY, pattern AiReturn_OUTOFMEMORY,
+  aiOrigin_SET, pattern AiOrigin_SET,
+  aiOrigin_CUR, pattern AiOrigin_CUR,
+  aiOrigin_END, pattern AiOrigin_END,
+  aiDefaultLogStream_FILE, pattern AiDefaultLogStream_FILE,
+  aiDefaultLogStream_STDOUT, pattern AiDefaultLogStream_STDOUT,
+  aiDefaultLogStream_STDERR, pattern AiDefaultLogStream_STDERR,
+  aiDefaultLogStream_DEBUGGER, pattern AiDefaultLogStream_DEBUGGER,
+  AiMemoryInfo
+) where
 
-{-
-#ifdef ASSIMP_DOUBLE_PRECISION
-type AiReal = CDouble
-type AiInt = CLLong
-type AiUInt = CULLong
-pattern ASSIMP_AI_REAL_TEXT_PRECISION :: (Num n, Eq n) => n
-pattern ASSIMP_AI_REAL_TEXT_PRECISION = 16
-#else
-type AiReal = CFloat
-type AiInt = CInt
-type AiUInt = CUInt
-pattern ASSIMP_AI_REAL_TEXT_PRECISION :: (Num n, Eq n) => n
-pattern ASSIMP_AI_REAL_TEXT_PRECISION = 8
-#endif
+import Data.Int
+import Data.Word
+import Foreign.Allocable
+import Foreign.C.Types
+import Foreign.Offset
+import Graphics.Formats.Assimp.Defs
+import Graphics.Formats.Assimp.Vector2D
+import Graphics.Formats.Assimp.Vector3D
+import Graphics.Formats.Assimp.Color4D
+import Graphics.Formats.Assimp.Matrix3x3
+import Graphics.Formats.Assimp.Matrix4x4
+import Graphics.Formats.Assimp.Quaternion
 
 type AiInt32 = Int32
 type AiUInt32 = Word32
-type AiBool = CInt
 
-pattern AI_FALSE :: AiBool
-pattern AI_FALSE = 0
+data AiPlane
 
-pattern AI_TRUE :: AiBool
-pattern AI_TRUE = 1
+instance Allocable AiPlane where
+  sizeof = #{size struct aiPlane}
+  alignof = #{alignment struct aiPlane}
 
-data AiVector2D = AiVector2D { aiVector2D'x, aiVector2D'y :: AiReal }
-  deriving (Generic)
-instance PrimBytes AiVector2D
+instance Offset "a" AiPlane AiReal where offsetof = #{offset struct aiPlane, a}
+instance Offset "b" AiPlane AiReal where offsetof = #{offset struct aiPlane, b}
+instance Offset "c" AiPlane AiReal where offsetof = #{offset struct aiPlane, c}
+instance Offset "d" AiPlane AiReal where offsetof = #{offset struct aiPlane, d}
 
-data AiVector3D = AiVector3D { aiVector3D'x, aiVector3D'y, aiVector3D'z :: AiReal }
-  deriving (Generic)
-instance PrimBytes AiVector3D
+data AiRay
 
-data AiAABB = AiAABB { aiAABB'min, aiAABB'max :: AiVector3D }
-  deriving (Generic)
-instance PrimBytes AiAABB 
+instance Allocable AiRay where
+  sizeof = #{size struct aiRay}
+  alignof = #{alignment struct aiRay}
 
-data AiColor3D = AiColor3D { aiColor3D'r, aiColor3D'g, aiColor3D'b :: AiReal }
-  deriving (Generic)
-instance PrimBytes AiColor3D
+instance Offset "pos" AiRay AiVector3D where offsetof = #{offset struct aiRay, pos}
+instance Offset "dir" AiRay AiVector3D where offsetof = #{offset struct aiRay, dir}
 
-data AiColor4D = AiColor4D { aiColor4D'r, aiColor4D'g, aiColor4D'b, aiColor4D'a :: AiReal } deriving (Generic)
-instance PrimBytes AiColor4D
+data AiColor3D
 
-data AiMatrix3x3 =
-  AiMatrix3x3 {
-    aiMatrix3x3'a1, aiMatrix3x3'a2, aiMatrix3x3'a3,
-    aiMatrix3x3'b1, aiMatrix3x3'b2, aiMatrix3x3'b3,
-    aiMatrix3x3'c1, aiMatrix3x3'c2, aiMatrix3x3'c3 :: AiReal
-  }
-  deriving (Generic)
-instance PrimBytes AiMatrix3x3
+instance Allocable AiColor3D where
+  sizeof = #{size struct aiColor3D}
+  alignof = #{alignment struct aiColor3D}
 
-data AiMatrix4x4 =
-  AiMatrix4x4 {
-    aiMatrix4x4'a1, aiMatrix4x4'a2, aiMatrix4x4'a3, aiMatrix4x4'a4,
-    aiMatrix4x4'b1, aiMatrix4x4'b2, aiMatrix4x4'b3, aiMatrix4x4'b4,
-    aiMatrix4x4'c1, aiMatrix4x4'c2, aiMatrix4x4'c3, aiMatrix4x4'c4,
-    aiMatrix4x4'd1, aiMatrix4x4'd2, aiMatrix4x4'd3, aiMatrix4x4'd4 :: AiReal
-  }
-  deriving (Generic)
-instance PrimBytes AiMatrix4x4
+instance Offset "r" AiColor3D AiReal where offsetof = #{offset struct aiColor3D, r}
+instance Offset "g" AiColor3D AiReal where offsetof = #{offset struct aiColor3D, g}
+instance Offset "b" AiColor3D AiReal where offsetof = #{offset struct aiColor3D, b}
 
-data AiQuaternion = AiQuaternion { aiQuaternion'w, aiQuaternion'x, aiQuaternion'y, aiQuaternion'z :: AiReal }
-  deriving (Generic)
-instance PrimBytes AiQuaternion
+data AiString
 
-data AiPlane = AiPlane { aiPlane'a, aiPlane'b, aiPlane'c, aiPlane'd :: AiReal } deriving (Generic)
-instance PrimBytes AiPlane
+instance Allocable AiString where
+  sizeof = #{size struct aiString}
+  alignof = #{alignment struct aiString}
 
-data AiRay = AiRay { aiRay'pos, aiRay'dir :: AiVector3D } deriving (Generic)
-instance PrimBytes AiRay
+instance Offset "length" AiString AiUInt32 where offsetof = #{offset struct aiString, length}
+instance Offset "data" AiString CChar where offsetof = #{offset struct aiString, data}
 
-data AiString =
-  AiString {
-    aiString'length :: AiUInt32,
-    aiString'data :: Vector CChar 1024
-  }
-  deriving (Generic)
-instance PrimBytes AiString
+#{cint "aiReturn_SUCCESS", "aiReturn_SUCCESS", "AiReturn_SUCCESS"}
+#{cint "aiReturn_FAILURE", "aiReturn_FAILURE", "AiReturn_FAILURE"}
+#{cint "aiReturn_OUTOFMEMORY", "aiReturn_OUTOFMEMORY", "AiReturn_OUTOFMEMORY"}
 
-vectorToList :: forall t (n :: Nat). (PrimBytes t, KnownDim n) => Vector t n -> [t]
-vectorToList = fmap unScalar . sewfoldr (:) []
+#{cint "aiOrigin_SET", "aiOrigin_SET", "AiOrigin_SET"}
+#{cint "aiOrigin_CUR", "aiOrigin_CUR", "AiOrigin_CUR"}
+#{cint "aiOrigin_END", "aiOrigin_END", "AiOrigin_END"}
 
-instance Eq AiString where
-  AiString l1 d1 == AiString l2 d2 =
-    l1 == l2 &&
-    take (fromIntegral l1) (vectorToList d1) == take (fromIntegral l2) (vectorToList d2)
+#{cint "aiDefaultLogStream_FILE", "aiDefaultLogStream_FILE", "AiDefaultLogStream_FILE"}
+#{cint "aiDefaultLogStream_STDOUT", "aiDefaultLogStream_STDOUT", "AiDefaultLogStream_STDOUT"}
+#{cint "aiDefaultLogStream_STDERR", "aiDefaultLogStream_STDERR", "AiDefaultLogStream_STDERR"}
+#{cint "aiDefaultLogStream_DEBUGGER", "aiDefaultLogStream_DEBUGGER", "AiDefaultLogStream_DEBUGGER"}
 
-instance IsString AiString where
-  fromString = AiString <$> fromIntegral . length <*> fromFlatList dims 0 . fmap (fromIntegral . ord)
+data AiMemoryInfo
 
-instance Show AiString where
-  show (AiString l d) = take (fromIntegral l) . fmap (chr . fromIntegral) . vectorToList $ d
+instance Allocable AiMemoryInfo where
+  sizeof = #{size struct aiMemoryInfo}
+  alignof = #{alignment struct aiMemoryInfo}
 
-newtype AiReturn = AiReturn CInt deriving (Eq, Ord, Show, Generic)
-instance PrimBytes AiReturn
-
-pattern AiReturn_SUCCESS :: AiReturn
-pattern AiReturn_SUCCESS = AiReturn 0x0
-pattern AiReturn_FAILURE :: AiReturn
-pattern AiReturn_FAILURE = AiReturn (-0x1)
-pattern AiReturn_OUTOFMEMORY :: AiReturn
-pattern AiReturn_OUTOFMEMORY = AiReturn (-0x3)
-
-newtype AiOrigin = AiOrigin CUInt deriving (Eq, Ord, Show, Generic)
-instance PrimBytes AiOrigin
-
-pattern AiOrigin_SET :: AiOrigin
-pattern AiOrigin_SET = AiOrigin 0x0
-pattern AiOrigin_CUR :: AiOrigin
-pattern AiOrigin_CUR = AiOrigin 0x1
-pattern AiOrigin_END :: AiOrigin
-pattern AiOrigin_END = AiOrigin 0x3
-
-newtype AiDefaultLogStream = AiDefaultLogStream CUInt deriving (Eq, Ord, Bits, FiniteBits, Show, Generic)
-instance PrimBytes AiDefaultLogStream
-
-pattern AiDefaultLogStream_FILE :: AiDefaultLogStream
-pattern AiDefaultLogStream_FILE = AiDefaultLogStream 0x1
-pattern AiDefaultLogStream_STDOUT :: AiDefaultLogStream
-pattern AiDefaultLogStream_STDOUT = AiDefaultLogStream 0x2
-pattern AiDefaultLogStream_STDERR :: AiDefaultLogStream
-pattern AiDefaultLogStream_STDERR = AiDefaultLogStream 0x4
-pattern AiDefaultLogStream_DEBUGGER :: AiDefaultLogStream
-pattern AiDefaultLogStream_DEBUGGER = AiDefaultLogStream 0x8
-
-data AiMemoryInfo =
-  AiMemoryInfo {
-    aiMemoryInfo'textures, aiMemoryInfo'materials, aiMemoryInfo'meshes, aiMemoryInfo'nodes,
-    aiMemoryInfo'animations, aiMemoryInfo'cameras, aiMemoryInfo'lights, aiMemoryInfo'total :: CUInt
-  }
-  deriving (Generic)
-instance PrimBytes AiMemoryInfo
--}
+instance Offset "textures" AiMemoryInfo CUInt where offsetof = #{offset struct aiMemoryInfo, textures}
+instance Offset "materials" AiMemoryInfo CUInt where offsetof = #{offset struct aiMemoryInfo, materials}
+instance Offset "meshes" AiMemoryInfo CUInt where offsetof = #{offset struct aiMemoryInfo, meshes}
+instance Offset "nodes" AiMemoryInfo CUInt where offsetof = #{offset struct aiMemoryInfo, nodes}
+instance Offset "animations" AiMemoryInfo CUInt where offsetof = #{offset struct aiMemoryInfo, animations}
+instance Offset "cameras" AiMemoryInfo CUInt where offsetof = #{offset struct aiMemoryInfo, cameras}
+instance Offset "lights" AiMemoryInfo CUInt where offsetof = #{offset struct aiMemoryInfo, lights}
+instance Offset "total" AiMemoryInfo CUInt where offsetof = #{offset struct aiMemoryInfo, total}

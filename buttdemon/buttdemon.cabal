@@ -27,6 +27,7 @@ common common
     CPP
     DataKinds
     DuplicateRecordFields
+    FlexibleInstances
     FunctionalDependencies
     KindSignatures
     PatternSynonyms
@@ -51,25 +52,17 @@ library
   exposed-modules:
     Foreign.Allocable
     Foreign.Offset
+    Graphics.Formats.Assimp.AABB
+    Graphics.Formats.Assimp.Anim
+    Graphics.Formats.Assimp.Color4D
     Graphics.Formats.Assimp.Config
     Graphics.Formats.Assimp.Defs
-    Graphics.Formats.Assimp.Vector3
---    Graphics.Formats.Assimp.Animation
---    Graphics.Formats.Assimp.Camera
---    Graphics.Formats.Assimp.Config
---    Graphics.Formats.Assimp.Export
---    Graphics.Formats.Assimp.FileIO
---    Graphics.Formats.Assimp.Import
---    Graphics.Formats.Assimp.ImporterDesc
---    Graphics.Formats.Assimp.Light
---    Graphics.Formats.Assimp.Material
---    Graphics.Formats.Assimp.Mesh
---    Graphics.Formats.Assimp.Metadata
---    Graphics.Formats.Assimp.PostProcess
---    Graphics.Formats.Assimp.Scene
---    Graphics.Formats.Assimp.Texture
---    Graphics.Formats.Assimp.Types
---    Graphics.Formats.Assimp.Version
+    Graphics.Formats.Assimp.Matrix3x3
+    Graphics.Formats.Assimp.Matrix4x4
+    Graphics.Formats.Assimp.Quaternion
+    Graphics.Formats.Assimp.Types
+    Graphics.Formats.Assimp.Vector2D
+    Graphics.Formats.Assimp.Vector3D
   if flag(swig)
     cpp-options: -DSWIG
     cc-options: -DSWIG

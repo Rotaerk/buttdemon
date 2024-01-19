@@ -1,7 +1,124 @@
 #define THE_HEADER "assimp/config.h"
 #include THE_HEADER
 
-module Graphics.Formats.Assimp.Config where
+module Graphics.Formats.Assimp.Config (
+  aiConfigGlobMeasureTime,
+  aiConfigImportNoSkeletonMeshes,
+  aiConfigPpSbbcMaxBones,
+  aiSbbcDefaultMaxBones, pattern AiSbbcDefaultMaxBones,
+  aiConfigPpCtMaxSmoothingAngle,
+  aiConfigPpCtTextureChannelIndex,
+  aiConfigPpGsnMaxSmoothingAngle,
+  aiConfigImportMdlColormap,
+  aiConfigPpRrmExcludeList,
+  aiConfigPpPtvKeepHierarchy,
+  aiConfigPpPtvNormalize,
+  aiConfigPpPtvAddRootTransformation,
+  aiConfigPpPtvRootTransformation,
+  aiConfigPpFdRemove,
+  aiConfigPpFdCheckarea,
+  aiConfigPpOgExcludeList,
+  aiConfigPpSlmTriangleLimit,
+  aiSlmDefaultMaxTriangles, pattern AiSlmDefaultMaxTriangles,
+  aiConfigPpSlmVertexLimit,
+  aiSlmDefaultMaxVertices, pattern AiSlmDefaultMaxVertices,
+  aiConfigPpLbwMaxWeights,
+  aiLmwMaxWeights, pattern AiLmwMaxWeights,
+  aiConfigPpDbThreshold,
+  aiDeboneThreshold,
+  aiConfigPpDbAllOrNone,
+  ppIclPtcacheSize, pattern PpIclPtcacheSize,
+  aiConfigPpIclPtcacheSize,
+  AiComponent,
+  aiComponent_NORMALS, pattern AiComponent_NORMALS,
+  aiComponent_TANGENTS_AND_BITANGENTS, pattern AiComponent_TANGENTS_AND_BITANGENTS,
+  aiComponent_COLORS, pattern AiComponent_COLORS,
+  aiComponent_TEXCOORDS, pattern AiComponent_TEXCOORDS,
+  aiComponent_BONEWEIGHTS, pattern AiComponent_BONEWEIGHTS,
+  aiComponent_ANIMATIONS, pattern AiComponent_ANIMATIONS,
+  aiComponent_TEXTURES, pattern AiComponent_TEXTURES,
+  aiComponent_LIGHTS, pattern AiComponent_LIGHTS,
+  aiComponent_CAMERAS, pattern AiComponent_CAMERAS,
+  aiComponent_MESHES, pattern AiComponent_MESHES,
+  aiComponent_MATERIALS, pattern AiComponent_MATERIALS,
+  aiComponent_COLORSn,
+  aiComponent_TEXCOORDSn,
+  aiConfigPpRvcFlags,
+  aiConfigPpSbpRemove,
+  aiConfigPpFidAnimAccuracy,
+  aiConfigPpFidIgnoreTexturecoords,
+  aiUvtrafoScaling, pattern AiUvtrafoScaling,
+  aiUvtrafoRotation, pattern AiUvtrafoRotation,
+  aiUvtrafoTranslation, pattern AiUvtrafoTranslation,
+  aiUvtrafoAll, pattern AiUvtrafoAll,
+  aiConfigPpTuvEvaluate,
+  aiConfigFavourSpeed,
+  aiConfigImportSchemaDocumentProvider,
+  aiConfigImportFbxReadAllGeometryLayers,
+  aiConfigImportFbxReadAllMaterials,
+  aiConfigImportFbxReadMaterials,
+  aiConfigImportFbxReadTextures,
+  aiConfigImportFbxReadCameras,
+  aiConfigImportFbxReadLights,
+  aiConfigImportFbxReadAnimations,
+  aiConfigImportFbxReadWeights,
+  aiConfigImportFbxStrictMode,
+  aiConfigImportFbxPreservePivots,
+  aiConfigImportFbxOptimizeEmptyAnimationCurves,
+  aiConfigImportFbxEmbeddedTexturesLegacyNaming,
+  aiConfigImportRemoveEmptyBones,
+  aiConfigFbxConvertToM,
+  aiConfigFbxUseSkeletonBoneContainer,
+  aiConfigImportGlobalKeyframe,
+  aiConfigImportMd3Keyframe,
+  aiConfigImportMd2Keyframe,
+  aiConfigImportMdlKeyframe,
+  aiConfigImportMdcKeyframe,
+  aiConfigImportSmdKeyframe,
+  aiConfigImportUnrealKeyframe,
+  aiConfigImportMdlHl1ReadAnimations,
+  aiConfigImportMdlHl1ReadAnimationEvents,
+  aiConfigImportMdlHl1ReadBlendControllers,
+  aiConfigImportMdlHl1ReadSequenceTransitions,
+  aiConfigImportMdlHl1ReadAttachments,
+  aiConfigImportMdlHl1ReadBoneControllers,
+  aiConfigImportMdlHl1ReadHitboxes,
+  aiConfigImportMdlHl1ReadMiscGlobalInfo,
+  aiConfigImportSmdLoadAnimationList,
+  aiConfigImportAcSeparateBfcull,
+  aiConfigImportAcEvalSubdivision,
+  aiConfigImportUnrealHandleFlags,
+  aiConfigImportTerMakeUvs,
+  aiConfigImportAseReconstructNormals,
+  aiConfigImportMd3HandleMultipart,
+  aiConfigImportMd3SkinName,
+  aiConfigImportMd3LoadShaders,
+  aiConfigImportMd3ShaderSrc,
+  aiConfigImportLwoOneLayerOnly,
+  aiConfigImportMd5NoAnimAutoload,
+  aiConfigImportLwsAnimStart,
+  aiConfigImportLwsAnimEnd,
+  aiConfigImportIrrAnimFps,
+  aiConfigImportOgreMaterialFile,
+  aiConfigImportOgreTexturetypeFromFilename,
+  aiConfigAndroidJniAssimpManagerSupport,
+  aiConfigImportIfcSkipSpaceRepresentations,
+  aiConfigImportIfcCustomTriangulation,
+  aiConfigImportIfcSmoothingAngle,
+  aiImportIfcDefaultSmoothingAngle,
+  aiConfigImportIfcCylindricalTessellation,
+  aiImportIfcDefaultCylindricalTessellation, pattern AiImportIfcDefaultCylindricalTessellation,
+  aiConfigImportColladaIgnoreUpDirection,
+  aiConfigImportColladaIgnoreUnitSize,
+  aiConfigImportColladaUseColladaNames,
+  aiConfigExportXfile64bit,
+  aiConfigExportPointClouds,
+  aiConfigUseGltfPbrSpecularGlossiness,
+  aiConfigExportBlobName,
+  aiConfigGlobalScaleFactorKey,
+  aiConfigGlobalScaleFactorDefault,
+  aiConfigAppScaleKey,
+) where
 
 import Foreign.C.String
 import Foreign.C.Types
@@ -34,6 +151,7 @@ import Foreign.C.Types
 #{cint "PP_ICL_PTCACHE_SIZE", "ppIclPtcacheSize", "PpIclPtcacheSize"}
 #{cstring "AI_CONFIG_PP_ICL_PTCACHE_SIZE", "aiConfigPpIclPtcacheSize"}
 
+type AiComponent = CUInt
 
 #ifdef SWIG
 #{cint "aiComponent_NORMALS", "aiComponent_NORMALS", "AiComponent_NORMALS"}
@@ -64,12 +182,10 @@ import Foreign.C.Types
 #{cstring "AI_CONFIG_PP_SBP_REMOVE", "aiConfigPpSbpRemove"}
 #{cstring "AI_CONFIG_PP_FID_ANIM_ACCURACY", "aiConfigPpFidAnimAccuracy"}
 #{cstring "AI_CONFIG_PP_FID_IGNORE_TEXTURECOORDS", "aiConfigPpFidIgnoreTexturecoords"}
-
 #{cint "AI_UVTRAFO_SCALING", "aiUvtrafoScaling", "AiUvtrafoScaling"}
 #{cint "AI_UVTRAFO_ROTATION", "aiUvtrafoRotation", "AiUvtrafoRotation"}
 #{cint "AI_UVTRAFO_TRANSLATION", "aiUvtrafoTranslation", "AiUvtrafoTranslation"}
 #{cint "AI_UVTRAFO_ALL", "aiUvtrafoAll", "AiUvtrafoAll"}
-
 #{cstring "AI_CONFIG_PP_TUV_EVALUATE", "aiConfigPpTuvEvaluate"}
 #{cstring "AI_CONFIG_FAVOUR_SPEED", "aiConfigFavourSpeed"}
 #{cstring "AI_CONFIG_IMPORT_SCHEMA_DOCUMENT_PROVIDER", "aiConfigImportSchemaDocumentProvider"}
@@ -88,7 +204,6 @@ import Foreign.C.Types
 #{cstring "AI_CONFIG_IMPORT_REMOVE_EMPTY_BONES", "aiConfigImportRemoveEmptyBones"}
 #{cstring "AI_CONFIG_FBX_CONVERT_TO_M", "aiConfigFbxConvertToM"}
 #{cstring "AI_CONFIG_FBX_USE_SKELETON_BONE_CONTAINER", "aiConfigFbxUseSkeletonBoneContainer"}
-
 #{cstring "AI_CONFIG_IMPORT_GLOBAL_KEYFRAME", "aiConfigImportGlobalKeyframe"}
 #{cstring "AI_CONFIG_IMPORT_MD3_KEYFRAME", "aiConfigImportMd3Keyframe"}
 #{cstring "AI_CONFIG_IMPORT_MD2_KEYFRAME", "aiConfigImportMd2Keyframe"}
@@ -96,7 +211,6 @@ import Foreign.C.Types
 #{cstring "AI_CONFIG_IMPORT_MDC_KEYFRAME", "aiConfigImportMdcKeyframe"}
 #{cstring "AI_CONFIG_IMPORT_SMD_KEYFRAME", "aiConfigImportSmdKeyframe"}
 #{cstring "AI_CONFIG_IMPORT_UNREAL_KEYFRAME", "aiConfigImportUnrealKeyframe"}
-
 #{cstring "AI_CONFIG_IMPORT_MDL_HL1_READ_ANIMATIONS", "aiConfigImportMdlHl1ReadAnimations"}
 #{cstring "AI_CONFIG_IMPORT_MDL_HL1_READ_ANIMATION_EVENTS", "aiConfigImportMdlHl1ReadAnimationEvents"}
 #{cstring "AI_CONFIG_IMPORT_MDL_HL1_READ_BLEND_CONTROLLERS", "aiConfigImportMdlHl1ReadBlendControllers"}

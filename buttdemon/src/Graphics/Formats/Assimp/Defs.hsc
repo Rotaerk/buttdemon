@@ -1,7 +1,10 @@
-#define THE_HEADER "assimp/defs.h"
-#include THE_HEADER
+#include "assimp/defs.h"
 
-module Graphics.Formats.Assimp.Defs where
+module Graphics.Formats.Assimp.Defs (
+  AiReal,
+  AiInt,
+  AiUint
+) where
 
 import Foreign.C.Types
 
