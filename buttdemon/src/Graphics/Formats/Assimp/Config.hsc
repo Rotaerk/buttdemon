@@ -154,29 +154,29 @@ import Foreign.C.Types
 type AiComponent = CUInt
 
 #ifdef SWIG
-#{cint "aiComponent_NORMALS", "aiComponent_NORMALS", "AiComponent_NORMALS"}
+#{cint_ "aiComponent_NORMALS", "AiComponent_NORMALS"}
 #else
-#{cuint "aiComponent_NORMALS", "aiComponent_NORMALS", "AiComponent_NORMALS"}
+#{cuint_ "aiComponent_NORMALS", "AiComponent_NORMALS"}
 #endif
 
 #ifdef SWIG
-#{cint "aiComponent_TANGENTS_AND_BITANGENTS", "aiComponent_TANGENTS_AND_BITANGENTS", "AiComponent_TANGENTS_AND_BITANGENTS"}
+#{cint_ "aiComponent_TANGENTS_AND_BITANGENTS", "AiComponent_TANGENTS_AND_BITANGENTS"}
 #else
-#{cuint "aiComponent_TANGENTS_AND_BITANGENTS", "aiComponent_TANGENTS_AND_BITANGENTS", "AiComponent_TANGENTS_AND_BITANGENTS"}
+#{cuint_ "aiComponent_TANGENTS_AND_BITANGENTS", "AiComponent_TANGENTS_AND_BITANGENTS"}
 #endif
 
-#{cint "aiComponent_COLORS", "aiComponent_COLORS", "AiComponent_COLORS"}
-#{cint "aiComponent_TEXCOORDS", "aiComponent_TEXCOORDS", "AiComponent_TEXCOORDS"}
-#{cint "aiComponent_BONEWEIGHTS", "aiComponent_BONEWEIGHTS", "AiComponent_BONEWEIGHTS"}
-#{cint "aiComponent_ANIMATIONS", "aiComponent_ANIMATIONS", "AiComponent_ANIMATIONS"}
-#{cint "aiComponent_TEXTURES", "aiComponent_TEXTURES", "AiComponent_TEXTURES"}
-#{cint "aiComponent_LIGHTS", "aiComponent_LIGHTS", "AiComponent_LIGHTS"}
-#{cint "aiComponent_CAMERAS", "aiComponent_CAMERAS", "AiComponent_CAMERAS"}
-#{cint "aiComponent_MESHES", "aiComponent_MESHES", "AiComponent_MESHES"}
-#{cint "aiComponent_MATERIALS", "aiComponent_MATERIALS", "AiComponent_MATERIALS"}
+#{cint_ "aiComponent_COLORS", "AiComponent_COLORS"}
+#{cint_ "aiComponent_TEXCOORDS", "AiComponent_TEXCOORDS"}
+#{cint_ "aiComponent_BONEWEIGHTS", "AiComponent_BONEWEIGHTS"}
+#{cint_ "aiComponent_ANIMATIONS", "AiComponent_ANIMATIONS"}
+#{cint_ "aiComponent_TEXTURES", "AiComponent_TEXTURES"}
+#{cint_ "aiComponent_LIGHTS", "AiComponent_LIGHTS"}
+#{cint_ "aiComponent_CAMERAS", "AiComponent_CAMERAS"}
+#{cint_ "aiComponent_MESHES", "AiComponent_MESHES"}
+#{cint_ "aiComponent_MATERIALS", "AiComponent_MATERIALS"}
 
-#{importfunction "aiComponent_COLORSn", "aiComponent_COLORSn", "CUInt -> CUInt"}
-#{importfunction "aiComponent_TEXCOORDSn", "aiComponent_TEXCOORDSn", "CUInt -> CUInt"}
+#{importfunction_ "aiComponent_COLORSn", "CUInt -> CUInt"}
+#{importfunction_ "aiComponent_TEXCOORDSn", "CUInt -> CUInt"}
 
 #{cstring "AI_CONFIG_PP_RVC_FLAGS", "aiConfigPpRvcFlags"}
 #{cstring "AI_CONFIG_PP_SBP_REMOVE", "aiConfigPpSbpRemove"}

@@ -1,4 +1,4 @@
-#define THE_HEADER "anim_fixed.h"
+#define THE_HEADER "anim_wrapper.h"
 #include THE_HEADER
 
 module Graphics.Formats.Assimp.Anim (

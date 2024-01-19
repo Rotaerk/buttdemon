@@ -54,12 +54,15 @@ library
     Foreign.Offset
     Graphics.Formats.Assimp.AABB
     Graphics.Formats.Assimp.Anim
+    Graphics.Formats.Assimp.Camera
+    Graphics.Formats.Assimp.CExport
     Graphics.Formats.Assimp.Color4D
     Graphics.Formats.Assimp.Config
     Graphics.Formats.Assimp.Defs
     Graphics.Formats.Assimp.Matrix3x3
     Graphics.Formats.Assimp.Matrix4x4
     Graphics.Formats.Assimp.Quaternion
+    Graphics.Formats.Assimp.Texture
     Graphics.Formats.Assimp.Types
     Graphics.Formats.Assimp.Vector2D
     Graphics.Formats.Assimp.Vector3D
@@ -76,7 +79,7 @@ executable buttdemon-sandbox
   main-is: ButtdemonSandbox.hs
   build-depends:
     buttdemon,
-    base
+    base >= 4.18
 
 source-repository head
   type: git

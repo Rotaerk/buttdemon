@@ -152,6 +152,9 @@ void *hsc_stdout(void);
 #define hsc_importfunction(cname, hsname, type) \
   hsc_importfunctionfrom(THE_HEADER, cname, hsname, type);
 
+#define hsc_importfunction_(name, type) \
+  hsc_importfunction(name, name, type);
+
 #define hsc_importvalue(cname, hsname, type) \
   hsc_importvaluefrom(THE_HEADER, cname, hsname, type);
 
@@ -169,8 +172,14 @@ void *hsc_stdout(void);
 #define hsc_cint(cname, hsname, patname) \
   hsc_integral(cname, hsname, patname, "CInt");
 
+#define hsc_cint_(name, patname) \
+  hsc_cint(name, name, patname);
+
 #define hsc_cuint(cname, hsname, patname) \
   hsc_integral(cname, hsname, patname, "CUInt");
+
+#define hsc_cuint_(name, patname) \
+  hsc_cuint(name, name, patname);
 
 #define hsc_csize(cname, hsname, patname) \
   hsc_integral(cname, hsname, patname, "CSize");

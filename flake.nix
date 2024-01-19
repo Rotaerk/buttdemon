@@ -11,7 +11,7 @@
       ldLibraryPath = pkgs.lib.makeLibraryPath [
         pkgs.assimp
       ];
-      hs = pkgs.haskellPackages;
+      hs = pkgs.haskell.packages.ghc963;
       buttdemon = hs.callCabal2nix "buttdemon" ./buttdemon { inherit (pkgs) assimp; };
     in {
       inherit pkgs buttdemon;
