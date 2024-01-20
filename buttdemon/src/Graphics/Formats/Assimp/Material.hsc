@@ -167,7 +167,6 @@ import Foreign.Offset
 import GHC.Ptr
 import Graphics.Formats.Assimp.Types
 
-
 #{cstring "AI_DEFAULT_MATERIAL_NAME", "aiDefaultMaterialName"}
 
 type AiTextureOp = #{type enum aiTextureMapMode}
