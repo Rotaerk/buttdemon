@@ -75,6 +75,33 @@ module Graphics.Formats.Assimp.Material (
   aiPTI_Buffer, pattern AiPTI_Buffer,
   AiMaterialProperty,
   AiMaterial,
+  MatKey(..),
+  aiMatkeyName,
+  aiMatkeyTwosided,
+  aiMatkeyShadingModel,
+  aiMatkeyEnableWireframe,
+  aiMatkeyBlendFunc,
+  aiMatkeyOpacity,
+  aiMatkeyTransparencyfactor,
+  aiMatkeyBumpscaling,
+  aiMatkeyShininess,
+  aiMatkeyReflectivity,
+  aiMatkeyShininessStrength,
+  aiMatkeyRefracti,
+  aiMatkeyColorDiffuse,
+  aiMatkeyColorAmbient,
+  aiMatkeyColorSpecular,
+  aiMatkeyColorEmissive,
+  aiMatkeyColorTransparent,
+  aiMatkeyColorReflective,
+  aiMatkeyGlobalBackgroundImage,
+  aiMatkeyGlobalShaderlang,
+  aiMatkeyShaderVertex,
+  aiMatkeyShaderFragment,
+  aiMatkeyShaderGeo,
+  aiMatkeyShaderTesselation,
+  aiMatkeyShaderPrimitive,
+  aiMatkeyShaderCompute,
   aiGetMaterialProperty,
   aiGetMaterialFloatArray,
   aiGetMaterialFloat,
@@ -93,8 +120,9 @@ import Foreign.C.ConstPtr
 import Foreign.C.String
 import Foreign.C.Types
 import Foreign.Offset
-import Foreign.Ptr
+import GHC.Ptr
 import Graphics.Formats.Assimp.Types
+
 
 #{cstring "AI_DEFAULT_MATERIAL_NAME", "aiDefaultMaterialName"}
 
@@ -216,6 +244,35 @@ instance Allocable AiMaterial where
 instance Offset "mProperties" AiMaterial (Ptr (Ptr AiMaterialProperty)) where offsetof = #{offset struct aiMaterial, mProperties}
 instance Offset "mNumProperties" AiMaterial CUInt where offsetof = #{offset struct aiMaterial, mNumProperties}
 instance Offset "mNumAllocated" AiMaterial CUInt where offsetof = #{offset struct aiMaterial, mNumAllocated}
+
+data MatKey = MatKey CString CUInt CUInt
+
+#{matkey AI_MATKEY_NAME, "aiMatkeyName"}
+#{matkey AI_MATKEY_TWOSIDED, "aiMatkeyTwosided"}
+#{matkey AI_MATKEY_SHADING_MODEL, "aiMatkeyShadingModel"}
+#{matkey AI_MATKEY_ENABLE_WIREFRAME, "aiMatkeyEnableWireframe"}
+#{matkey AI_MATKEY_BLEND_FUNC, "aiMatkeyBlendFunc"}
+#{matkey AI_MATKEY_OPACITY, "aiMatkeyOpacity"}
+#{matkey AI_MATKEY_TRANSPARENCYFACTOR, "aiMatkeyTransparencyfactor"}
+#{matkey AI_MATKEY_BUMPSCALING, "aiMatkeyBumpscaling"}
+#{matkey AI_MATKEY_SHININESS, "aiMatkeyShininess"}
+#{matkey AI_MATKEY_REFLECTIVITY, "aiMatkeyReflectivity"}
+#{matkey AI_MATKEY_SHININESS_STRENGTH, "aiMatkeyShininessStrength"}
+#{matkey AI_MATKEY_REFRACTI, "aiMatkeyRefracti"}
+#{matkey AI_MATKEY_COLOR_DIFFUSE, "aiMatkeyColorDiffuse"}
+#{matkey AI_MATKEY_COLOR_AMBIENT, "aiMatkeyColorAmbient"}
+#{matkey AI_MATKEY_COLOR_SPECULAR, "aiMatkeyColorSpecular"}
+#{matkey AI_MATKEY_COLOR_EMISSIVE, "aiMatkeyColorEmissive"}
+#{matkey AI_MATKEY_COLOR_TRANSPARENT, "aiMatkeyColorTransparent"}
+#{matkey AI_MATKEY_COLOR_REFLECTIVE, "aiMatkeyColorReflective"}
+#{matkey AI_MATKEY_GLOBAL_BACKGROUND_IMAGE, "aiMatkeyGlobalBackgroundImage"}
+#{matkey AI_MATKEY_GLOBAL_SHADERLANG, "aiMatkeyGlobalShaderlang"}
+#{matkey AI_MATKEY_SHADER_VERTEX, "aiMatkeyShaderVertex"}
+#{matkey AI_MATKEY_SHADER_FRAGMENT, "aiMatkeyShaderFragment"}
+#{matkey AI_MATKEY_SHADER_GEO, "aiMatkeyShaderGeo"}
+#{matkey AI_MATKEY_SHADER_TESSELATION, "aiMatkeyShaderTesselation"}
+#{matkey AI_MATKEY_SHADER_PRIMITIVE, "aiMatkeyShaderPrimitive"}
+#{matkey AI_MATKEY_SHADER_COMPUTE, "aiMatkeyShaderCompute"}
 
 #{importfunction_ "aiGetMaterialProperty", "Ptr AiMaterial -> CString -> CUInt -> CUInt -> Ptr (ConstPtr AiMaterialProperty) -> IO AiReturn"}
 #{importfunction_ "aiGetMaterialFloatArray", "Ptr AiMaterial -> CString -> CUInt -> CUInt -> Ptr AiReal -> Ptr CUInt -> IO AiReturn"}

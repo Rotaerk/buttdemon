@@ -137,19 +137,21 @@ void *hsc_stdout(void);
         }                                                          \
     }
 
+// Below are custom HSC macros:
+
 #define hsc_importfunction(cname, hsname, type) \
-  hsc_printf ("foreign import capi \"%s %s\" %s :: %s", THE_HEADER, cname, hsname, type);
+  hsc_printf("foreign import capi \"%s %s\" %s :: %s", THE_HEADER, cname, hsname, type);
 
 #define hsc_importfunction_(name, type) \
   hsc_importfunction(name, name, type);
 
 #define hsc_importvalue(cname, hsname, type) \
-  hsc_printf ("foreign import capi \"%s value %s\" %s :: %s", THE_HEADER, cname, hsname, type);
+  hsc_printf("foreign import capi \"%s value %s\" %s :: %s", THE_HEADER, cname, hsname, type);
 
 #define hsc_equalspattern(name, type, value) \
-  hsc_printf ("pattern %s :: %s\n", name, type); \
-  hsc_printf ("pattern %s <- ((== %s) -> True)\n", name, value); \
-  hsc_printf ("  where %s = %s", name, value);
+  hsc_printf("pattern %s :: %s\n", name, type); \
+  hsc_printf("pattern %s <-((== %s) -> True)\n", name, value); \
+  hsc_printf("  where %s = %s", name, value);
 
 #define hsc_cstring(cname, hsname) \
   hsc_importvalue(cname, hsname, "CString");
@@ -159,7 +161,7 @@ void *hsc_stdout(void);
 
 #define hsc_integral(cname, hsname, patname, type) \
   hsc_importvalue(cname, hsname, type); \
-  hsc_printf ("\n\n"); \
+  hsc_printf("\n\n"); \
   hsc_equalspattern(patname, "(Eq a, Num a) => a", "fromIntegral "hsname);
 
 #define hsc_cint(cname, hsname, patname) \
@@ -178,13 +180,27 @@ void *hsc_stdout(void);
   hsc_integral(cname, hsname, patname, "CSize");
 
 #define hsc_enumerant(enumtype, cname, hsname, patname) \
-  hsc_printf ("foreign import capi \"%s value %s\" %s :: ", THE_HEADER, cname, hsname); \
-  hsc_type (enumtype); \
-  hsc_printf ("\n\n"); \
+  hsc_printf("foreign import capi \"%s value %s\" %s :: ", THE_HEADER, cname, hsname); \
+  hsc_type(enumtype); \
+  hsc_printf("\n\n"); \
   hsc_equalspattern(patname, "(Eq a, Num a) => a", "fromIntegral "hsname);
 
 #define hsc_enumerant_(enumtype, name, patname) \
-  hsc_printf ("foreign import capi \"%s value %s\" %s :: ", THE_HEADER, name, name); \
-  hsc_type (enumtype); \
-  hsc_printf ("\n\n"); \
+  hsc_printf("foreign import capi \"%s value %s\" %s :: ", THE_HEADER, name, name); \
+  hsc_type(enumtype); \
+  hsc_printf("\n\n"); \
   hsc_equalspattern(patname, "(Eq a, Num a) => a", "fromIntegral "name);
+
+void hsc_matkey_key(const char *, unsigned int, unsigned int);
+void hsc_matkey_type(const char *, unsigned int, unsigned int);
+void hsc_matkey_index(const char *, unsigned int, unsigned int);
+
+#define hsc_matkey(matkey, hsname) \
+  hsc_printf("%s :: MatKey\n%s = MatKey (Ptr ", hsname, hsname); \
+  hsc_matkey_key(matkey); \
+  hsc_printf("#) "); \
+  hsc_matkey_type(matkey); \
+  hsc_putchar(' '); \
+  hsc_matkey_index(matkey);
+
+#define TEST "\\\\blah", 0, 0

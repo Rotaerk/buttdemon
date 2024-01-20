@@ -9,6 +9,8 @@ author: Matthew Stewart
 maintainer: m.scott.stewart@gmail.com
 category: Graphics
 build-type: Simple
+extra-source-files:
+  include/**/*.h
 
 flag swig
   description: Compatible with Assimp builds where SWIG is #defined.
@@ -30,6 +32,7 @@ common common
     FlexibleInstances
     FunctionalDependencies
     KindSignatures
+    MagicHash
     PatternSynonyms
     RankNTypes
     ScopedTypeVariables
@@ -46,7 +49,7 @@ library
   pkgconfig-depends: assimp
   include-dirs: include
   build-tool-depends: hsc2hs:hsc2hs
-  hsc2hs-options: -t template-hsc.h
+  hsc2hs-options: -t template-hsc.h -i functions-hsc.h
   build-depends:
     base >=4.9
   exposed-modules:
