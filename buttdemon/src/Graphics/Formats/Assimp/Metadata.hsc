@@ -18,27 +18,26 @@ module Graphics.Formats.Assimp.Metadata (
   AiMetadata
 ) where
 
-import Data.Int
 import Data.Void
-import Data.Word
+import Data.IntWord
 import Foreign.Allocable
 import Foreign.C.Types
 import Foreign.Offset
 import Foreign.Ptr
 import Graphics.Formats.Assimp.Types
 
-type AiMetadataType = CInt
+type AiMetadataType = #{type aiMetadataType}
 
-#{cint "AI_BOOL", "aiMetadataType_BOOL", "AiMetadataType_BOOL"}
-#{cint "AI_INT32", "aiMetadataType_INT32", "AiMetadataType_INT32"}
-#{cint "AI_UINT64", "aiMetadataType_UINT64", "AiMetadataType_UINT64"}
-#{cint "AI_FLOAT", "aiMetadataType_FLOAT", "AiMetadataType_FLOAT"}
-#{cint "AI_DOUBLE", "aiMetadataType_DOUBLE", "AiMetadataType_DOUBLE"}
-#{cint "AI_AISTRING", "aiMetadataType_AISTRING", "AiMetadataType_AISTRING"}
-#{cint "AI_AIVECTOR3D", "aiMetadataType_AIVECTOR3D", "AiMetadataType_AIVECTOR3D"}
-#{cint "AI_AIMETADATA", "aiMetadataType_AIMETADATA", "AiMetadataType_AIMETADATA"}
-#{cint "AI_INT64", "aiMetadataType_INT64", "AiMetadataType_INT64"}
-#{cint "AI_UINT32", "aiMetadataType_UINT32", "AiMetadataType_UINT32"}
+#{enumerant aiMetadataType, "AI_BOOL", "aiMetadataType_BOOL", "AiMetadataType_BOOL"}
+#{enumerant aiMetadataType, "AI_INT32", "aiMetadataType_INT32", "AiMetadataType_INT32"}
+#{enumerant aiMetadataType, "AI_UINT64", "aiMetadataType_UINT64", "AiMetadataType_UINT64"}
+#{enumerant aiMetadataType, "AI_FLOAT", "aiMetadataType_FLOAT", "AiMetadataType_FLOAT"}
+#{enumerant aiMetadataType, "AI_DOUBLE", "aiMetadataType_DOUBLE", "AiMetadataType_DOUBLE"}
+#{enumerant aiMetadataType, "AI_AISTRING", "aiMetadataType_AISTRING", "AiMetadataType_AISTRING"}
+#{enumerant aiMetadataType, "AI_AIVECTOR3D", "aiMetadataType_AIVECTOR3D", "AiMetadataType_AIVECTOR3D"}
+#{enumerant aiMetadataType, "AI_AIMETADATA", "aiMetadataType_AIMETADATA", "AiMetadataType_AIMETADATA"}
+#{enumerant aiMetadataType, "AI_INT64", "aiMetadataType_INT64", "AiMetadataType_INT64"}
+#{enumerant aiMetadataType, "AI_UINT32", "aiMetadataType_UINT32", "AiMetadataType_UINT32"}
 
 class IsAiMetadataType a where
   aiTypeOf :: AiMetadataType

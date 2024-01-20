@@ -17,6 +17,7 @@ module Graphics.Formats.Assimp.Anim (
   AiAnimation
 ) where
 
+import Data.IntWord
 import Foreign.Allocable
 import Foreign.C.Types
 import Foreign.Offset
@@ -62,11 +63,12 @@ instance Offset "mValues" AiMeshMorphKey (Ptr CUInt) where offsetof = #{offset s
 instance Offset "mWeights" AiMeshMorphKey (Ptr CDouble) where offsetof = #{offset struct aiMeshMorphKey, mWeights}
 instance Offset "mNumValuesAndWeights" AiMeshMorphKey CUInt where offsetof = #{offset struct aiMeshMorphKey, mNumValuesAndWeights}
 
-type AiAnimBehavior = CInt
-#{cint "aiAnimBehaviour_DEFAULT", "aiAnimBehaviour_DEFAULT", "AiAnimBehaviour_DEFAULT"}
-#{cint "aiAnimBehaviour_CONSTANT", "aiAnimBehaviour_CONSTANT", "AiAnimBehaviour_CONSTANT"}
-#{cint "aiAnimBehaviour_LINEAR", "aiAnimBehaviour_LINEAR", "AiAnimBehaviour_LINEAR"}
-#{cint "aiAnimBehaviour_REPEAT", "aiAnimBehaviour_REPEAT", "AiAnimBehaviour_REPEAT"}
+type AiAnimBehavior = #{type enum aiAnimBehaviour}
+
+#{enumerant enum aiAnimBehaviour, "aiAnimBehaviour_DEFAULT", "aiAnimBehaviour_DEFAULT", "AiAnimBehaviour_DEFAULT"}
+#{enumerant enum aiAnimBehaviour, "aiAnimBehaviour_CONSTANT", "aiAnimBehaviour_CONSTANT", "AiAnimBehaviour_CONSTANT"}
+#{enumerant enum aiAnimBehaviour, "aiAnimBehaviour_LINEAR", "aiAnimBehaviour_LINEAR", "AiAnimBehaviour_LINEAR"}
+#{enumerant enum aiAnimBehaviour, "aiAnimBehaviour_REPEAT", "aiAnimBehaviour_REPEAT", "AiAnimBehaviour_REPEAT"}
 
 data AiNodeAnim
 

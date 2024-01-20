@@ -18,7 +18,6 @@ module Graphics.Formats.Assimp.Mesh (
   aiPrimitiveType_TRIANGLE, pattern AiPrimitiveType_TRIANGLE,
   aiPrimitiveType_POLYGON, pattern AiPrimitiveType_POLYGON,
   aiPrimitiveType_NGONEncodingFlag, pattern AiPrimitiveType_NGONEncodingFlag,
-  aiPrimitiveTypeForNIndices,
   AiAnimMesh,
   AiMorphingMethod,
   aiMorphingMethod_UNKNOWN, pattern AiMorphingMethod_UNKNOWN,
@@ -30,6 +29,7 @@ module Graphics.Formats.Assimp.Mesh (
   AiSkeleton,
 ) where
 
+import Data.IntWord
 import Foreign.Allocable
 import Foreign.C.Types
 import Foreign.Offset
@@ -78,21 +78,13 @@ instance Offset "mNode" AiBone (Ptr AiNode) where offsetof = #{offset struct aiB
 instance Offset "mWeights" AiBone (Ptr AiVertexWeight) where offsetof = #{offset struct aiBone, mWeights}
 instance Offset "mOffsetMatrix" AiBone AiMatrix4x4 where offsetof = #{offset struct aiBone, mOffsetMatrix}
 
-type AiPrimitiveType = CInt
+type AiPrimitiveType = #{type enum aiPrimitiveType}
 
-#{cint_ "aiPrimitiveType_POINT", "AiPrimitiveType_POINT"}
-#{cint_ "aiPrimitiveType_LINE", "AiPrimitiveType_LINE"}
-#{cint_ "aiPrimitiveType_TRIANGLE", "AiPrimitiveType_TRIANGLE"}
-#{cint_ "aiPrimitiveType_POLYGON", "AiPrimitiveType_POLYGON"}
-#{cint_ "aiPrimitiveType_NGONEncodingFlag", "AiPrimitiveType_NGONEncodingFlag"}
-
-aiPrimitiveTypeForNIndices :: Int -> AiPrimitiveType
-aiPrimitiveTypeForNIndices = \case
-  1 -> aiPrimitiveType_POINT
-  2 -> aiPrimitiveType_LINE
-  3 -> aiPrimitiveType_TRIANGLE
-  x | x > 3 -> aiPrimitiveType_POLYGON
-  _ -> error "Undefined for non-positive index counts."
+#{enumerant_ enum aiPrimitiveType, "aiPrimitiveType_POINT", "AiPrimitiveType_POINT"}
+#{enumerant_ enum aiPrimitiveType, "aiPrimitiveType_LINE", "AiPrimitiveType_LINE"}
+#{enumerant_ enum aiPrimitiveType, "aiPrimitiveType_TRIANGLE", "AiPrimitiveType_TRIANGLE"}
+#{enumerant_ enum aiPrimitiveType, "aiPrimitiveType_POLYGON", "AiPrimitiveType_POLYGON"}
+#{enumerant_ enum aiPrimitiveType, "aiPrimitiveType_NGONEncodingFlag", "AiPrimitiveType_NGONEncodingFlag"}
 
 data AiAnimMesh
 
@@ -110,12 +102,12 @@ instance Offset "mTextureCoords" AiAnimMesh (Ptr AiVector3D) where offsetof = #{
 instance Offset "mNumVertices" AiAnimMesh CUInt where offsetof = #{offset struct aiAnimMesh, mNumVertices}
 instance Offset "mWeight" AiAnimMesh CFloat where offsetof = #{offset struct aiAnimMesh, mWeight}
 
-type AiMorphingMethod = CInt
+type AiMorphingMethod = #{type enum aiMorphingMethod}
 
-#{cint_ "aiMorphingMethod_UNKNOWN", "AiMorphingMethod_UNKNOWN"}
-#{cint_ "aiMorphingMethod_VERTEX_BLEND", "AiMorphingMethod_VERTEX_BLEND"}
-#{cint_ "aiMorphingMethod_MORPH_NORMALIZED", "AiMorphingMethod_MORPH_NORMALIZED"}
-#{cint_ "aiMorphingMethod_MORPH_RELATIVE", "AiMorphingMethod_MORPH_RELATIVE"}
+#{enumerant_ enum aiMorphingMethod, "aiMorphingMethod_UNKNOWN", "AiMorphingMethod_UNKNOWN"}
+#{enumerant_ enum aiMorphingMethod, "aiMorphingMethod_VERTEX_BLEND", "AiMorphingMethod_VERTEX_BLEND"}
+#{enumerant_ enum aiMorphingMethod, "aiMorphingMethod_MORPH_NORMALIZED", "AiMorphingMethod_MORPH_NORMALIZED"}
+#{enumerant_ enum aiMorphingMethod, "aiMorphingMethod_MORPH_RELATIVE", "AiMorphingMethod_MORPH_RELATIVE"}
 
 data AiMesh
 

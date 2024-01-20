@@ -1,0 +1,229 @@
+#define THE_HEADER "assimp/material.h"
+#include THE_HEADER
+
+module Graphics.Formats.Assimp.Material (
+  aiDefaultMaterialName,
+  AiTextureOp,
+  aiTextureOp_Multiply, pattern AiTextureOp_Multiply,
+  aiTextureOp_Add, pattern AiTextureOp_Add,
+  aiTextureOp_Subtract, pattern AiTextureOp_Subtract,
+  aiTextureOp_Divide, pattern AiTextureOp_Divide,
+  aiTextureOp_SmoothAdd, pattern AiTextureOp_SmoothAdd,
+  aiTextureOp_SignedAdd, pattern AiTextureOp_SignedAdd,
+  AiTextureMapMode,
+  aiTextureMapMode_Wrap, pattern AiTextureMapMode_Wrap,
+  aiTextureMapMode_Clamp, pattern AiTextureMapMode_Clamp,
+  aiTextureMapMode_Decal, pattern AiTextureMapMode_Decal,
+  aiTextureMapMode_Mirror, pattern AiTextureMapMode_Mirror,
+  AiTextureMapping,
+  aiTextureMapping_UV, pattern AiTextureMapping_UV,
+  aiTextureMapping_SPHERE, pattern AiTextureMapping_SPHERE,
+  aiTextureMapping_CYLINDER, pattern AiTextureMapping_CYLINDER,
+  aiTextureMapping_BOX, pattern AiTextureMapping_BOX,
+  aiTextureMapping_PLANE, pattern AiTextureMapping_PLANE,
+  aiTextureMapping_OTHER, pattern AiTextureMapping_OTHER,
+  AiTextureType,
+  aiTextureType_NONE, pattern AiTextureType_NONE,
+  aiTextureType_DIFFUSE, pattern AiTextureType_DIFFUSE,
+  aiTextureType_SPECULAR, pattern AiTextureType_SPECULAR,
+  aiTextureType_AMBIENT, pattern AiTextureType_AMBIENT,
+  aiTextureType_EMISSIVE, pattern AiTextureType_EMISSIVE,
+  aiTextureType_HEIGHT, pattern AiTextureType_HEIGHT,
+  aiTextureType_NORMALS, pattern AiTextureType_NORMALS,
+  aiTextureType_SHININESS, pattern AiTextureType_SHININESS,
+  aiTextureType_OPACITY, pattern AiTextureType_OPACITY,
+  aiTextureType_DISPLACEMENT, pattern AiTextureType_DISPLACEMENT,
+  aiTextureType_LIGHTMAP, pattern AiTextureType_LIGHTMAP,
+  aiTextureType_REFLECTION, pattern AiTextureType_REFLECTION,
+  aiTextureType_BASE_COLOR, pattern AiTextureType_BASE_COLOR,
+  aiTextureType_NORMAL_CAMERA, pattern AiTextureType_NORMAL_CAMERA,
+  aiTextureType_EMISSION_COLOR, pattern AiTextureType_EMISSION_COLOR,
+  aiTextureType_METALNESS, pattern AiTextureType_METALNESS,
+  aiTextureType_DIFFUSE_ROUGHNESS, pattern AiTextureType_DIFFUSE_ROUGHNESS,
+  aiTextureType_AMBIENT_OCCLUSION, pattern AiTextureType_AMBIENT_OCCLUSION,
+  aiTextureType_SHEEN, pattern AiTextureType_SHEEN,
+  aiTextureType_CLEARCOAT, pattern AiTextureType_CLEARCOAT,
+  aiTextureType_TRANSMISSION, pattern AiTextureType_TRANSMISSION,
+  aiTextureType_UNKNOWN, pattern AiTextureType_UNKNOWN,
+  aiTextureTypeToString,
+  AiShadingMode,
+  aiShadingMode_Flat, pattern AiShadingMode_Flat,
+  aiShadingMode_Gouraud, pattern AiShadingMode_Gouraud,
+  aiShadingMode_Phong, pattern AiShadingMode_Phong,
+  aiShadingMode_Blinn, pattern AiShadingMode_Blinn,
+  aiShadingMode_Toon, pattern AiShadingMode_Toon,
+  aiShadingMode_OrenNayar, pattern AiShadingMode_OrenNayar,
+  aiShadingMode_Minnaert, pattern AiShadingMode_Minnaert,
+  aiShadingMode_CookTorrance, pattern AiShadingMode_CookTorrance,
+  aiShadingMode_NoShading, pattern AiShadingMode_NoShading,
+  aiShadingMode_Unlit, pattern AiShadingMode_Unlit,
+  aiShadingMode_Fresnel, pattern AiShadingMode_Fresnel,
+  aiShadingMode_PBR_BRDF, pattern AiShadingMode_PBR_BRDF,
+  AiTextureFlags,
+  aiTextureFlags_Invert, pattern AiTextureFlags_Invert,
+  aiTextureFlags_UseAlpha, pattern AiTextureFlags_UseAlpha,
+  aiTextureFlags_IgnoreAlpha, pattern AiTextureFlags_IgnoreAlpha,
+  AiBlendMode,
+  aiBlendMode_Default, pattern AiBlendMode_Default,
+  aiBlendMode_Additive, pattern AiBlendMode_Additive,
+  AiUVTransform,
+  AiPropertyTypeInfo,
+  aiPTI_Float, pattern AiPTI_Float,
+  aiPTI_Double, pattern AiPTI_Double,
+  aiPTI_String, pattern AiPTI_String,
+  aiPTI_Integer, pattern AiPTI_Integer,
+  aiPTI_Buffer, pattern AiPTI_Buffer,
+  AiMaterialProperty,
+  AiMaterial,
+  aiGetMaterialProperty,
+  aiGetMaterialFloatArray,
+  aiGetMaterialFloat,
+  aiGetMaterialIntegerArray,
+  aiGetMaterialInteger,
+  aiGetMaterialColor,
+  aiGetMaterialUVTransform,
+  aiGetMaterialString,
+  aiGetMaterialTextureCount,
+  aiGetMaterialTexture,
+) where
+
+import Data.IntWord
+import Foreign.Allocable
+import Foreign.C.ConstPtr
+import Foreign.C.String
+import Foreign.C.Types
+import Foreign.Offset
+import Foreign.Ptr
+import Graphics.Formats.Assimp.Types
+
+#{cstring "AI_DEFAULT_MATERIAL_NAME", "aiDefaultMaterialName"}
+
+type AiTextureOp = #{type enum aiTextureMapMode}
+
+#{enumerant_ enum aiTextureMapMode, "aiTextureOp_Multiply", "AiTextureOp_Multiply"}
+#{enumerant_ enum aiTextureMapMode, "aiTextureOp_Add", "AiTextureOp_Add"}
+#{enumerant_ enum aiTextureMapMode, "aiTextureOp_Subtract", "AiTextureOp_Subtract"}
+#{enumerant_ enum aiTextureMapMode, "aiTextureOp_Divide", "AiTextureOp_Divide"}
+#{enumerant_ enum aiTextureMapMode, "aiTextureOp_SmoothAdd", "AiTextureOp_SmoothAdd"}
+#{enumerant_ enum aiTextureMapMode, "aiTextureOp_SignedAdd", "AiTextureOp_SignedAdd"}
+
+type AiTextureMapMode = #{type enum aiTextureMapMode}
+
+#{enumerant_ enum aiTextureMapMode, "aiTextureMapMode_Wrap", "AiTextureMapMode_Wrap"}
+#{enumerant_ enum aiTextureMapMode, "aiTextureMapMode_Clamp", "AiTextureMapMode_Clamp"}
+#{enumerant_ enum aiTextureMapMode, "aiTextureMapMode_Decal", "AiTextureMapMode_Decal"}
+#{enumerant_ enum aiTextureMapMode, "aiTextureMapMode_Mirror", "AiTextureMapMode_Mirror"}
+
+type AiTextureMapping = #{type enum aiTextureMapping}
+
+#{enumerant_ enum aiTextureMapping, "aiTextureMapping_UV", "AiTextureMapping_UV"}
+#{enumerant_ enum aiTextureMapping, "aiTextureMapping_SPHERE", "AiTextureMapping_SPHERE"}
+#{enumerant_ enum aiTextureMapping, "aiTextureMapping_CYLINDER", "AiTextureMapping_CYLINDER"}
+#{enumerant_ enum aiTextureMapping, "aiTextureMapping_BOX", "AiTextureMapping_BOX"}
+#{enumerant_ enum aiTextureMapping, "aiTextureMapping_PLANE", "AiTextureMapping_PLANE"}
+#{enumerant_ enum aiTextureMapping, "aiTextureMapping_OTHER", "AiTextureMapping_OTHER"}
+
+type AiTextureType = #{type enum aiTextureType}
+
+#{enumerant_ enum aiTextureType, "aiTextureType_NONE", "AiTextureType_NONE"}
+#{enumerant_ enum aiTextureType, "aiTextureType_DIFFUSE", "AiTextureType_DIFFUSE"}
+#{enumerant_ enum aiTextureType, "aiTextureType_SPECULAR", "AiTextureType_SPECULAR"}
+#{enumerant_ enum aiTextureType, "aiTextureType_AMBIENT", "AiTextureType_AMBIENT"}
+#{enumerant_ enum aiTextureType, "aiTextureType_EMISSIVE", "AiTextureType_EMISSIVE"}
+#{enumerant_ enum aiTextureType, "aiTextureType_HEIGHT", "AiTextureType_HEIGHT"}
+#{enumerant_ enum aiTextureType, "aiTextureType_NORMALS", "AiTextureType_NORMALS"}
+#{enumerant_ enum aiTextureType, "aiTextureType_SHININESS", "AiTextureType_SHININESS"}
+#{enumerant_ enum aiTextureType, "aiTextureType_OPACITY", "AiTextureType_OPACITY"}
+#{enumerant_ enum aiTextureType, "aiTextureType_DISPLACEMENT", "AiTextureType_DISPLACEMENT"}
+#{enumerant_ enum aiTextureType, "aiTextureType_LIGHTMAP", "AiTextureType_LIGHTMAP"}
+#{enumerant_ enum aiTextureType, "aiTextureType_REFLECTION", "AiTextureType_REFLECTION"}
+#{enumerant_ enum aiTextureType, "aiTextureType_BASE_COLOR", "AiTextureType_BASE_COLOR"}
+#{enumerant_ enum aiTextureType, "aiTextureType_NORMAL_CAMERA", "AiTextureType_NORMAL_CAMERA"}
+#{enumerant_ enum aiTextureType, "aiTextureType_EMISSION_COLOR", "AiTextureType_EMISSION_COLOR"}
+#{enumerant_ enum aiTextureType, "aiTextureType_METALNESS", "AiTextureType_METALNESS"}
+#{enumerant_ enum aiTextureType, "aiTextureType_DIFFUSE_ROUGHNESS", "AiTextureType_DIFFUSE_ROUGHNESS"}
+#{enumerant_ enum aiTextureType, "aiTextureType_AMBIENT_OCCLUSION", "AiTextureType_AMBIENT_OCCLUSION"}
+#{enumerant_ enum aiTextureType, "aiTextureType_SHEEN", "AiTextureType_SHEEN"}
+#{enumerant_ enum aiTextureType, "aiTextureType_CLEARCOAT", "AiTextureType_CLEARCOAT"}
+#{enumerant_ enum aiTextureType, "aiTextureType_TRANSMISSION", "AiTextureType_TRANSMISSION"}
+#{enumerant_ enum aiTextureType, "aiTextureType_UNKNOWN", "AiTextureType_UNKNOWN"}
+
+#{importfunction_ "aiTextureTypeToString", "AiTextureType -> IO (ConstPtr CChar)"}
+
+type AiShadingMode = #{type enum aiShadingMode}
+
+#{enumerant_ enum aiShadingMode, "aiShadingMode_Flat", "AiShadingMode_Flat"}
+#{enumerant_ enum aiShadingMode, "aiShadingMode_Gouraud", "AiShadingMode_Gouraud"}
+#{enumerant_ enum aiShadingMode, "aiShadingMode_Phong", "AiShadingMode_Phong"}
+#{enumerant_ enum aiShadingMode, "aiShadingMode_Blinn", "AiShadingMode_Blinn"}
+#{enumerant_ enum aiShadingMode, "aiShadingMode_Toon", "AiShadingMode_Toon"}
+#{enumerant_ enum aiShadingMode, "aiShadingMode_OrenNayar", "AiShadingMode_OrenNayar"}
+#{enumerant_ enum aiShadingMode, "aiShadingMode_Minnaert", "AiShadingMode_Minnaert"}
+#{enumerant_ enum aiShadingMode, "aiShadingMode_CookTorrance", "AiShadingMode_CookTorrance"}
+#{enumerant_ enum aiShadingMode, "aiShadingMode_NoShading", "AiShadingMode_NoShading"}
+#{enumerant_ enum aiShadingMode, "aiShadingMode_Unlit", "AiShadingMode_Unlit"}
+#{enumerant_ enum aiShadingMode, "aiShadingMode_Fresnel", "AiShadingMode_Fresnel"}
+#{enumerant_ enum aiShadingMode, "aiShadingMode_PBR_BRDF", "AiShadingMode_PBR_BRDF"}
+
+type AiTextureFlags = #{type enum aiTextureFlags}
+
+#{enumerant_ enum aiTextureFlags, "aiTextureFlags_Invert", "AiTextureFlags_Invert"}
+#{enumerant_ enum aiTextureFlags, "aiTextureFlags_UseAlpha", "AiTextureFlags_UseAlpha"}
+#{enumerant_ enum aiTextureFlags, "aiTextureFlags_IgnoreAlpha", "AiTextureFlags_IgnoreAlpha"}
+
+type AiBlendMode = #{type enum aiBlendMode}
+
+#{enumerant_ enum aiBlendMode, "aiBlendMode_Default", "AiBlendMode_Default"}
+#{enumerant_ enum aiBlendMode, "aiBlendMode_Additive", "AiBlendMode_Additive"}
+
+data AiUVTransform
+
+instance Allocable AiUVTransform where
+  sizeof = #{size struct aiUVTransform}
+  alignof = #{alignment struct aiUVTransform}
+
+instance Offset "mTranslation" AiUVTransform AiVector2D where offsetof = #{offset struct aiUVTransform, mTranslation}
+instance Offset "mScaling" AiUVTransform AiVector2D where offsetof = #{offset struct aiUVTransform, mScaling}
+instance Offset "mRotation" AiUVTransform AiReal where offsetof = #{offset struct aiUVTransform, mRotation}
+
+type AiPropertyTypeInfo = #{type enum aiPropertyTypeInfo}
+
+#{enumerant_ enum aiPropertyTypeInfo, "aiPTI_Float", "AiPTI_Float"}
+#{enumerant_ enum aiPropertyTypeInfo, "aiPTI_Double", "AiPTI_Double"}
+#{enumerant_ enum aiPropertyTypeInfo, "aiPTI_String", "AiPTI_String"}
+#{enumerant_ enum aiPropertyTypeInfo, "aiPTI_Integer", "AiPTI_Integer"}
+#{enumerant_ enum aiPropertyTypeInfo, "aiPTI_Buffer", "AiPTI_Buffer"}
+
+data AiMaterialProperty
+
+instance Allocable AiMaterialProperty where
+  sizeof = #{size struct aiMaterialProperty}
+  alignof = #{alignment struct aiMaterialProperty}
+
+instance Offset "mKey" AiMaterialProperty AiString where offsetof = #{offset struct aiMaterialProperty, mKey}
+instance Offset "mSemantic" AiMaterialProperty CUInt where offsetof = #{offset struct aiMaterialProperty, mSemantic}
+instance Offset "mIndex" AiMaterialProperty CUInt where offsetof = #{offset struct aiMaterialProperty, mIndex}
+instance Offset "mDataLength" AiMaterialProperty CUInt where offsetof = #{offset struct aiMaterialProperty, mDataLength}
+instance Offset "mType" AiMaterialProperty AiPropertyTypeInfo where offsetof = #{offset struct aiMaterialProperty, mType}
+instance Offset "mData" AiMaterialProperty (Ptr CChar) where offsetof = #{offset struct aiMaterialProperty, mData}
+
+data AiMaterial
+
+instance Allocable AiMaterial where
+  sizeof = #{size struct aiMaterial}
+  alignof = #{alignment struct aiMaterial}
+
+instance Offset "mProperties" AiMaterial (Ptr (Ptr AiMaterialProperty)) where offsetof = #{offset struct aiMaterial, mProperties}
+instance Offset "mNumProperties" AiMaterial CUInt where offsetof = #{offset struct aiMaterial, mNumProperties}
+instance Offset "mNumAllocated" AiMaterial CUInt where offsetof = #{offset struct aiMaterial, mNumAllocated}
+
+#{importfunction_ "aiGetMaterialProperty", "Ptr AiMaterial -> CString -> CUInt -> CUInt -> Ptr (ConstPtr AiMaterialProperty) -> IO AiReturn"}
+#{importfunction_ "aiGetMaterialFloatArray", "Ptr AiMaterial -> CString -> CUInt -> CUInt -> Ptr AiReal -> Ptr CUInt -> IO AiReturn"}
+#{importfunction_ "aiGetMaterialFloat", "Ptr AiMaterial -> CString -> CUInt -> CUInt -> Ptr AiReal -> IO AiReturn"}
+#{importfunction_ "aiGetMaterialIntegerArray", "Ptr AiMaterial -> CString -> CUInt -> CUInt -> Ptr CInt -> Ptr CUInt -> IO AiReturn"}
+#{importfunction_ "aiGetMaterialInteger", "Ptr AiMaterial -> CString -> CUInt -> CUInt -> Ptr CInt -> IO AiReturn"}
+#{importfunction_ "aiGetMaterialColor", "Ptr AiMaterial -> CString -> CUInt -> CUInt -> Ptr AiColor4D -> IO AiReturn"}
+#{importfunction_ "aiGetMaterialUVTransform", "Ptr AiMaterial -> CString -> CUInt -> CUInt -> Ptr AiUVTransform -> IO AiReturn"}
+#{importfunction_ "aiGetMaterialString", "Ptr AiMaterial -> CString -> CUInt -> CUInt -> Ptr AiString -> IO AiReturn"}
+#{importfunction_ "aiGetMaterialTextureCount", "Ptr AiMaterial -> AiTextureType -> IO CUInt"}
+#{importfunction_ "aiGetMaterialTexture", "Ptr AiMaterial -> AiTextureType -> CUInt -> Ptr AiString -> Ptr AiTextureMapping -> Ptr CUInt -> Ptr AiReal -> Ptr AiTextureOp -> Ptr AiTextureMapMode -> Ptr CUInt -> IO AiReturn"}

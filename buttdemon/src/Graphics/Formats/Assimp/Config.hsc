@@ -120,6 +120,7 @@ module Graphics.Formats.Assimp.Config (
   aiConfigAppScaleKey,
 ) where
 
+import Data.IntWord
 import Foreign.C.String
 import Foreign.C.Types
 
@@ -151,29 +152,19 @@ import Foreign.C.Types
 #{cint "PP_ICL_PTCACHE_SIZE", "ppIclPtcacheSize", "PpIclPtcacheSize"}
 #{cstring "AI_CONFIG_PP_ICL_PTCACHE_SIZE", "aiConfigPpIclPtcacheSize"}
 
-type AiComponent = CUInt
+type AiComponent = #{type enum aiComponent}
 
-#ifdef SWIG
-#{cint_ "aiComponent_NORMALS", "AiComponent_NORMALS"}
-#else
-#{cuint_ "aiComponent_NORMALS", "AiComponent_NORMALS"}
-#endif
-
-#ifdef SWIG
-#{cint_ "aiComponent_TANGENTS_AND_BITANGENTS", "AiComponent_TANGENTS_AND_BITANGENTS"}
-#else
-#{cuint_ "aiComponent_TANGENTS_AND_BITANGENTS", "AiComponent_TANGENTS_AND_BITANGENTS"}
-#endif
-
-#{cint_ "aiComponent_COLORS", "AiComponent_COLORS"}
-#{cint_ "aiComponent_TEXCOORDS", "AiComponent_TEXCOORDS"}
-#{cint_ "aiComponent_BONEWEIGHTS", "AiComponent_BONEWEIGHTS"}
-#{cint_ "aiComponent_ANIMATIONS", "AiComponent_ANIMATIONS"}
-#{cint_ "aiComponent_TEXTURES", "AiComponent_TEXTURES"}
-#{cint_ "aiComponent_LIGHTS", "AiComponent_LIGHTS"}
-#{cint_ "aiComponent_CAMERAS", "AiComponent_CAMERAS"}
-#{cint_ "aiComponent_MESHES", "AiComponent_MESHES"}
-#{cint_ "aiComponent_MATERIALS", "AiComponent_MATERIALS"}
+#{enumerant_ enum aiComponent, "aiComponent_NORMALS", "AiComponent_NORMALS"}
+#{enumerant_ enum aiComponent, "aiComponent_TANGENTS_AND_BITANGENTS", "AiComponent_TANGENTS_AND_BITANGENTS"}
+#{enumerant_ enum aiComponent, "aiComponent_COLORS", "AiComponent_COLORS"}
+#{enumerant_ enum aiComponent, "aiComponent_TEXCOORDS", "AiComponent_TEXCOORDS"}
+#{enumerant_ enum aiComponent, "aiComponent_BONEWEIGHTS", "AiComponent_BONEWEIGHTS"}
+#{enumerant_ enum aiComponent, "aiComponent_ANIMATIONS", "AiComponent_ANIMATIONS"}
+#{enumerant_ enum aiComponent, "aiComponent_TEXTURES", "AiComponent_TEXTURES"}
+#{enumerant_ enum aiComponent, "aiComponent_LIGHTS", "AiComponent_LIGHTS"}
+#{enumerant_ enum aiComponent, "aiComponent_CAMERAS", "AiComponent_CAMERAS"}
+#{enumerant_ enum aiComponent, "aiComponent_MESHES", "AiComponent_MESHES"}
+#{enumerant_ enum aiComponent, "aiComponent_MATERIALS", "AiComponent_MATERIALS"}
 
 #{importfunction_ "aiComponent_COLORSn", "CUInt -> CUInt"}
 #{importfunction_ "aiComponent_TEXCOORDSn", "CUInt -> CUInt"}

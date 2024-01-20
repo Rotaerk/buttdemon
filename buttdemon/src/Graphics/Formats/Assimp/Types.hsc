@@ -15,12 +15,15 @@ module Graphics.Formats.Assimp.Types (
   AiRay,
   AiColor3D,
   AiString,
+  AiReturn,
   aiReturn_SUCCESS, pattern AiReturn_SUCCESS,
   aiReturn_FAILURE, pattern AiReturn_FAILURE,
   aiReturn_OUTOFMEMORY, pattern AiReturn_OUTOFMEMORY,
+  AiOrigin,
   aiOrigin_SET, pattern AiOrigin_SET,
   aiOrigin_CUR, pattern AiOrigin_CUR,
   aiOrigin_END, pattern AiOrigin_END,
+  AiDefaultLogStream,
   aiDefaultLogStream_FILE, pattern AiDefaultLogStream_FILE,
   aiDefaultLogStream_STDOUT, pattern AiDefaultLogStream_STDOUT,
   aiDefaultLogStream_STDERR, pattern AiDefaultLogStream_STDERR,
@@ -28,8 +31,7 @@ module Graphics.Formats.Assimp.Types (
   AiMemoryInfo
 ) where
 
-import Data.Int
-import Data.Word
+import Data.IntWord
 import Foreign.Allocable
 import Foreign.C.Types
 import Foreign.Offset
@@ -83,18 +85,24 @@ instance Allocable AiString where
 instance Offset "length" AiString AiUInt32 where offsetof = #{offset struct aiString, length}
 instance Offset "data" AiString CChar where offsetof = #{offset struct aiString, data}
 
-#{cint "aiReturn_SUCCESS", "aiReturn_SUCCESS", "AiReturn_SUCCESS"}
-#{cint "aiReturn_FAILURE", "aiReturn_FAILURE", "AiReturn_FAILURE"}
-#{cint "aiReturn_OUTOFMEMORY", "aiReturn_OUTOFMEMORY", "AiReturn_OUTOFMEMORY"}
+type AiReturn = #{type enum aiReturn}
 
-#{cint "aiOrigin_SET", "aiOrigin_SET", "AiOrigin_SET"}
-#{cint "aiOrigin_CUR", "aiOrigin_CUR", "AiOrigin_CUR"}
-#{cint "aiOrigin_END", "aiOrigin_END", "AiOrigin_END"}
+#{enumerant_ aiReturn, "aiReturn_SUCCESS", "AiReturn_SUCCESS"}
+#{enumerant_ aiReturn, "aiReturn_FAILURE", "AiReturn_FAILURE"}
+#{enumerant_ aiReturn, "aiReturn_OUTOFMEMORY", "AiReturn_OUTOFMEMORY"}
 
-#{cint "aiDefaultLogStream_FILE", "aiDefaultLogStream_FILE", "AiDefaultLogStream_FILE"}
-#{cint "aiDefaultLogStream_STDOUT", "aiDefaultLogStream_STDOUT", "AiDefaultLogStream_STDOUT"}
-#{cint "aiDefaultLogStream_STDERR", "aiDefaultLogStream_STDERR", "AiDefaultLogStream_STDERR"}
-#{cint "aiDefaultLogStream_DEBUGGER", "aiDefaultLogStream_DEBUGGER", "AiDefaultLogStream_DEBUGGER"}
+type AiOrigin = #{type enum aiOrigin}
+
+#{enumerant_ enum aiOrigin, "aiOrigin_SET", "AiOrigin_SET"}
+#{enumerant_ enum aiOrigin, "aiOrigin_CUR", "AiOrigin_CUR"}
+#{enumerant_ enum aiOrigin, "aiOrigin_END", "AiOrigin_END"}
+
+type AiDefaultLogStream = #{type enum aiDefaultLogStream}
+
+#{enumerant_ enum aiDefaultLogStream, "aiDefaultLogStream_FILE", "AiDefaultLogStream_FILE"}
+#{enumerant_ enum aiDefaultLogStream, "aiDefaultLogStream_STDOUT", "AiDefaultLogStream_STDOUT"}
+#{enumerant_ enum aiDefaultLogStream, "aiDefaultLogStream_STDERR", "AiDefaultLogStream_STDERR"}
+#{enumerant_ enum aiDefaultLogStream, "aiDefaultLogStream_DEBUGGER", "AiDefaultLogStream_DEBUGGER"}
 
 data AiMemoryInfo
 

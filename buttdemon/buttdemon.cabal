@@ -50,6 +50,7 @@ library
   build-depends:
     base >=4.9
   exposed-modules:
+    Data.IntWord
     Foreign.Allocable
     Foreign.Offset
     Graphics.Formats.Assimp.AABB
@@ -59,6 +60,8 @@ library
     Graphics.Formats.Assimp.Color4D
     Graphics.Formats.Assimp.Config
     Graphics.Formats.Assimp.Defs
+    Graphics.Formats.Assimp.Light
+    Graphics.Formats.Assimp.Material
     Graphics.Formats.Assimp.Matrix3x3
     Graphics.Formats.Assimp.Matrix4x4
     Graphics.Formats.Assimp.Metadata
