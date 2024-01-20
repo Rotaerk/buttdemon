@@ -75,7 +75,8 @@ module Graphics.Formats.Assimp.Material (
   aiPTI_Buffer, pattern AiPTI_Buffer,
   AiMaterialProperty,
   AiMaterial,
-  MatKey(..),
+  AiMatKey(..),
+  AiTextureKey(..),
   aiMatkeyName,
   aiMatkeyTwosided,
   aiMatkeyShadingModel,
@@ -102,6 +103,47 @@ module Graphics.Formats.Assimp.Material (
   aiMatkeyShaderTesselation,
   aiMatkeyShaderPrimitive,
   aiMatkeyShaderCompute,
+  aiMatkeyUseColorMap,
+  aiMatkeyBaseColor,
+  aiMatkeyBaseColorTexture,
+  aiMatkeyUseMetallicMap,
+  aiMatkeyMetallicFactor,
+  aiMatkeyMetallicTexture,
+  aiMatkeyUseRoughnessMap,
+  aiMatkeyRoughnessFactor,
+  aiMatkeyRoughnessTexture,
+  aiMatkeyAnisotropyFactor,
+  aiMatkeySpecularFactor,
+  aiMatkeyGlossinessFactor,
+  aiMatkeySheenColorFactor,
+  aiMatkeySheenRoughnessFactor,
+  aiMatkeySheenColorTexture,
+  aiMatkeySheenRoughnessTexture,
+  aiMatkeyClearcoatFactor,
+  aiMatkeyClearcoatRoughnessFactor,
+  aiMatkeyClearcoatTexture,
+  aiMatkeyClearcoatRoughnessTexture,
+  aiMatkeyClearcoatNormalTexture,
+  aiMatkeyTransmissionFactor,
+  aiMatkeyTransmissionTexture,
+  aiMatkeyVolumeThicknessFactor,
+  aiMatkeyVolumeThicknessTexture,
+  aiMatkeyVolumeAttenuationDistance,
+  aiMatkeyVolumeAttenuationColor,
+  aiMatkeyUseEmissiveMap,
+  aiMatkeyEmissiveIntensity,
+  aiMatkeyUseAoMap,
+  aiMatkeyTextureBase,
+  aiMatkeyUvwsrcBase,
+  aiMatkeyTexopBase,
+  aiMatkeyMappingBase,
+  aiMatkeyTexblendBase,
+  aiMatkeyMappingmodeUBase,
+  aiMatkeyMappingmodeVBase,
+  aiMatkeyTexmapAxisBase,
+  aiMatkeyUvtransformBase,
+  aiMatkeyTexflagsBase,
+  aiTextureKeyToMatKey,
   aiGetMaterialProperty,
   aiGetMaterialFloatArray,
   aiGetMaterialFloat,
@@ -112,6 +154,8 @@ module Graphics.Formats.Assimp.Material (
   aiGetMaterialString,
   aiGetMaterialTextureCount,
   aiGetMaterialTexture,
+  withAiMatKey,
+  withAiTextureKey,
 ) where
 
 import Data.IntWord
@@ -245,7 +289,18 @@ instance Offset "mProperties" AiMaterial (Ptr (Ptr AiMaterialProperty)) where of
 instance Offset "mNumProperties" AiMaterial CUInt where offsetof = #{offset struct aiMaterial, mNumProperties}
 instance Offset "mNumAllocated" AiMaterial CUInt where offsetof = #{offset struct aiMaterial, mNumAllocated}
 
-data MatKey = MatKey CString CUInt CUInt
+data AiMatKey =
+  AiMatKey {
+    name :: CString,
+    textureType :: CUInt,
+    index :: CUInt
+  }
+
+data AiTextureKey =
+  AiTextureKey {
+    textureType :: AiTextureType,
+    index :: CUInt
+  }
 
 #{matkey AI_MATKEY_NAME, "aiMatkeyName"}
 #{matkey AI_MATKEY_TWOSIDED, "aiMatkeyTwosided"}
@@ -273,6 +328,49 @@ data MatKey = MatKey CString CUInt CUInt
 #{matkey AI_MATKEY_SHADER_TESSELATION, "aiMatkeyShaderTesselation"}
 #{matkey AI_MATKEY_SHADER_PRIMITIVE, "aiMatkeyShaderPrimitive"}
 #{matkey AI_MATKEY_SHADER_COMPUTE, "aiMatkeyShaderCompute"}
+#{matkey AI_MATKEY_USE_COLOR_MAP, "aiMatkeyUseColorMap"}
+#{matkey AI_MATKEY_BASE_COLOR, "aiMatkeyBaseColor"}
+#{texturekey AI_MATKEY_BASE_COLOR_TEXTURE, "aiMatkeyBaseColorTexture"}
+#{matkey AI_MATKEY_USE_METALLIC_MAP, "aiMatkeyUseMetallicMap"}
+#{matkey AI_MATKEY_METALLIC_FACTOR, "aiMatkeyMetallicFactor"}
+#{texturekey AI_MATKEY_METALLIC_TEXTURE, "aiMatkeyMetallicTexture"}
+#{matkey AI_MATKEY_USE_ROUGHNESS_MAP, "aiMatkeyUseRoughnessMap"}
+#{matkey AI_MATKEY_ROUGHNESS_FACTOR, "aiMatkeyRoughnessFactor"}
+#{texturekey AI_MATKEY_ROUGHNESS_TEXTURE, "aiMatkeyRoughnessTexture"}
+#{matkey AI_MATKEY_ANISOTROPY_FACTOR, "aiMatkeyAnisotropyFactor"}
+#{matkey AI_MATKEY_SPECULAR_FACTOR, "aiMatkeySpecularFactor"}
+#{matkey AI_MATKEY_GLOSSINESS_FACTOR, "aiMatkeyGlossinessFactor"}
+#{matkey AI_MATKEY_SHEEN_COLOR_FACTOR, "aiMatkeySheenColorFactor"}
+#{matkey AI_MATKEY_SHEEN_ROUGHNESS_FACTOR, "aiMatkeySheenRoughnessFactor"}
+#{texturekey AI_MATKEY_SHEEN_COLOR_TEXTURE, "aiMatkeySheenColorTexture"}
+#{texturekey AI_MATKEY_SHEEN_ROUGHNESS_TEXTURE, "aiMatkeySheenRoughnessTexture"}
+#{matkey AI_MATKEY_CLEARCOAT_FACTOR, "aiMatkeyClearcoatFactor"}
+#{matkey AI_MATKEY_CLEARCOAT_ROUGHNESS_FACTOR, "aiMatkeyClearcoatRoughnessFactor"}
+#{texturekey AI_MATKEY_CLEARCOAT_TEXTURE, "aiMatkeyClearcoatTexture"}
+#{texturekey AI_MATKEY_CLEARCOAT_ROUGHNESS_TEXTURE, "aiMatkeyClearcoatRoughnessTexture"}
+#{texturekey AI_MATKEY_CLEARCOAT_NORMAL_TEXTURE, "aiMatkeyClearcoatNormalTexture"}
+#{matkey AI_MATKEY_TRANSMISSION_FACTOR, "aiMatkeyTransmissionFactor"}
+#{texturekey AI_MATKEY_TRANSMISSION_TEXTURE, "aiMatkeyTransmissionTexture"}
+#{matkey AI_MATKEY_VOLUME_THICKNESS_FACTOR, "aiMatkeyVolumeThicknessFactor"}
+#{texturekey AI_MATKEY_VOLUME_THICKNESS_TEXTURE, "aiMatkeyVolumeThicknessTexture"}
+#{matkey AI_MATKEY_VOLUME_ATTENUATION_DISTANCE, "aiMatkeyVolumeAttenuationDistance"}
+#{matkey AI_MATKEY_VOLUME_ATTENUATION_COLOR, "aiMatkeyVolumeAttenuationColor"}
+#{matkey AI_MATKEY_USE_EMISSIVE_MAP, "aiMatkeyUseEmissiveMap"}
+#{matkey AI_MATKEY_EMISSIVE_INTENSITY, "aiMatkeyEmissiveIntensity"}
+#{matkey AI_MATKEY_USE_AO_MAP, "aiMatkeyUseAoMap"}
+#{cstring "_AI_MATKEY_TEXTURE_BASE", "aiMatkeyTextureBase"}
+#{cstring "_AI_MATKEY_UVWSRC_BASE", "aiMatkeyUvwsrcBase"}
+#{cstring "_AI_MATKEY_TEXOP_BASE", "aiMatkeyTexopBase"}
+#{cstring "_AI_MATKEY_MAPPING_BASE", "aiMatkeyMappingBase"}
+#{cstring "_AI_MATKEY_TEXBLEND_BASE", "aiMatkeyTexblendBase"}
+#{cstring "_AI_MATKEY_MAPPINGMODE_U_BASE", "aiMatkeyMappingmodeUBase"}
+#{cstring "_AI_MATKEY_MAPPINGMODE_V_BASE", "aiMatkeyMappingmodeVBase"}
+#{cstring "_AI_MATKEY_TEXMAP_AXIS_BASE", "aiMatkeyTexmapAxisBase"}
+#{cstring "_AI_MATKEY_UVTRANSFORM_BASE", "aiMatkeyUvtransformBase"}
+#{cstring "_AI_MATKEY_TEXFLAGS_BASE", "aiMatkeyTexflagsBase"}
+
+aiTextureKeyToMatKey :: CString -> AiTextureKey -> AiMatKey
+aiTextureKeyToMatKey name (AiTextureKey textureType index) = AiMatKey name (fromIntegral textureType) index
 
 #{importfunction_ "aiGetMaterialProperty", "Ptr AiMaterial -> CString -> CUInt -> CUInt -> Ptr (ConstPtr AiMaterialProperty) -> IO AiReturn"}
 #{importfunction_ "aiGetMaterialFloatArray", "Ptr AiMaterial -> CString -> CUInt -> CUInt -> Ptr AiReal -> Ptr CUInt -> IO AiReturn"}
@@ -284,3 +382,9 @@ data MatKey = MatKey CString CUInt CUInt
 #{importfunction_ "aiGetMaterialString", "Ptr AiMaterial -> CString -> CUInt -> CUInt -> Ptr AiString -> IO AiReturn"}
 #{importfunction_ "aiGetMaterialTextureCount", "Ptr AiMaterial -> AiTextureType -> IO CUInt"}
 #{importfunction_ "aiGetMaterialTexture", "Ptr AiMaterial -> AiTextureType -> CUInt -> Ptr AiString -> Ptr AiTextureMapping -> Ptr CUInt -> Ptr AiReal -> Ptr AiTextureOp -> Ptr AiTextureMapMode -> Ptr CUInt -> IO AiReturn"}
+
+withAiMatKey :: AiMatKey -> (CString -> CUInt -> CUInt -> a) -> a
+withAiMatKey (AiMatKey n t i) cont = cont n t i
+
+withAiTextureKey :: AiTextureKey -> (AiTextureType -> CUInt -> a) -> a
+withAiTextureKey (AiTextureKey t i) cont = cont t i

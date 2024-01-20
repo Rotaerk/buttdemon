@@ -139,6 +139,8 @@ void *hsc_stdout(void);
 
 // Below are custom HSC macros:
 
+#include "assimp/material.h"
+
 #define hsc_importfunction(cname, hsname, type) \
   hsc_printf("foreign import capi \"%s %s\" %s :: %s", THE_HEADER, cname, hsname, type);
 
@@ -194,13 +196,19 @@ void *hsc_stdout(void);
 void hsc_matkey_key(const char *, unsigned int, unsigned int);
 void hsc_matkey_type(const char *, unsigned int, unsigned int);
 void hsc_matkey_index(const char *, unsigned int, unsigned int);
+void hsc_texturematkey_type(enum aiTextureType, unsigned int);
+void hsc_texturematkey_index(enum aiTextureType, unsigned int);
 
 #define hsc_matkey(matkey, hsname) \
-  hsc_printf("%s :: MatKey\n%s = MatKey (Ptr ", hsname, hsname); \
+  hsc_printf("%s :: AiMatKey\n%s = AiMatKey (Ptr ", hsname, hsname); \
   hsc_matkey_key(matkey); \
   hsc_printf("#) "); \
   hsc_matkey_type(matkey); \
   hsc_putchar(' '); \
   hsc_matkey_index(matkey);
 
-#define TEST "\\\\blah", 0, 0
+#define hsc_texturekey(matkey, hsname) \
+  hsc_printf("%s :: AiTextureKey\n%s = AiTextureKey ", hsname, hsname); \
+  hsc_texturekey_type(matkey); \
+  hsc_putchar(' '); \
+  hsc_texturekey_index(matkey);
