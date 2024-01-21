@@ -61,6 +61,7 @@ library
     Graphics.Formats.Assimp.Anim
     Graphics.Formats.Assimp.Camera
     Graphics.Formats.Assimp.CExport
+    Graphics.Formats.Assimp.CFileIO
     Graphics.Formats.Assimp.Color4D
     Graphics.Formats.Assimp.Config
     Graphics.Formats.Assimp.Defs
