@@ -2,6 +2,7 @@
 #include THE_HEADER
 
 module Graphics.Formats.Assimp.Light (
+  AiLightSourceType(..),
   aiLightSource_UNDEFINED, pattern AiLightSource_UNDEFINED,
   aiLightSource_DIRECTIONAL, pattern AiLightSource_DIRECTIONAL,
   aiLightSource_POINT, pattern AiLightSource_POINT,
@@ -17,32 +18,26 @@ import Foreign.C.Types
 import Foreign.Offset
 import Graphics.Formats.Assimp.Types
 
-type AiLightSourceType = #{type enum aiLightSourceType}
+#{cenum enum aiLightSourceType, AiLightSourceType}
+#{cenumerant_ AiLightSourceType, aiLightSource_UNDEFINED, AiLightSource_UNDEFINED}
+#{cenumerant_ AiLightSourceType, aiLightSource_DIRECTIONAL, AiLightSource_DIRECTIONAL}
+#{cenumerant_ AiLightSourceType, aiLightSource_POINT, AiLightSource_POINT}
+#{cenumerant_ AiLightSourceType, aiLightSource_SPOT, AiLightSource_SPOT}
+#{cenumerant_ AiLightSourceType, aiLightSource_AMBIENT, AiLightSource_AMBIENT}
+#{cenumerant_ AiLightSourceType, aiLightSource_AREA, AiLightSource_AREA}
 
-#{enumerant_ enum aiLightSourceType, "aiLightSource_UNDEFINED", "AiLightSource_UNDEFINED"}
-#{enumerant_ enum aiLightSourceType, "aiLightSource_DIRECTIONAL", "AiLightSource_DIRECTIONAL"}
-#{enumerant_ enum aiLightSourceType, "aiLightSource_POINT", "AiLightSource_POINT"}
-#{enumerant_ enum aiLightSourceType, "aiLightSource_SPOT", "AiLightSource_SPOT"}
-#{enumerant_ enum aiLightSourceType, "aiLightSource_AMBIENT", "AiLightSource_AMBIENT"}
-#{enumerant_ enum aiLightSourceType, "aiLightSource_AREA", "AiLightSource_AREA"}
-
-data AiLight
-
-instance Allocable AiLight where
-  sizeof = #{size struct aiLight}
-  alignof = #{alignment struct aiLight}
-
-instance Offset "mName" AiLight AiString where offsetof = #{offset struct aiLight, mName}
-instance Offset "mType" AiLight AiLightSourceType where offsetof = #{offset struct aiLight, mType}
-instance Offset "mPosition" AiLight AiVector3D where offsetof = #{offset struct aiLight, mPosition}
-instance Offset "mDirection" AiLight AiVector3D where offsetof = #{offset struct aiLight, mDirection}
-instance Offset "mUp" AiLight AiVector3D where offsetof = #{offset struct aiLight, mUp}
-instance Offset "mAttenuationConstant" AiLight CFloat where offsetof = #{offset struct aiLight, mAttenuationConstant}
-instance Offset "mAttenuationLinear" AiLight CFloat where offsetof = #{offset struct aiLight, mAttenuationLinear}
-instance Offset "mAttenuationQuadratic" AiLight CFloat where offsetof = #{offset struct aiLight, mAttenuationQuadratic}
-instance Offset "mColorDiffuse" AiLight AiColor3D where offsetof = #{offset struct aiLight, mColorDiffuse}
-instance Offset "mColorSpecular" AiLight AiColor3D where offsetof = #{offset struct aiLight, mColorSpecular}
-instance Offset "mColorAmbient" AiLight AiColor3D where offsetof = #{offset struct aiLight, mColorAmbient}
-instance Offset "mAngleInnerCone" AiLight CFloat where offsetof = #{offset struct aiLight, mAngleInnerCone}
-instance Offset "mAngleOuterCone" AiLight CFloat where offsetof = #{offset struct aiLight, mAngleOuterCone}
-instance Offset "mSize" AiLight AiVector2D where offsetof = #{offset struct aiLight, mSize}
+#{cstruct struct aiLight, AiLight}
+#{cstructfield struct aiLight, AiLight, mName, AiString}
+#{cstructfield struct aiLight, AiLight, mType, AiLightSourceType}
+#{cstructfield struct aiLight, AiLight, mPosition, AiVector3D}
+#{cstructfield struct aiLight, AiLight, mDirection, AiVector3D}
+#{cstructfield struct aiLight, AiLight, mUp, AiVector3D}
+#{cstructfield struct aiLight, AiLight, mAttenuationConstant, CFloat}
+#{cstructfield struct aiLight, AiLight, mAttenuationLinear, CFloat}
+#{cstructfield struct aiLight, AiLight, mAttenuationQuadratic, CFloat}
+#{cstructfield struct aiLight, AiLight, mColorDiffuse, AiColor3D}
+#{cstructfield struct aiLight, AiLight, mColorSpecular, AiColor3D}
+#{cstructfield struct aiLight, AiLight, mColorAmbient, AiColor3D}
+#{cstructfield struct aiLight, AiLight, mAngleInnerCone, CFloat}
+#{cstructfield struct aiLight, AiLight, mAngleOuterCone, CFloat}
+#{cstructfield struct aiLight, AiLight, mSize, AiVector2D}

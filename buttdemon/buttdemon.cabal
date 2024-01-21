@@ -31,6 +31,7 @@ common common
     DuplicateRecordFields
     FlexibleInstances
     FunctionalDependencies
+    GeneralizedNewtypeDeriving
     KindSignatures
     MagicHash
     PatternSynonyms

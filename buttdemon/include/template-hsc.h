@@ -141,57 +141,71 @@ void *hsc_stdout(void);
 
 #include "assimp/material.h"
 
-#define hsc_importfunction(cname, hsname, type) \
-  hsc_printf("foreign import capi \"%s %s\" %s :: %s", THE_HEADER, cname, hsname, type);
+#define hsc_importfunction(csymbol, hsvar, hstype) \
+  hsc_printf("foreign import capi \"%s %s\" %s :: %s", THE_HEADER, #csymbol, #hsvar, #hstype);
 
-#define hsc_importfunction_(name, type) \
-  hsc_importfunction(name, name, type);
+#define hsc_importfunction_(csymbol, hstype) \
+  hsc_printf("foreign import capi \"%s %s\" %s :: %s", THE_HEADER, #csymbol, #csymbol, #hstype);
 
-#define hsc_importvalue(cname, hsname, type) \
-  hsc_printf("foreign import capi \"%s value %s\" %s :: %s", THE_HEADER, cname, hsname, type);
+#define hsc_cstring(csymbol, hsvar) \
+  hsc_printf("foreign import capi \"%s value %s\" %s :: CString", THE_HEADER, #csymbol, #hsvar);
 
-#define hsc_equalspattern(name, type, value) \
-  hsc_printf("pattern %s :: %s\n", name, type); \
-  hsc_printf("pattern %s <-((== %s) -> True)\n", name, value); \
-  hsc_printf("  where %s = %s", name, value);
+#define hsc_cfloat(csymbol, hsvar) \
+  hsc_printf("foreign import capi \"%s value %s\" %s :: CFloat", THE_HEADER, #csymbol, #hsvar);
 
-#define hsc_cstring(cname, hsname) \
-  hsc_importvalue(cname, hsname, "CString");
+#define hsc_cint(csymbol, hsvar, pattern) \
+  hsc_printf("foreign import capi \"%s value %s\" %s :: CInt\n", THE_HEADER, #csymbol, #hsvar); \
+  hsc_printf("pattern %s :: (Eq a, Num a) => a\n", #pattern); \
+  hsc_printf("pattern %s <-((== fromIntegral %s) -> True)\n", #pattern, #hsvar); \
+  hsc_printf("  where %s = fromIntegral %s", #pattern, #hsvar);
 
-#define hsc_cfloat(cname, hsname) \
-  hsc_importvalue(cname, hsname, "CFloat");
+#define hsc_cint_(csymbol, pattern) \
+  hsc_printf("foreign import capi \"%s value %s\" %s :: CInt\n", THE_HEADER, #csymbol, #csymbol); \
+  hsc_printf("pattern %s :: (Eq a, Num a) => a\n", #pattern); \
+  hsc_printf("pattern %s <-((== fromIntegral %s) -> True)\n", #pattern, #csymbol); \
+  hsc_printf("  where %s = fromIntegral %s", #pattern, #csymbol);
 
-#define hsc_integral(cname, hsname, patname, type) \
-  hsc_importvalue(cname, hsname, type); \
-  hsc_printf("\n\n"); \
-  hsc_equalspattern(patname, "(Eq a, Num a) => a", "fromIntegral "hsname);
+#define hsc_cuint(csymbol, hsvar, pattern) \
+  hsc_printf("foreign import capi \"%s value %s\" %s :: CUInt\n", THE_HEADER, #csymbol, #hsvar); \
+  hsc_printf("pattern %s :: (Eq a, Num a) => a\n", #pattern); \
+  hsc_printf("pattern %s <-((== fromIntegral %s) -> True)\n", #pattern, #hsvar); \
+  hsc_printf("  where %s = fromIntegral %s", #pattern, #hsvar);
 
-#define hsc_cint(cname, hsname, patname) \
-  hsc_integral(cname, hsname, patname, "CInt");
+#define hsc_cuint_(csymbol, pattern) \
+  hsc_printf("foreign import capi \"%s value %s\" %s :: CUInt\n", THE_HEADER, #csymbol, #csymbol); \
+  hsc_printf("pattern %s :: (Eq a, Num a) => a\n", #pattern); \
+  hsc_printf("pattern %s <-((== fromIntegral %s) -> True)\n", #pattern, #csymbol); \
+  hsc_printf("  where %s = fromIntegral %s", #pattern, #csymbol);
 
-#define hsc_cint_(name, patname) \
-  hsc_cint(name, name, patname);
+#define hsc_cstruct(ctype, hstype) \
+  hsc_printf("data {-# CTYPE \"%s\" \"%s\" #-} %s\n", THE_HEADER, #ctype, #hstype); \
+  hsc_printf("instance Allocable %s where\n", #hstype); \
+  hsc_printf("  sizeof = "); \
+  hsc_size(ctype); \
+  hsc_printf("\n"); \
+  hsc_printf("  alignof = "); \
+  hsc_alignment(ctype);
 
-#define hsc_cuint(cname, hsname, patname) \
-  hsc_integral(cname, hsname, patname, "CUInt");
+#define hsc_cstructfield(cstructtype, hsstructtype, cfield, hsfieldtype) \
+  hsc_printf("instance Offset \"%s\" %s (%s) where offsetof = ", #cfield, #hsstructtype, #hsfieldtype); \
+  hsc_offset(cstructtype, cfield);
 
-#define hsc_cuint_(name, patname) \
-  hsc_cuint(name, name, patname);
+#define hsc_cenum(ctype, hstype) \
+  hsc_printf("newtype {-# CTYPE \"%s\" \"%s\" #-} %s = %s ", THE_HEADER, #ctype, #hstype, #hstype); \
+  hsc_type(ctype); \
+  hsc_printf(" deriving (Eq, Ord, Num, Real, Integral, Enum)");
 
-#define hsc_csize(cname, hsname, patname) \
-  hsc_integral(cname, hsname, patname, "CSize");
+#define hsc_cenumerant(hstype, enumerant, hsvar, pattern) \
+  hsc_printf("foreign import capi \"%s value %s\" %s :: %s\n", THE_HEADER, #enumerant, #hsvar, #hstype); \
+  hsc_printf("pattern %s :: (Eq a, Num a) => a\n", #pattern); \
+  hsc_printf("pattern %s <-((== fromIntegral %s) -> True)\n", #pattern, #hsvar); \
+  hsc_printf("  where %s = fromIntegral %s", #pattern, #hsvar);
 
-#define hsc_enumerant(enumtype, cname, hsname, patname) \
-  hsc_printf("foreign import capi \"%s value %s\" %s :: ", THE_HEADER, cname, hsname); \
-  hsc_type(enumtype); \
-  hsc_printf("\n\n"); \
-  hsc_equalspattern(patname, "(Eq a, Num a) => a", "fromIntegral "hsname);
-
-#define hsc_enumerant_(enumtype, name, patname) \
-  hsc_printf("foreign import capi \"%s value %s\" %s :: ", THE_HEADER, name, name); \
-  hsc_type(enumtype); \
-  hsc_printf("\n\n"); \
-  hsc_equalspattern(patname, "(Eq a, Num a) => a", "fromIntegral "name);
+#define hsc_cenumerant_(hstype, enumerant, pattern) \
+  hsc_printf("foreign import capi \"%s value %s\" %s :: %s\n", THE_HEADER, #enumerant, #enumerant, #hstype); \
+  hsc_printf("pattern %s :: (Eq a, Num a) => a\n", #pattern); \
+  hsc_printf("pattern %s <-((== fromIntegral %s) -> True)\n", #pattern, #enumerant); \
+  hsc_printf("  where %s = fromIntegral %s", #pattern, #enumerant);
 
 void hsc_matkey_key(const char *, unsigned int, unsigned int);
 void hsc_matkey_type(const char *, unsigned int, unsigned int);
@@ -199,16 +213,16 @@ void hsc_matkey_index(const char *, unsigned int, unsigned int);
 void hsc_texturematkey_type(enum aiTextureType, unsigned int);
 void hsc_texturematkey_index(enum aiTextureType, unsigned int);
 
-#define hsc_matkey(matkey, hsname) \
-  hsc_printf("%s :: AiMatKey\n%s = AiMatKey (Ptr ", hsname, hsname); \
+#define hsc_matkey(matkey, hsvar) \
+  hsc_printf("%s :: AiMatKey\n%s = AiMatKey (Ptr ", #hsvar, #hsvar); \
   hsc_matkey_key(matkey); \
   hsc_printf("#) "); \
   hsc_matkey_type(matkey); \
   hsc_putchar(' '); \
   hsc_matkey_index(matkey);
 
-#define hsc_texturekey(matkey, hsname) \
-  hsc_printf("%s :: AiTextureKey\n%s = AiTextureKey ", hsname, hsname); \
+#define hsc_texturekey(matkey, hsvar) \
+  hsc_printf("%s :: AiTextureKey\n%s = AiTextureKey ", #hsvar, #hsvar); \
   hsc_texturekey_type(matkey); \
   hsc_putchar(' '); \
   hsc_texturekey_index(matkey);

@@ -15,15 +15,15 @@ module Graphics.Formats.Assimp.Types (
   AiRay,
   AiColor3D,
   AiString,
-  AiReturn,
+  AiReturn(..),
   aiReturn_SUCCESS, pattern AiReturn_SUCCESS,
   aiReturn_FAILURE, pattern AiReturn_FAILURE,
   aiReturn_OUTOFMEMORY, pattern AiReturn_OUTOFMEMORY,
-  AiOrigin,
+  AiOrigin(..),
   aiOrigin_SET, pattern AiOrigin_SET,
   aiOrigin_CUR, pattern AiOrigin_CUR,
   aiOrigin_END, pattern AiOrigin_END,
-  AiDefaultLogStream,
+  AiDefaultLogStream(..),
   aiDefaultLogStream_FILE, pattern AiDefaultLogStream_FILE,
   aiDefaultLogStream_STDOUT, pattern AiDefaultLogStream_STDOUT,
   aiDefaultLogStream_STDERR, pattern AiDefaultLogStream_STDERR,
@@ -46,75 +46,47 @@ import Graphics.Formats.Assimp.Quaternion
 type AiInt32 = Int32
 type AiUInt32 = Word32
 
-data AiPlane
+#{cstruct struct aiPlane, AiPlane}
+#{cstructfield struct aiPlane, AiPlane, a, AiReal}
+#{cstructfield struct aiPlane, AiPlane, b, AiReal}
+#{cstructfield struct aiPlane, AiPlane, c, AiReal}
+#{cstructfield struct aiPlane, AiPlane, d, AiReal}
 
-instance Allocable AiPlane where
-  sizeof = #{size struct aiPlane}
-  alignof = #{alignment struct aiPlane}
+#{cstruct struct aiRay, AiRay}
+#{cstructfield struct aiRay, AiRay, pos, AiVector3D}
+#{cstructfield struct aiRay, AiRay, dir, AiVector3D}
 
-instance Offset "a" AiPlane AiReal where offsetof = #{offset struct aiPlane, a}
-instance Offset "b" AiPlane AiReal where offsetof = #{offset struct aiPlane, b}
-instance Offset "c" AiPlane AiReal where offsetof = #{offset struct aiPlane, c}
-instance Offset "d" AiPlane AiReal where offsetof = #{offset struct aiPlane, d}
+#{cstruct struct aiColor3D, AiColor3D}
+#{cstructfield struct aiColor3D, AiColor3D, r, AiReal}
+#{cstructfield struct aiColor3D, AiColor3D, g, AiReal}
+#{cstructfield struct aiColor3D, AiColor3D, b, AiReal}
 
-data AiRay
+#{cstruct struct aiString, AiString}
+#{cstructfield struct aiString, AiString, length, AiUInt32}
+#{cstructfield struct aiString, AiString, data, CChar}
 
-instance Allocable AiRay where
-  sizeof = #{size struct aiRay}
-  alignof = #{alignment struct aiRay}
+#{cenum enum aiReturn, AiReturn}
+#{cenumerant_ AiReturn, aiReturn_SUCCESS, AiReturn_SUCCESS}
+#{cenumerant_ AiReturn, aiReturn_FAILURE, AiReturn_FAILURE}
+#{cenumerant_ AiReturn, aiReturn_OUTOFMEMORY, AiReturn_OUTOFMEMORY}
 
-instance Offset "pos" AiRay AiVector3D where offsetof = #{offset struct aiRay, pos}
-instance Offset "dir" AiRay AiVector3D where offsetof = #{offset struct aiRay, dir}
+#{cenum enum aiOrigin, AiOrigin}
+#{cenumerant_ AiOrigin, aiOrigin_SET, AiOrigin_SET}
+#{cenumerant_ AiOrigin, aiOrigin_CUR, AiOrigin_CUR}
+#{cenumerant_ AiOrigin, aiOrigin_END, AiOrigin_END}
 
-data AiColor3D
+#{cenum enum aiDefaultLogStream, AiDefaultLogStream}
+#{cenumerant_ AiDefaultLogStream, aiDefaultLogStream_FILE, AiDefaultLogStream_FILE}
+#{cenumerant_ AiDefaultLogStream, aiDefaultLogStream_STDOUT, AiDefaultLogStream_STDOUT}
+#{cenumerant_ AiDefaultLogStream, aiDefaultLogStream_STDERR, AiDefaultLogStream_STDERR}
+#{cenumerant_ AiDefaultLogStream, aiDefaultLogStream_DEBUGGER, AiDefaultLogStream_DEBUGGER}
 
-instance Allocable AiColor3D where
-  sizeof = #{size struct aiColor3D}
-  alignof = #{alignment struct aiColor3D}
-
-instance Offset "r" AiColor3D AiReal where offsetof = #{offset struct aiColor3D, r}
-instance Offset "g" AiColor3D AiReal where offsetof = #{offset struct aiColor3D, g}
-instance Offset "b" AiColor3D AiReal where offsetof = #{offset struct aiColor3D, b}
-
-data AiString
-
-instance Allocable AiString where
-  sizeof = #{size struct aiString}
-  alignof = #{alignment struct aiString}
-
-instance Offset "length" AiString AiUInt32 where offsetof = #{offset struct aiString, length}
-instance Offset "data" AiString CChar where offsetof = #{offset struct aiString, data}
-
-type AiReturn = #{type enum aiReturn}
-
-#{enumerant_ aiReturn, "aiReturn_SUCCESS", "AiReturn_SUCCESS"}
-#{enumerant_ aiReturn, "aiReturn_FAILURE", "AiReturn_FAILURE"}
-#{enumerant_ aiReturn, "aiReturn_OUTOFMEMORY", "AiReturn_OUTOFMEMORY"}
-
-type AiOrigin = #{type enum aiOrigin}
-
-#{enumerant_ enum aiOrigin, "aiOrigin_SET", "AiOrigin_SET"}
-#{enumerant_ enum aiOrigin, "aiOrigin_CUR", "AiOrigin_CUR"}
-#{enumerant_ enum aiOrigin, "aiOrigin_END", "AiOrigin_END"}
-
-type AiDefaultLogStream = #{type enum aiDefaultLogStream}
-
-#{enumerant_ enum aiDefaultLogStream, "aiDefaultLogStream_FILE", "AiDefaultLogStream_FILE"}
-#{enumerant_ enum aiDefaultLogStream, "aiDefaultLogStream_STDOUT", "AiDefaultLogStream_STDOUT"}
-#{enumerant_ enum aiDefaultLogStream, "aiDefaultLogStream_STDERR", "AiDefaultLogStream_STDERR"}
-#{enumerant_ enum aiDefaultLogStream, "aiDefaultLogStream_DEBUGGER", "AiDefaultLogStream_DEBUGGER"}
-
-data AiMemoryInfo
-
-instance Allocable AiMemoryInfo where
-  sizeof = #{size struct aiMemoryInfo}
-  alignof = #{alignment struct aiMemoryInfo}
-
-instance Offset "textures" AiMemoryInfo CUInt where offsetof = #{offset struct aiMemoryInfo, textures}
-instance Offset "materials" AiMemoryInfo CUInt where offsetof = #{offset struct aiMemoryInfo, materials}
-instance Offset "meshes" AiMemoryInfo CUInt where offsetof = #{offset struct aiMemoryInfo, meshes}
-instance Offset "nodes" AiMemoryInfo CUInt where offsetof = #{offset struct aiMemoryInfo, nodes}
-instance Offset "animations" AiMemoryInfo CUInt where offsetof = #{offset struct aiMemoryInfo, animations}
-instance Offset "cameras" AiMemoryInfo CUInt where offsetof = #{offset struct aiMemoryInfo, cameras}
-instance Offset "lights" AiMemoryInfo CUInt where offsetof = #{offset struct aiMemoryInfo, lights}
-instance Offset "total" AiMemoryInfo CUInt where offsetof = #{offset struct aiMemoryInfo, total}
+#{cstruct struct aiMemoryInfo, AiMemoryInfo}
+#{cstructfield struct aiMemoryInfo, AiMemoryInfo, textures, CUInt}
+#{cstructfield struct aiMemoryInfo, AiMemoryInfo, materials, CUInt}
+#{cstructfield struct aiMemoryInfo, AiMemoryInfo, meshes, CUInt}
+#{cstructfield struct aiMemoryInfo, AiMemoryInfo, nodes, CUInt}
+#{cstructfield struct aiMemoryInfo, AiMemoryInfo, animations, CUInt}
+#{cstructfield struct aiMemoryInfo, AiMemoryInfo, cameras, CUInt}
+#{cstructfield struct aiMemoryInfo, AiMemoryInfo, lights, CUInt}
+#{cstructfield struct aiMemoryInfo, AiMemoryInfo, total, CUInt}

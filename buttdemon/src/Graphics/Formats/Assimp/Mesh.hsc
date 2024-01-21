@@ -12,14 +12,14 @@ module Graphics.Formats.Assimp.Mesh (
   AiFace,
   AiVertexWeight,
   AiBone,
-  AiPrimitiveType,
+  AiPrimitiveType(..),
   aiPrimitiveType_POINT, pattern AiPrimitiveType_POINT,
   aiPrimitiveType_LINE, pattern AiPrimitiveType_LINE,
   aiPrimitiveType_TRIANGLE, pattern AiPrimitiveType_TRIANGLE,
   aiPrimitiveType_POLYGON, pattern AiPrimitiveType_POLYGON,
   aiPrimitiveType_NGONEncodingFlag, pattern AiPrimitiveType_NGONEncodingFlag,
   AiAnimMesh,
-  AiMorphingMethod,
+  AiMorphingMethod(..),
   aiMorphingMethod_UNKNOWN, pattern AiMorphingMethod_UNKNOWN,
   aiMorphingMethod_VERTEX_BLEND, pattern AiMorphingMethod_VERTEX_BLEND,
   aiMorphingMethod_MORPH_NORMALIZED, pattern AiMorphingMethod_MORPH_NORMALIZED,
@@ -38,127 +38,91 @@ import Graphics.Formats.Assimp.AABB
 import Graphics.Formats.Assimp.Node
 import Graphics.Formats.Assimp.Types
 
-#{cint "AI_MAX_FACE_INDICES", "aiMaxFaceIndices", "AiMaxFaceIndices"}
-#{cint "AI_MAX_BONE_WEIGHTS", "aiMaxBoneWeights", "AiMaxBoneWeights"}
-#{cint "AI_MAX_VERTICES", "aiMaxVertices", "AiMaxVertices"}
-#{cint "AI_MAX_FACES", "aiMaxFaces", "AiMaxFaces"}
-#{cint "AI_MAX_NUMBER_OF_COLOR_SETS", "aiMaxNumberOfColorSets", "AiMaxNumberOfColorSets"}
-#{cint "AI_MAX_NUMBER_OF_TEXTURECOORDS", "aiMaxNumberOfTexturecoords", "AiMaxNumberOfTexturecoords"}
+#{cint AI_MAX_FACE_INDICES, aiMaxFaceIndices, AiMaxFaceIndices}
+#{cint AI_MAX_BONE_WEIGHTS, aiMaxBoneWeights, AiMaxBoneWeights}
+#{cint AI_MAX_VERTICES, aiMaxVertices, AiMaxVertices}
+#{cint AI_MAX_FACES, aiMaxFaces, AiMaxFaces}
+#{cint AI_MAX_NUMBER_OF_COLOR_SETS, aiMaxNumberOfColorSets, AiMaxNumberOfColorSets}
+#{cint AI_MAX_NUMBER_OF_TEXTURECOORDS, aiMaxNumberOfTexturecoords, AiMaxNumberOfTexturecoords}
 
-data AiFace
+#{cstruct struct aiFace, AiFace}
+#{cstructfield struct aiFace, AiFace, mNumIndices, CUInt}
+#{cstructfield struct aiFace, AiFace, mIndices, Ptr CUInt}
 
-instance Allocable AiFace where
-  sizeof = #{size struct aiFace}
-  alignof = #{alignment struct aiFace}
+#{cstruct struct aiVertexWeight, AiVertexWeight}
+#{cstructfield struct aiVertexWeight, AiVertexWeight, mVertexId, CUInt}
+#{cstructfield struct aiVertexWeight, AiVertexWeight, mWeight, AiReal}
 
-instance Offset "mNumIndices" AiFace CUInt where offsetof = #{offset struct aiFace, mNumIndices}
-instance Offset "mIndices" AiFace (Ptr CUInt) where offsetof = #{offset struct aiFace, mIndices}
-
-data AiVertexWeight
-
-instance Allocable AiVertexWeight where
-  sizeof = #{size struct aiVertexWeight}
-  alignof = #{alignment struct aiVertexWeight}
-
-instance Offset "mVertexId" AiVertexWeight CUInt where offsetof = #{offset struct aiVertexWeight, mVertexId}
-instance Offset "mWeight" AiVertexWeight AiReal where offsetof = #{offset struct aiVertexWeight, mWeight}
-
-data AiBone
-
-instance Allocable AiBone where
-  sizeof = #{size struct aiBone}
-  alignof = #{alignment struct aiBone}
-
-instance Offset "mName" AiBone AiString where offsetof = #{offset struct aiBone, mName}
-instance Offset "mNumWeights" AiBone CUInt where offsetof = #{offset struct aiBone, mNumWeights}
+#{cstruct struct aiBone, AiBone}
+#{cstructfield struct aiBone, AiBone, mName, AiString}
+#{cstructfield struct aiBone, AiBone, mNumWeights, CUInt}
 #ifndef ASSIMP_BUILD_NO_ARMATUREPOPULATE_PROCESS
-instance Offset "mArmature" AiBone (Ptr AiNode) where offsetof = #{offset struct aiBone, mArmature}
-instance Offset "mNode" AiBone (Ptr AiNode) where offsetof = #{offset struct aiBone, mNode}
+#{cstructfield struct aiBone, AiBone, mArmature, Ptr AiNode}
+#{cstructfield struct aiBone, AiBone, mNode, Ptr AiNode}
 #endif
-instance Offset "mWeights" AiBone (Ptr AiVertexWeight) where offsetof = #{offset struct aiBone, mWeights}
-instance Offset "mOffsetMatrix" AiBone AiMatrix4x4 where offsetof = #{offset struct aiBone, mOffsetMatrix}
+#{cstructfield struct aiBone, AiBone, mWeights, Ptr AiVertexWeight}
+#{cstructfield struct aiBone, AiBone, mOffsetMatrix, AiMatrix4x4}
 
-type AiPrimitiveType = #{type enum aiPrimitiveType}
+#{cenum enum aiPrimitiveType, AiPrimitiveType}
+#{cenumerant_ AiPrimitiveType, aiPrimitiveType_POINT, AiPrimitiveType_POINT}
+#{cenumerant_ AiPrimitiveType, aiPrimitiveType_LINE, AiPrimitiveType_LINE}
+#{cenumerant_ AiPrimitiveType, aiPrimitiveType_TRIANGLE, AiPrimitiveType_TRIANGLE}
+#{cenumerant_ AiPrimitiveType, aiPrimitiveType_POLYGON, AiPrimitiveType_POLYGON}
+#{cenumerant_ AiPrimitiveType, aiPrimitiveType_NGONEncodingFlag, AiPrimitiveType_NGONEncodingFlag}
 
-#{enumerant_ enum aiPrimitiveType, "aiPrimitiveType_POINT", "AiPrimitiveType_POINT"}
-#{enumerant_ enum aiPrimitiveType, "aiPrimitiveType_LINE", "AiPrimitiveType_LINE"}
-#{enumerant_ enum aiPrimitiveType, "aiPrimitiveType_TRIANGLE", "AiPrimitiveType_TRIANGLE"}
-#{enumerant_ enum aiPrimitiveType, "aiPrimitiveType_POLYGON", "AiPrimitiveType_POLYGON"}
-#{enumerant_ enum aiPrimitiveType, "aiPrimitiveType_NGONEncodingFlag", "AiPrimitiveType_NGONEncodingFlag"}
+#{cstruct struct aiAnimMesh, AiAnimMesh}
+#{cstructfield struct aiAnimMesh, AiAnimMesh, mName, AiString}
+#{cstructfield struct aiAnimMesh, AiAnimMesh, mVertices, AiVector3D}
+#{cstructfield struct aiAnimMesh, AiAnimMesh, mNormals, AiVector3D}
+#{cstructfield struct aiAnimMesh, AiAnimMesh, mTangents, AiVector3D}
+#{cstructfield struct aiAnimMesh, AiAnimMesh, mBitangents, AiVector3D}
+#{cstructfield struct aiAnimMesh, AiAnimMesh, mColors, Ptr AiColor4D}
+#{cstructfield struct aiAnimMesh, AiAnimMesh, mTextureCoords, Ptr AiVector3D}
+#{cstructfield struct aiAnimMesh, AiAnimMesh, mNumVertices, CUInt}
+#{cstructfield struct aiAnimMesh, AiAnimMesh, mWeight, CFloat}
 
-data AiAnimMesh
+#{cenum enum aiMorphingMethod, AiMorphingMethod}
+#{cenumerant_ AiMorphingMethod, aiMorphingMethod_UNKNOWN, AiMorphingMethod_UNKNOWN}
+#{cenumerant_ AiMorphingMethod, aiMorphingMethod_VERTEX_BLEND, AiMorphingMethod_VERTEX_BLEND}
+#{cenumerant_ AiMorphingMethod, aiMorphingMethod_MORPH_NORMALIZED, AiMorphingMethod_MORPH_NORMALIZED}
+#{cenumerant_ AiMorphingMethod, aiMorphingMethod_MORPH_RELATIVE, AiMorphingMethod_MORPH_RELATIVE}
 
-instance Allocable AiAnimMesh where
-  sizeof = #{size struct aiAnimMesh}
-  alignof = #{alignment struct aiAnimMesh}
+#{cstruct struct aiMesh, AiMesh}
+#{cstructfield struct aiMesh, AiMesh, mPrimitiveTypes, CUInt}
+#{cstructfield struct aiMesh, AiMesh, mNumVertices, CUInt}
+#{cstructfield struct aiMesh, AiMesh, mNumFaces, CUInt}
+#{cstructfield struct aiMesh, AiMesh, mVertices, Ptr AiVector3D}
+#{cstructfield struct aiMesh, AiMesh, mNormals, Ptr AiVector3D}
+#{cstructfield struct aiMesh, AiMesh, mTangents, Ptr AiVector3D}
+#{cstructfield struct aiMesh, AiMesh, mBitangents, Ptr AiVector3D}
+#{cstructfield struct aiMesh, AiMesh, mColors, Ptr AiColor4D}
+#{cstructfield struct aiMesh, AiMesh, mTextureCoords, Ptr AiVector3D}
+#{cstructfield struct aiMesh, AiMesh, mNumUVComponents, CUInt}
+#{cstructfield struct aiMesh, AiMesh, mFaces, Ptr AiFace}
+#{cstructfield struct aiMesh, AiMesh, mNumBones, CUInt}
+#{cstructfield struct aiMesh, AiMesh, mBones, Ptr (Ptr AiBone)}
+#{cstructfield struct aiMesh, AiMesh, mMaterialIndex, CUInt}
+#{cstructfield struct aiMesh, AiMesh, mName, AiString}
+#{cstructfield struct aiMesh, AiMesh, mNumAnimMeshes, CUInt}
+#{cstructfield struct aiMesh, AiMesh, mAnimMeshes, Ptr (Ptr AiAnimMesh)}
+#{cstructfield struct aiMesh, AiMesh, mMethod, AiMorphingMethod}
+#{cstructfield struct aiMesh, AiMesh, mAABB, AiAABB}
+#{cstructfield struct aiMesh, AiMesh, mTextureCoordsNames, Ptr (Ptr AiString)}
 
-instance Offset "mName" AiAnimMesh AiString where offsetof = #{offset struct aiAnimMesh, mName}
-instance Offset "mVertices" AiAnimMesh AiVector3D where offsetof = #{offset struct aiAnimMesh, mVertices}
-instance Offset "mNormals" AiAnimMesh AiVector3D where offsetof = #{offset struct aiAnimMesh, mNormals}
-instance Offset "mTangents" AiAnimMesh AiVector3D where offsetof = #{offset struct aiAnimMesh, mTangents}
-instance Offset "mBitangents" AiAnimMesh AiVector3D where offsetof = #{offset struct aiAnimMesh, mBitangents}
-instance Offset "mColors" AiAnimMesh (Ptr AiColor4D) where offsetof = #{offset struct aiAnimMesh, mColors}
-instance Offset "mTextureCoords" AiAnimMesh (Ptr AiVector3D) where offsetof = #{offset struct aiAnimMesh, mTextureCoords}
-instance Offset "mNumVertices" AiAnimMesh CUInt where offsetof = #{offset struct aiAnimMesh, mNumVertices}
-instance Offset "mWeight" AiAnimMesh CFloat where offsetof = #{offset struct aiAnimMesh, mWeight}
+#{cstruct struct aiSkeletonBone, AiSkeletonBone}
 
-type AiMorphingMethod = #{type enum aiMorphingMethod}
-
-#{enumerant_ enum aiMorphingMethod, "aiMorphingMethod_UNKNOWN", "AiMorphingMethod_UNKNOWN"}
-#{enumerant_ enum aiMorphingMethod, "aiMorphingMethod_VERTEX_BLEND", "AiMorphingMethod_VERTEX_BLEND"}
-#{enumerant_ enum aiMorphingMethod, "aiMorphingMethod_MORPH_NORMALIZED", "AiMorphingMethod_MORPH_NORMALIZED"}
-#{enumerant_ enum aiMorphingMethod, "aiMorphingMethod_MORPH_RELATIVE", "AiMorphingMethod_MORPH_RELATIVE"}
-
-data AiMesh
-
-instance Allocable AiMesh where
-  sizeof = #{size struct aiMesh}
-  alignof = #{alignment struct aiMesh}
-
-instance Offset "mPrimitiveTypes" AiMesh CUInt where offsetof = #{offset struct aiMesh, mPrimitiveTypes}
-instance Offset "mNumVertices" AiMesh CUInt where offsetof = #{offset struct aiMesh, mNumVertices}
-instance Offset "mNumFaces" AiMesh CUInt where offsetof = #{offset struct aiMesh, mNumFaces}
-instance Offset "mVertices" AiMesh (Ptr AiVector3D) where offsetof = #{offset struct aiMesh, mVertices}
-instance Offset "mNormals" AiMesh (Ptr AiVector3D) where offsetof = #{offset struct aiMesh, mNormals}
-instance Offset "mTangents" AiMesh (Ptr AiVector3D) where offsetof = #{offset struct aiMesh, mTangents}
-instance Offset "mBitangents" AiMesh (Ptr AiVector3D) where offsetof = #{offset struct aiMesh, mBitangents}
-instance Offset "mColors" AiMesh (Ptr AiColor4D) where offsetof = #{offset struct aiMesh, mColors}
-instance Offset "mTextureCoords" AiMesh (Ptr AiVector3D) where offsetof = #{offset struct aiMesh, mTextureCoords}
-instance Offset "mNumUVComponents" AiMesh CUInt where offsetof = #{offset struct aiMesh, mNumUVComponents}
-instance Offset "mFaces" AiMesh (Ptr AiFace) where offsetof = #{offset struct aiMesh, mFaces}
-instance Offset "mNumBones" AiMesh CUInt where offsetof = #{offset struct aiMesh, mNumBones}
-instance Offset "mBones" AiMesh (Ptr (Ptr AiBone)) where offsetof = #{offset struct aiMesh, mBones}
-instance Offset "mMaterialIndex" AiMesh CUInt where offsetof = #{offset struct aiMesh, mMaterialIndex}
-instance Offset "mName" AiMesh AiString where offsetof = #{offset struct aiMesh, mName}
-instance Offset "mNumAnimMeshes" AiMesh CUInt where offsetof = #{offset struct aiMesh, mNumAnimMeshes}
-instance Offset "mAnimMeshes" AiMesh (Ptr (Ptr AiAnimMesh)) where offsetof = #{offset struct aiMesh, mAnimMeshes}
-instance Offset "mMethod" AiMesh AiMorphingMethod where offsetof = #{offset struct aiMesh, mMethod}
-instance Offset "mAABB" AiMesh AiAABB where offsetof = #{offset struct aiMesh, mAABB}
-instance Offset "mTextureCoordsNames" AiMesh (Ptr (Ptr AiString)) where offsetof = #{offset struct aiMesh, mTextureCoordsNames}
-
-data AiSkeletonBone
-
-instance Allocable AiSkeletonBone where
-  sizeof = #{size struct aiSkeletonBone}
-  alignof = #{alignment struct aiSkeletonBone}
-
-instance Offset "mParent" AiSkeletonBone CInt where offsetof = #{offset struct aiSkeletonBone, mParent}
+#{cstructfield struct aiSkeletonBone, AiSkeletonBone, mParent, CInt}
 #ifndef ASSIMP_BUILD_NO_ARMATUREPOPULATE_PROCESS
-instance Offset "mArmature" AiSkeletonBone (Ptr AiNode) where offsetof = #{offset struct aiSkeletonBone, mArmature}
-instance Offset "mNode" AiSkeletonBone (Ptr AiNode) where offsetof = #{offset struct aiSkeletonBone, mNode}
+#{cstructfield struct aiSkeletonBone, AiSkeletonBone, mArmature, Ptr AiNode}
+#{cstructfield struct aiSkeletonBone, AiSkeletonBone, mNode, Ptr AiNode}
 #endif
-instance Offset "mNumnWeights" AiSkeletonBone CUInt where offsetof = #{offset struct aiSkeletonBone, mNumnWeights}
-instance Offset "mMeshId" AiSkeletonBone (Ptr AiMesh) where offsetof = #{offset struct aiSkeletonBone, mMeshId}
-instance Offset "mWeights" AiSkeletonBone (Ptr AiVertexWeight) where offsetof = #{offset struct aiSkeletonBone, mWeights}
-instance Offset "mOffsetMatrix" AiSkeletonBone AiMatrix4x4 where offsetof = #{offset struct aiSkeletonBone, mOffsetMatrix}
-instance Offset "mLocalMatrix" AiSkeletonBone AiMatrix4x4 where offsetof = #{offset struct aiSkeletonBone, mLocalMatrix}
+#{cstructfield struct aiSkeletonBone, AiSkeletonBone, mNumnWeights, CUInt}
+#{cstructfield struct aiSkeletonBone, AiSkeletonBone, mMeshId, Ptr AiMesh}
+#{cstructfield struct aiSkeletonBone, AiSkeletonBone, mWeights, Ptr AiVertexWeight}
+#{cstructfield struct aiSkeletonBone, AiSkeletonBone, mOffsetMatrix, AiMatrix4x4}
+#{cstructfield struct aiSkeletonBone, AiSkeletonBone, mLocalMatrix, AiMatrix4x4}
 
-data AiSkeleton
-
-instance Allocable AiSkeleton where
-  sizeof = #{size struct aiSkeleton}
-  alignof = #{alignment struct aiSkeleton}
-
-instance Offset "mName" AiSkeleton AiString where offsetof = #{offset struct aiSkeleton, mName}
-instance Offset "mNumBones" AiSkeleton CUInt where offsetof = #{offset struct aiSkeleton, mNumBones}
-instance Offset "mBones" AiSkeleton (Ptr (Ptr AiSkeletonBone)) where offsetof = #{offset struct aiSkeleton, mBones}
+#{cstruct struct aiSkeleton, AiSkeleton}
+#{cstructfield struct aiSkeleton, AiSkeleton, mName, AiString}
+#{cstructfield struct aiSkeleton, AiSkeleton, mNumBones, CUInt}
+#{cstructfield struct aiSkeleton, AiSkeleton, mBones, Ptr (Ptr AiSkeletonBone)}

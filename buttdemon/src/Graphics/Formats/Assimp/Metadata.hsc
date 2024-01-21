@@ -2,7 +2,7 @@
 #include THE_HEADER
 
 module Graphics.Formats.Assimp.Metadata (
-  AiMetadataType,
+  AiMetadataType(..),
   aiMetadataType_BOOL, pattern AiMetadataType_BOOL,
   aiMetadataType_INT32, pattern AiMetadataType_INT32,
   aiMetadataType_UINT64, pattern AiMetadataType_UINT64,
@@ -14,6 +14,7 @@ module Graphics.Formats.Assimp.Metadata (
   aiMetadataType_INT64, pattern AiMetadataType_INT64,
   aiMetadataType_UINT32, pattern AiMetadataType_UINT32,
   IsAiMetadataType(..),
+  aiType,
   AiMetadataEntry,
   AiMetadata
 ) where
@@ -26,48 +27,40 @@ import Foreign.Offset
 import Foreign.Ptr
 import Graphics.Formats.Assimp.Types
 
-type AiMetadataType = #{type aiMetadataType}
-
-#{enumerant aiMetadataType, "AI_BOOL", "aiMetadataType_BOOL", "AiMetadataType_BOOL"}
-#{enumerant aiMetadataType, "AI_INT32", "aiMetadataType_INT32", "AiMetadataType_INT32"}
-#{enumerant aiMetadataType, "AI_UINT64", "aiMetadataType_UINT64", "AiMetadataType_UINT64"}
-#{enumerant aiMetadataType, "AI_FLOAT", "aiMetadataType_FLOAT", "AiMetadataType_FLOAT"}
-#{enumerant aiMetadataType, "AI_DOUBLE", "aiMetadataType_DOUBLE", "AiMetadataType_DOUBLE"}
-#{enumerant aiMetadataType, "AI_AISTRING", "aiMetadataType_AISTRING", "AiMetadataType_AISTRING"}
-#{enumerant aiMetadataType, "AI_AIVECTOR3D", "aiMetadataType_AIVECTOR3D", "AiMetadataType_AIVECTOR3D"}
-#{enumerant aiMetadataType, "AI_AIMETADATA", "aiMetadataType_AIMETADATA", "AiMetadataType_AIMETADATA"}
-#{enumerant aiMetadataType, "AI_INT64", "aiMetadataType_INT64", "AiMetadataType_INT64"}
-#{enumerant aiMetadataType, "AI_UINT32", "aiMetadataType_UINT32", "AiMetadataType_UINT32"}
+#{cenum aiMetadataType, AiMetadataType}
+#{cenumerant AiMetadataType, AI_BOOL, aiMetadataType_BOOL, AiMetadataType_BOOL}
+#{cenumerant AiMetadataType, AI_INT32, aiMetadataType_INT32, AiMetadataType_INT32}
+#{cenumerant AiMetadataType, AI_UINT64, aiMetadataType_UINT64, AiMetadataType_UINT64}
+#{cenumerant AiMetadataType, AI_FLOAT, aiMetadataType_FLOAT, AiMetadataType_FLOAT}
+#{cenumerant AiMetadataType, AI_DOUBLE, aiMetadataType_DOUBLE, AiMetadataType_DOUBLE}
+#{cenumerant AiMetadataType, AI_AISTRING, aiMetadataType_AISTRING, AiMetadataType_AISTRING}
+#{cenumerant AiMetadataType, AI_AIVECTOR3D, aiMetadataType_AIVECTOR3D, AiMetadataType_AIVECTOR3D}
+#{cenumerant AiMetadataType, AI_AIMETADATA, aiMetadataType_AIMETADATA, AiMetadataType_AIMETADATA}
+#{cenumerant AiMetadataType, AI_INT64, aiMetadataType_INT64, AiMetadataType_INT64}
+#{cenumerant AiMetadataType, AI_UINT32, aiMetadataType_UINT32, AiMetadataType_UINT32}
 
 class IsAiMetadataType a where
-  aiTypeOf :: AiMetadataType
+  aiTypeOf :: a -> AiMetadataType
 
-instance IsAiMetadataType CBool where aiTypeOf = aiMetadataType_BOOL 
-instance IsAiMetadataType Int32 where aiTypeOf = aiMetadataType_INT32 
-instance IsAiMetadataType Word64 where aiTypeOf = aiMetadataType_UINT64 
-instance IsAiMetadataType CFloat where aiTypeOf = aiMetadataType_FLOAT 
-instance IsAiMetadataType CDouble where aiTypeOf = aiMetadataType_DOUBLE 
-instance IsAiMetadataType AiString where aiTypeOf = aiMetadataType_AISTRING 
-instance IsAiMetadataType AiVector3D where aiTypeOf = aiMetadataType_AIVECTOR3D 
-instance IsAiMetadataType AiMetadata where aiTypeOf = aiMetadataType_AIMETADATA 
-instance IsAiMetadataType Int64 where aiTypeOf = aiMetadataType_INT64 
-instance IsAiMetadataType Word32 where aiTypeOf = aiMetadataType_UINT32 
+aiType :: forall a. IsAiMetadataType a => AiMetadataType
+aiType = aiTypeOf (undefined :: a)
 
-data AiMetadataEntry
+instance IsAiMetadataType CBool where aiTypeOf _ = aiMetadataType_BOOL 
+instance IsAiMetadataType Int32 where aiTypeOf _ = aiMetadataType_INT32 
+instance IsAiMetadataType Word64 where aiTypeOf _ = aiMetadataType_UINT64 
+instance IsAiMetadataType CFloat where aiTypeOf _ = aiMetadataType_FLOAT 
+instance IsAiMetadataType CDouble where aiTypeOf _ = aiMetadataType_DOUBLE 
+instance IsAiMetadataType AiString where aiTypeOf _ = aiMetadataType_AISTRING 
+instance IsAiMetadataType AiVector3D where aiTypeOf _ = aiMetadataType_AIVECTOR3D 
+instance IsAiMetadataType AiMetadata where aiTypeOf _ = aiMetadataType_AIMETADATA 
+instance IsAiMetadataType Int64 where aiTypeOf _ = aiMetadataType_INT64 
+instance IsAiMetadataType Word32 where aiTypeOf _ = aiMetadataType_UINT32 
 
-instance Allocable AiMetadataEntry where
-  sizeof = #{size struct aiMetadataEntry}
-  alignof = #{alignment struct aiMetadataEntry}
+#{cstruct struct aiMetadataEntry, AiMetadataEntry}
+#{cstructfield struct aiMetadataEntry, AiMetadataEntry, mType, AiMetadataType}
+#{cstructfield struct aiMetadataEntry, AiMetadataEntry, mData, Ptr Void}
 
-instance Offset "mType" AiMetadataEntry AiMetadataType where offsetof = #{offset struct aiMetadataEntry, mType}
-instance Offset "mData" AiMetadataEntry (Ptr Void) where offsetof = #{offset struct aiMetadataEntry, mData}
-
-data AiMetadata
-
-instance Allocable AiMetadata where
-  sizeof = #{size struct aiMetadata}
-  alignof = #{alignment struct aiMetadata}
-
-instance Offset "mNumProperties" AiMetadata CUInt where offsetof = #{offset struct aiMetadata, mNumProperties}
-instance Offset "mKeys" AiMetadata (Ptr AiString) where offsetof = #{offset struct aiMetadata, mKeys}
-instance Offset "mValues" AiMetadata (Ptr AiMetadataEntry) where offsetof = #{offset struct aiMetadata, mValues}
+#{cstruct struct aiMetadata, AiMetadata}
+#{cstructfield struct aiMetadata, AiMetadata, mNumProperties, CUInt}
+#{cstructfield struct aiMetadata, AiMetadata, mKeys, (Ptr AiString)}
+#{cstructfield struct aiMetadata, AiMetadata, mValues, (Ptr AiMetadataEntry)}

@@ -6,7 +6,7 @@ module Graphics.Formats.Assimp.Anim (
   AiQuatKey,
   AiMeshKey,
   AiMeshMorphKey,
-  AiAnimBehavior,
+  AiAnimBehaviour(..),
   aiAnimBehaviour_DEFAULT, pattern AiAnimBehaviour_DEFAULT,
   aiAnimBehaviour_CONSTANT, pattern AiAnimBehaviour_CONSTANT,
   aiAnimBehaviour_LINEAR, pattern AiAnimBehaviour_LINEAR,
@@ -25,99 +25,58 @@ import Foreign.Ptr
 import Graphics.Formats.Assimp.Quaternion
 import Graphics.Formats.Assimp.Types
 
-data AiVectorKey
+#{cstruct struct aiVectorKey, AiVectorKey}
+#{cstructfield struct aiVectorKey, AiVectorKey, mTime, CDouble}
+#{cstructfield struct aiVectorKey, AiVectorKey, mValue, AiVector3D}
 
-instance Allocable AiVectorKey where
-  sizeof = #{size struct aiVectorKey}
-  alignof = #{alignment struct aiVectorKey}
+#{cstruct struct aiQuatKey, AiQuatKey}
+#{cstructfield struct aiQuatKey, AiQuatKey, mTime, CDouble}
+#{cstructfield struct aiQuatKey, AiQuatKey, mValue, AiQuaternion}
 
-instance Offset "mTime" AiVectorKey CDouble where offsetof = #{offset struct aiVectorKey, mTime}
-instance Offset "mValue" AiVectorKey AiVector3D where offsetof = #{offset struct aiVectorKey, mValue}
+#{cstruct struct aiMeshKey, AiMeshKey}
+#{cstructfield struct aiMeshKey, AiMeshKey, mTime, CDouble}
+#{cstructfield struct aiMeshKey, AiMeshKey, mValue, CUInt}
 
-data AiQuatKey
+#{cstruct struct aiMeshMorphKey, AiMeshMorphKey}
+#{cstructfield struct aiMeshMorphKey, AiMeshMorphKey, mTime, CDouble}
+#{cstructfield struct aiMeshMorphKey, AiMeshMorphKey, mValues, Ptr CUInt}
+#{cstructfield struct aiMeshMorphKey, AiMeshMorphKey, mWeights, Ptr CDouble}
+#{cstructfield struct aiMeshMorphKey, AiMeshMorphKey, mNumValuesAndWeights, CUInt}
 
-instance Allocable AiQuatKey where
-  sizeof = #{size struct aiQuatKey}
-  alignof = #{alignment struct aiQuatKey}
+#{cenum enum aiAnimBehaviour, AiAnimBehaviour}
+#{cenumerant_ AiAnimBehaviour, aiAnimBehaviour_DEFAULT, AiAnimBehaviour_DEFAULT}
+#{cenumerant_ AiAnimBehaviour, aiAnimBehaviour_CONSTANT, AiAnimBehaviour_CONSTANT}
+#{cenumerant_ AiAnimBehaviour, aiAnimBehaviour_LINEAR, AiAnimBehaviour_LINEAR}
+#{cenumerant_ AiAnimBehaviour, aiAnimBehaviour_REPEAT, AiAnimBehaviour_REPEAT}
 
-instance Offset "mTime" AiQuatKey CDouble where offsetof = #{offset struct aiQuatKey, mTime}
-instance Offset "mValue" AiQuatKey AiQuaternion where offsetof = #{offset struct aiQuatKey, mValue}
+#{cstruct struct aiNodeAnim, AiNodeAnim}
+#{cstructfield struct aiNodeAnim, AiNodeAnim, mNodeName, AiString}
+#{cstructfield struct aiNodeAnim, AiNodeAnim, mNumPositionKeys, CUInt}
+#{cstructfield struct aiNodeAnim, AiNodeAnim, mPositionKeys, Ptr AiVectorKey}
+#{cstructfield struct aiNodeAnim, AiNodeAnim, mNumRotationKeys, CUInt}
+#{cstructfield struct aiNodeAnim, AiNodeAnim, mRotationKeys, Ptr AiQuatKey}
+#{cstructfield struct aiNodeAnim, AiNodeAnim, mNumScalingKeys, CUInt}
+#{cstructfield struct aiNodeAnim, AiNodeAnim, mScalingKeys, Ptr AiVectorKey}
+#{cstructfield struct aiNodeAnim, AiNodeAnim, mPreState, AiAnimBehaviour}
+#{cstructfield struct aiNodeAnim, AiNodeAnim, mPostState, AiAnimBehaviour}
 
-data AiMeshKey
+#{cstruct struct aiMeshAnim, AiMeshAnim}
+#{cstructfield struct aiMeshAnim, AiMeshAnim, mName, AiString}
+#{cstructfield struct aiMeshAnim, AiMeshAnim, mNumKeys, CUInt}
+#{cstructfield struct aiMeshAnim, AiMeshAnim, mKeys, Ptr AiMeshKey}
 
-instance Allocable AiMeshKey where
-  sizeof = #{size struct aiMeshKey}
-  alignof = #{alignment struct aiMeshKey}
+#{cstruct struct aiMeshMorphAnim, AiMeshMorphAnim}
+#{cstructfield struct aiMeshMorphAnim, AiMeshMorphAnim, mName, AiString}
+#{cstructfield struct aiMeshMorphAnim, AiMeshMorphAnim, mNumKeys, CUInt}
+#{cstructfield struct aiMeshMorphAnim, AiMeshMorphAnim, mKeys, Ptr AiMeshMorphKey}
 
-instance Offset "mTime" AiMeshKey CDouble where offsetof = #{offset struct aiMeshKey, mTime}
-instance Offset "mValue" AiMeshKey CUInt where offsetof = #{offset struct aiMeshKey, mValue}
-
-data AiMeshMorphKey
-
-instance Allocable AiMeshMorphKey where
-  sizeof = #{size struct aiMeshMorphKey}
-  alignof = #{alignment struct aiMeshMorphKey}
-
-instance Offset "mTime" AiMeshMorphKey CDouble where offsetof = #{offset struct aiMeshMorphKey, mTime}
-instance Offset "mValues" AiMeshMorphKey (Ptr CUInt) where offsetof = #{offset struct aiMeshMorphKey, mValues}
-instance Offset "mWeights" AiMeshMorphKey (Ptr CDouble) where offsetof = #{offset struct aiMeshMorphKey, mWeights}
-instance Offset "mNumValuesAndWeights" AiMeshMorphKey CUInt where offsetof = #{offset struct aiMeshMorphKey, mNumValuesAndWeights}
-
-type AiAnimBehavior = #{type enum aiAnimBehaviour}
-
-#{enumerant enum aiAnimBehaviour, "aiAnimBehaviour_DEFAULT", "aiAnimBehaviour_DEFAULT", "AiAnimBehaviour_DEFAULT"}
-#{enumerant enum aiAnimBehaviour, "aiAnimBehaviour_CONSTANT", "aiAnimBehaviour_CONSTANT", "AiAnimBehaviour_CONSTANT"}
-#{enumerant enum aiAnimBehaviour, "aiAnimBehaviour_LINEAR", "aiAnimBehaviour_LINEAR", "AiAnimBehaviour_LINEAR"}
-#{enumerant enum aiAnimBehaviour, "aiAnimBehaviour_REPEAT", "aiAnimBehaviour_REPEAT", "AiAnimBehaviour_REPEAT"}
-
-data AiNodeAnim
-
-instance Allocable AiNodeAnim where
-  sizeof = #{size struct aiNodeAnim}
-  alignof = #{alignment struct aiNodeAnim}
-
-instance Offset "mNodeName" AiNodeAnim AiString where offsetof = #{offset struct aiNodeAnim, mNodeName}
-instance Offset "mNumPositionKeys" AiNodeAnim CUInt where offsetof = #{offset struct aiNodeAnim, mNumPositionKeys}
-instance Offset "mPositionKeys" AiNodeAnim (Ptr AiVectorKey) where offsetof = #{offset struct aiNodeAnim, mPositionKeys}
-instance Offset "mNumRotationKeys" AiNodeAnim CUInt where offsetof = #{offset struct aiNodeAnim, mNumRotationKeys}
-instance Offset "mRotationKeys" AiNodeAnim (Ptr AiQuatKey) where offsetof = #{offset struct aiNodeAnim, mRotationKeys}
-instance Offset "mNumScalingKeys" AiNodeAnim CUInt where offsetof = #{offset struct aiNodeAnim, mNumScalingKeys}
-instance Offset "mScalingKeys" AiNodeAnim (Ptr AiVectorKey) where offsetof = #{offset struct aiNodeAnim, mScalingKeys}
-instance Offset "mPreState" AiNodeAnim AiAnimBehavior where offsetof = #{offset struct aiNodeAnim, mPreState}
-instance Offset "mPostState" AiNodeAnim AiAnimBehavior where offsetof = #{offset struct aiNodeAnim, mPostState}
-
-data AiMeshAnim
-
-instance Allocable AiMeshAnim where
-  sizeof = #{size struct aiMeshAnim}
-  alignof = #{alignment struct aiMeshAnim}
-
-instance Offset "mName" AiMeshAnim AiString where offsetof = #{offset struct aiMeshAnim, mName}
-instance Offset "mNumKeys" AiMeshAnim CUInt where offsetof = #{offset struct aiMeshAnim, mNumKeys}
-instance Offset "mKeys" AiMeshAnim (Ptr AiMeshKey) where offsetof = #{offset struct aiMeshAnim, mKeys}
-
-data AiMeshMorphAnim
-
-instance Allocable AiMeshMorphAnim where
-  sizeof = #{size struct aiMeshMorphAnim}
-  alignof = #{alignment struct aiMeshMorphAnim}
-
-instance Offset "mName" AiMeshMorphAnim AiString where offsetof = #{offset struct aiMeshMorphAnim, mName}
-instance Offset "mNumKeys" AiMeshMorphAnim CUInt where offsetof = #{offset struct aiMeshMorphAnim, mNumKeys}
-instance Offset "mKeys" AiMeshMorphAnim (Ptr AiMeshMorphKey) where offsetof = #{offset struct aiMeshMorphAnim, mKeys}
-
-data AiAnimation
-
-instance Allocable AiAnimation where
-  sizeof = #{size struct aiAnimation}
-  alignof = #{alignment struct aiAnimation}
-
-instance Offset "mName" AiAnimation AiString where offsetof = #{offset struct aiAnimation, mName}
-instance Offset "mDuration" AiAnimation CDouble where offsetof = #{offset struct aiAnimation, mDuration}
-instance Offset "mTicksPerSecond" AiAnimation CDouble where offsetof = #{offset struct aiAnimation, mTicksPerSecond}
-instance Offset "mNumChannels" AiAnimation CUInt where offsetof = #{offset struct aiAnimation, mNumChannels}
-instance Offset "mChannels" AiAnimation (Ptr (Ptr AiNodeAnim)) where offsetof = #{offset struct aiAnimation, mChannels}
-instance Offset "mNumMeshChannels" AiAnimation CUInt where offsetof = #{offset struct aiAnimation, mNumMeshChannels}
-instance Offset "mMeshChannels" AiAnimation (Ptr (Ptr AiMeshAnim)) where offsetof = #{offset struct aiAnimation, mMeshChannels}
-instance Offset "mNumMorphMeshChannels" AiAnimation CUInt where offsetof = #{offset struct aiAnimation, mNumMorphMeshChannels}
-instance Offset "mMorphMeshChannels" AiAnimation (Ptr (Ptr AiMeshMorphAnim)) where offsetof = #{offset struct aiAnimation, mMorphMeshChannels}
+#{cstruct struct aiAnimation, AiAnimation}
+#{cstructfield struct aiAnimation, AiAnimation, mName, AiString}
+#{cstructfield struct aiAnimation, AiAnimation, mDuration, CDouble}
+#{cstructfield struct aiAnimation, AiAnimation, mTicksPerSecond, CDouble}
+#{cstructfield struct aiAnimation, AiAnimation, mNumChannels, CUInt}
+#{cstructfield struct aiAnimation, AiAnimation, mChannels, Ptr (Ptr AiNodeAnim)}
+#{cstructfield struct aiAnimation, AiAnimation, mNumMeshChannels, CUInt}
+#{cstructfield struct aiAnimation, AiAnimation, mMeshChannels, Ptr (Ptr AiMeshAnim)}
+#{cstructfield struct aiAnimation, AiAnimation, mNumMorphMeshChannels, CUInt}
+#{cstructfield struct aiAnimation, AiAnimation, mMorphMeshChannels, Ptr (Ptr AiMeshMorphAnim)}

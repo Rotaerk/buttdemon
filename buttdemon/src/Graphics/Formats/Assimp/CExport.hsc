@@ -10,23 +10,19 @@ module Graphics.Formats.Assimp.CExport (
 
 import Foreign.Allocable
 import Foreign.C.ConstPtr
-import Foreign.C.Types
 import Foreign.C.String
+import Foreign.C.Types
 import Foreign.Offset
 import Foreign.Ptr
+import Graphics.Formats.Assimp.Scene
 import Graphics.Formats.Assimp.Types
 
-data AiExportFormatDesc
+#{cstruct struct aiExportFormatDesc, AiExportFormatDesc}
+#{cstructfield struct aiExportFormatDesc, AiExportFormatDesc, id, CString}
+#{cstructfield struct aiExportFormatDesc, AiExportFormatDesc, description, CString}
+#{cstructfield struct aiExportFormatDesc, AiExportFormatDesc, fileExtension, CString}
 
-instance Allocable AiExportFormatDesc where
-  sizeof = #{size struct aiExportFormatDesc}
-  alignof = #{alignment struct aiExportFormatDesc}
-
-instance Offset "id" AiExportFormatDesc CString where offsetof = #{offset struct aiExportFormatDesc, id}
-instance Offset "description" AiExportFormatDesc CString where offsetof = #{offset struct aiExportFormatDesc, description}
-instance Offset "fileExtension" AiExportFormatDesc CString where offsetof = #{offset struct aiExportFormatDesc, fileExtension}
-
-#{importfunction_ "aiGetExportFormatCount", "IO CSize"} 
-#{importfunction_ "aiGetExportFormatDescription", "CSize -> IO (ConstPtr AiExportFormatDesc)"} 
-#{importfunction_ "aiReleaseExportFormatDescription", "ConstPtr AiExportFormatDesc -> IO ()"} 
--- #{importfunction_ "aiCopyScene", "ConstPtr AiScene -> Ptr (Ptr AiScene) -> IO ()"} 
+#{importfunction_ aiGetExportFormatCount, IO CSize} 
+#{importfunction_ aiGetExportFormatDescription, CSize -> IO (ConstPtr AiExportFormatDesc)} 
+#{importfunction_ aiReleaseExportFormatDescription, ConstPtr AiExportFormatDesc -> IO ()} 
+#{importfunction_ aiCopyScene, ConstPtr AiScene -> Ptr (Ptr AiScene) -> IO ()} 

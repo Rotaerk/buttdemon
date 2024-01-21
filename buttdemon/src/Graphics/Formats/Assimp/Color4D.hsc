@@ -1,4 +1,5 @@
-#include "assimp/color4.h"
+#define THE_HEADER "assimp/color4.h"
+#include THE_HEADER
 
 module Graphics.Formats.Assimp.Color4D (
   AiColor4D
@@ -8,13 +9,8 @@ import Foreign.Allocable
 import Foreign.Offset
 import Graphics.Formats.Assimp.Defs
 
-data AiColor4D
-
-instance Allocable AiColor4D where
-  sizeof = #{size struct aiColor4D}
-  alignof = #{alignment struct aiColor4D}
-
-instance Offset "r" AiColor4D AiReal where offsetof = #{offset struct aiColor4D, r}
-instance Offset "g" AiColor4D AiReal where offsetof = #{offset struct aiColor4D, g}
-instance Offset "b" AiColor4D AiReal where offsetof = #{offset struct aiColor4D, b}
-instance Offset "a" AiColor4D AiReal where offsetof = #{offset struct aiColor4D, a}
+#{cstruct struct aiColor4D, AiColor4D}
+#{cstructfield struct aiColor4D, AiColor4D, r, AiReal}
+#{cstructfield struct aiColor4D, AiColor4D, g, AiReal}
+#{cstructfield struct aiColor4D, AiColor4D, b, AiReal}
+#{cstructfield struct aiColor4D, AiColor4D, a, AiReal}

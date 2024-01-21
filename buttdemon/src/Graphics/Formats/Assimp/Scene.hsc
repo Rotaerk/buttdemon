@@ -25,34 +25,29 @@ import Graphics.Formats.Assimp.Anim
 import Graphics.Formats.Assimp.Metadata
 import Graphics.Formats.Assimp.Node
 
-#{cint "AI_SCENE_FLAGS_INCOMPLETE", "aiSceneFlagsIncomplete", "AiSceneFlagsIncomplete"}
-#{cint "AI_SCENE_FLAGS_VALIDATED", "aiSceneFlagsValidated", "AiSceneFlagsValidated"}
-#{cint "AI_SCENE_FLAGS_VALIDATION_WARNING", "aiSceneFlagsValidationWarning", "AiSceneFlagsValidationWarning"}
-#{cint "AI_SCENE_FLAGS_NON_VERBOSE_FORMAT", "aiSceneFlagsNonVerboseFormat", "AiSceneFlagsNonVerboseFormat"}
-#{cint "AI_SCENE_FLAGS_TERRAIN", "aiSceneFlagsTerrain", "AiSceneFlagsTerrain"}
-#{cint "AI_SCENE_FLAGS_ALLOW_SHARED", "aiSceneFlagsAllowShared", "AiSceneFlagsAllowShared"}
+#{cint AI_SCENE_FLAGS_INCOMPLETE, aiSceneFlagsIncomplete, AiSceneFlagsIncomplete}
+#{cint AI_SCENE_FLAGS_VALIDATED, aiSceneFlagsValidated, AiSceneFlagsValidated}
+#{cint AI_SCENE_FLAGS_VALIDATION_WARNING, aiSceneFlagsValidationWarning, AiSceneFlagsValidationWarning}
+#{cint AI_SCENE_FLAGS_NON_VERBOSE_FORMAT, aiSceneFlagsNonVerboseFormat, AiSceneFlagsNonVerboseFormat}
+#{cint AI_SCENE_FLAGS_TERRAIN, aiSceneFlagsTerrain, AiSceneFlagsTerrain}
+#{cint AI_SCENE_FLAGS_ALLOW_SHARED, aiSceneFlagsAllowShared, AiSceneFlagsAllowShared}
 
-data AiScene
-
-instance Allocable AiScene where
-  sizeof = #{size struct aiScene}
-  alignof = #{alignment struct aiScene}
-
-instance Offset "mFlags" AiScene CUInt where offsetof = #{offset struct aiScene, mFlags}
-instance Offset "mRootNode" AiScene (Ptr AiNode) where offsetof = #{offset struct aiScene, mRootNode}
-instance Offset "mNumMeshes" AiScene CUInt where offsetof = #{offset struct aiScene, mNumMeshes}
-instance Offset "mMeshes" AiScene (Ptr (Ptr AiMesh)) where offsetof = #{offset struct aiScene, mMeshes}
-instance Offset "mNumMaterials" AiScene CUInt where offsetof = #{offset struct aiScene, mNumMaterials}
-instance Offset "mMaterials" AiScene (Ptr (Ptr AiMaterial)) where offsetof = #{offset struct aiScene, mMaterials}
-instance Offset "mNumAnimations" AiScene CUInt where offsetof = #{offset struct aiScene, mNumAnimations}
-instance Offset "mAnimations" AiScene (Ptr (Ptr AiAnimation)) where offsetof = #{offset struct aiScene, mAnimations}
-instance Offset "mNumTextures" AiScene CUInt where offsetof = #{offset struct aiScene, mNumTextures}
-instance Offset "mTextures" AiScene (Ptr (Ptr AiTexture)) where offsetof = #{offset struct aiScene, mTextures}
-instance Offset "mNumLights" AiScene CUInt where offsetof = #{offset struct aiScene, mNumLights}
-instance Offset "mLights" AiScene (Ptr (Ptr AiLight)) where offsetof = #{offset struct aiScene, mLights}
-instance Offset "mNumCameras" AiScene CUInt where offsetof = #{offset struct aiScene, mNumCameras}
-instance Offset "mCameras" AiScene (Ptr (Ptr AiCamera)) where offsetof = #{offset struct aiScene, mCameras}
-instance Offset "mMetaData" AiScene (Ptr AiMetadata) where offsetof = #{offset struct aiScene, mMetaData}
-instance Offset "mName" AiScene AiString where offsetof = #{offset struct aiScene, mName}
-instance Offset "mNumSkeletons" AiScene CUInt where offsetof = #{offset struct aiScene, mNumSkeletons}
-instance Offset "mSkeletons" AiScene (Ptr (Ptr AiSkeleton)) where offsetof = #{offset struct aiScene, mSkeletons}
+#{cstruct C_STRUCT aiScene, AiScene}
+#{cstructfield C_STRUCT aiScene, AiScene, mFlags, CUInt}
+#{cstructfield C_STRUCT aiScene, AiScene, mRootNode, Ptr AiNode}
+#{cstructfield C_STRUCT aiScene, AiScene, mNumMeshes, CUInt}
+#{cstructfield C_STRUCT aiScene, AiScene, mMeshes, Ptr (Ptr AiMesh)}
+#{cstructfield C_STRUCT aiScene, AiScene, mNumMaterials, CUInt}
+#{cstructfield C_STRUCT aiScene, AiScene, mMaterials, Ptr (Ptr AiMaterial)}
+#{cstructfield C_STRUCT aiScene, AiScene, mNumAnimations, CUInt}
+#{cstructfield C_STRUCT aiScene, AiScene, mAnimations, Ptr (Ptr AiAnimation)}
+#{cstructfield C_STRUCT aiScene, AiScene, mNumTextures, CUInt}
+#{cstructfield C_STRUCT aiScene, AiScene, mTextures, Ptr (Ptr AiTexture)}
+#{cstructfield C_STRUCT aiScene, AiScene, mNumLights, CUInt}
+#{cstructfield C_STRUCT aiScene, AiScene, mLights, Ptr (Ptr AiLight)}
+#{cstructfield C_STRUCT aiScene, AiScene, mNumCameras, CUInt}
+#{cstructfield C_STRUCT aiScene, AiScene, mCameras, Ptr (Ptr AiCamera)}
+#{cstructfield C_STRUCT aiScene, AiScene, mMetaData, Ptr AiMetadata}
+#{cstructfield C_STRUCT aiScene, AiScene, mName, AiString}
+#{cstructfield C_STRUCT aiScene, AiScene, mNumSkeletons, CUInt}
+#{cstructfield C_STRUCT aiScene, AiScene, mSkeletons, Ptr (Ptr AiSkeleton)}
