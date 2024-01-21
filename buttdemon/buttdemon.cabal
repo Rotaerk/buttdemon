@@ -65,6 +65,7 @@ library
     Graphics.Formats.Assimp.Color4D
     Graphics.Formats.Assimp.Config
     Graphics.Formats.Assimp.Defs
+    Graphics.Formats.Assimp.ImporterDesc
     Graphics.Formats.Assimp.Light
     Graphics.Formats.Assimp.Material
     Graphics.Formats.Assimp.Matrix3x3
