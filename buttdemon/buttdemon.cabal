@@ -83,6 +83,7 @@ library
     Graphics.Formats.Assimp.Types
     Graphics.Formats.Assimp.Vector2D
     Graphics.Formats.Assimp.Vector3D
+    Graphics.Formats.Assimp.Version
   if flag(swig)
     cpp-options: -DSWIG
     cc-options: -DSWIG
