@@ -43,6 +43,7 @@ common common
   if impl(ghc >= 9.0.2)
     default-extensions:
       NoFieldSelectors
+  build-depends: base >=4.9
 
 library
   import: common
@@ -51,8 +52,6 @@ library
   include-dirs: include
   build-tool-depends: hsc2hs:hsc2hs
   hsc2hs-options: -t template-hsc.h -i functions-hsc.h
-  build-depends:
-    base >=4.9
   exposed-modules:
     Data.IntWord
     Foreign.Allocable
@@ -90,14 +89,6 @@ library
   if flag(doublePrecision)
     cpp-options: -DASSIMP_DOUBLE_PRECISION
     cc-options: -DASSIMP_DOUBLE_PRECISION
-
-executable buttdemon-sandbox
-  import: common
-  hs-source-dirs: app
-  main-is: ButtdemonSandbox.hs
-  build-depends:
-    buttdemon,
-    base >= 4.18
 
 source-repository head
   type: git

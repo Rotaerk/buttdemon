@@ -42,9 +42,6 @@ module Graphics.Formats.Assimp.PostProcess (
 ) where
 
 import Data.IntWord
-import Foreign.Allocable
-import Foreign.Offset
-import Graphics.Formats.Assimp.Defs
 
 #{cenum enum aiPostProcessSteps, AiPostProcessSteps}
 #{cenumerant_ AiPostProcessSteps, aiProcess_CalcTangentSpace, AiProcess_CalcTangentSpace}
